@@ -24,11 +24,11 @@ Werken in sprints, met een verdunde versie van Agile.
 
 ## Git gebruik
 Feature Branches, Name must be sufficiently descriptive<br>
-Small commits <br>
+Kleine commits <br>
 Issues <br>
 Review Request <br>
-Don't push to main <br>
-Don't push to development <br>
+Niet naar main pushen <br>
+Niet naar development pushen, zonder review <br>
 
 ## Regels
 Breken van de regels wordt gedocumenteerd, sancties worden op democratische wijze bepaald.
