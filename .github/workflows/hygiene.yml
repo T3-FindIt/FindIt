@@ -2,8 +2,9 @@ name: Code Hygiene
 
 on:
   pull_request:
-    branches: [ "main" ]
-    branches: [ "development" ]
+    branches:
+      - main
+      - development
   workflow_dispatch:
     inputs:
       reason:
