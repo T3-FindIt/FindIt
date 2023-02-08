@@ -5,7 +5,7 @@ def printToStderr(string:str):
 
 def main():
     printToStderr("This test should FAIL, and this string should be easily visible in the output.")
-    return -1
+    exit -1
 
 if __name__ == "__main__":
     main()
