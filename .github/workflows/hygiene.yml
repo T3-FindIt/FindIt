@@ -5,6 +5,11 @@ on:
     branches:
       - main
       - development
+  # Tijdelijk voor testen, verwijderen na testen
+  push:
+    branches:
+      - auto-code-style-check-workflow
+  # Tijdelijk voor testen, verwijderen na testen
   workflow_dispatch:
     inputs:
       reason:
