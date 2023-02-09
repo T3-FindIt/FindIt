@@ -110,8 +110,6 @@ def CheckHHPPCommonStyle(path:str):
     failed = False
     with open(path, "r") as file:
 
-        nrOfLines = sum(1 for line in open(path))
-
         includeGuardIfndefPresent = False
         includeGuardDefinePresent = False
         includeGuardEndifPresent = False
