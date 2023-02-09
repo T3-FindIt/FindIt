@@ -15,6 +15,8 @@ Deze moet ook multiple include bescherming te hebben.
 
 Geen variablen buiten klasse definitie, tenzij ze constant zijn.
 
+💻 - *Geautomatiseerd getest*
+
 ### C
 Dezelfde regels gelden voor C bestanden, echter hoeven deze niet de .*pp extensie te hebben.
 
@@ -24,6 +26,8 @@ Dezelfde regels gelden voor C bestanden, echter hoeven deze niet de .*pp extensi
 
 #endif // HEADERFILENAME_H
 ```
+
+💻 - *Geautomatiseerd getest*
 
 ## Source Files
 De volgende volgorde moet worden gehanteerd voor source bestanden.
@@ -91,6 +95,8 @@ while (true)
 }
 ```
 
+💻 - *Gedeeltjelijk geautomatiseerd getest*
+
 ## One-Liners
 ❌<br>
 In verband met de vorige regel over krulhaken, zijn one-liners verboden. Het volgende is dus verboden:
@@ -113,6 +119,8 @@ Dit geld ook voor Getter en Setter functies.
 public int GetSpeed() {return speed;}
 ```
 
+💻 - *Gedeeltjelijk geautomatiseerd getest*
+
 ## Whitespace
 
 Er dient altijd Whitespace tussen/rondom bepaalde elementen te zitten:
@@ -127,6 +135,8 @@ Er dient altijd Whitespace tussen/rondom bepaalde elementen te zitten:
 
 Tabs zijn 4 spaties breed.
 
+💻 - *Geautomatiseerd getest*
+
 ## Goto, Continue & break
 Deze mogen nooit worden gebruikt.
 
@@ -135,6 +145,8 @@ Voor break geld een uitzondering, mits het binnen een switch statement wordt geb
 ## End of File Newline
 
 Aan het einde van een bestand moet een newline staan. We maken gebruik van Github Actions om hierop te controlleren.
+
+💻 - *Geautomatiseerd getest*
 
 ## Initializer lists (C++ specefiek)
 
@@ -177,4 +189,4 @@ using namespace std;
 
 Dit is nooit toegestaan.
 
-
+💻 - *Geautomatiseerd getest*
