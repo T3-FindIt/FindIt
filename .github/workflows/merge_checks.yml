@@ -1,0 +1,21 @@
+name: Merge Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  mergeChecks:
+    runs-on: ubuntu-latest
+    name: Check for newline at end of files
+    steps:
+      # - name: Checkout
+        # uses: actions/checkout@v3
+
+    - name: Check if the target branch is main
+      run: |
+        if [ ${{ github.head_ref }} != 'development' ]; then
+          echo "Pull request is not from development to main"
+          exit 1
+        fi
