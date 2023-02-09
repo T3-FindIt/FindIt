@@ -183,6 +183,14 @@ def CheckHHPPCommonStyle(path:str):
                     printError(index, line, path, "whitespace at end of line")
                     failed = True
 
+        if not includeGuardIfndefPresent and not includeGuardDefinePresent and not includeGuardEndifPresent:
+            printError(0, "", path, "missing include guard")
+            failed = True
+
+        elif not includeGuardIfndefPresent or not includeGuardDefinePresent or not includeGuardEndifPresent:
+            printError(0, "", path, "partially missing include guard")
+            failed = True
+
     return failed
 
 #------------------------------------------------#
