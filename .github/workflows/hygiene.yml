@@ -5,11 +5,6 @@ on:
     branches:
       - main
       - development
-  # Tijdelijk voor testen, verwijderen na testen
-  push:
-    branches:
-      - auto-code-style-check-workflow
-  # Tijdelijk voor testen, verwijderen na testen
   workflow_dispatch:
     inputs:
       reason:
@@ -20,15 +15,15 @@ on:
 run-name: ${{ inputs.reason || github.event.pull_request.title || github.event.head_commit.message || 'unexpected workflow trigger' }}
 
 jobs:
-  # linelint:
-  #   runs-on: ubuntu-latest
-  #   name: Check for newline at end of files
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
+  linelint:
+    runs-on: ubuntu-latest
+    name: Check for newline at end of files
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-  #     - name: Linelint
-  #       uses: fernandrone/linelint@0.0.4
+      - name: Linelint
+        uses: fernandrone/linelint@0.0.4
 
   codeStyle:
     runs-on: ubuntu-latest
