@@ -222,6 +222,12 @@ def checkCStyle(path:str):
     failed = checkCCPPCommonStyle(path)
     return failed
 
+#--------------------------------------------------------------------------------------------------#
+#                                                                                                  #
+#                                      Global Checking Logic                                       #
+#                                                                                                  #
+#--------------------------------------------------------------------------------------------------#
+
 def checkFolder(folderPath:str):
     failed = False
     files = os.listdir(folderPath)
