@@ -11,6 +11,7 @@ jobs:
     name: Check target branch
     steps:
     - name: Check if the target branch is main
+      if: github.base_ref == 'main'
       run: |
         if [ ${{ github.head_ref }} != 'development' ]; then
           echo "Pull request is not from development to main"
