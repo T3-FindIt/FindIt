@@ -8,11 +8,8 @@ on:
 jobs:
   mergeChecks:
     runs-on: ubuntu-latest
-    name: Check for newline at end of files
+    name: Check target branch
     steps:
-      # - name: Checkout
-        # uses: actions/checkout@v3
-
     - name: Check if the target branch is main
       run: |
         if [ ${{ github.head_ref }} != 'development' ]; then
