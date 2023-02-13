@@ -3,6 +3,7 @@
 ## Header Files
 
 ### C++
+
 Deze dienen opgeslagen te worden als .hpp bestanden. <br>
 Deze moet ook multiple include bescherming te hebben.
 
@@ -18,6 +19,7 @@ Geen variablen buiten klasse definitie, tenzij ze constant zijn.
 💻 - *Geautomatiseerd getest*
 
 ### C
+
 Dezelfde regels gelden voor C bestanden, echter hoeven deze niet de .*pp extensie te hebben.
 
 ```c
@@ -30,6 +32,7 @@ Dezelfde regels gelden voor C bestanden, echter hoeven deze niet de .*pp extensi
 💻 - *Geautomatiseerd getest*
 
 ## Source Files
+
 De volgende volgorde moet worden gehanteerd voor source bestanden.
 
 - Includes
@@ -84,6 +87,7 @@ De volgende volgorde moet worden gehanteerd voor source bestanden.
 ## Code Stijl
 
 ## Krulhaken
+
 Krulhaken moeten altijd starten op een nieuwe regel.
 ```cpp
 while (true)
@@ -98,6 +102,7 @@ while (true)
 💻 - *Gedeeltjelijk geautomatiseerd getest*
 
 ## One-Liners
+
 ❌<br>
 In verband met de vorige regel over krulhaken, zijn one-liners verboden. Het volgende is dus verboden:
 ```cpp
@@ -138,6 +143,7 @@ Tabs zijn 4 spaties breed.
 💻 - *Geautomatiseerd getest*
 
 ## Goto, Continue & break
+
 Deze mogen nooit worden gebruikt.
 
 Voor break geld een uitzondering, mits het binnen een switch statement wordt gebruikt.
@@ -170,9 +176,11 @@ De ':' van het begin van de initializer list moet op dezelfde colom staan als de
 De volgorde van de intializer list moet hetzelfde zijn als de volgorde waarop de variabelen zijn gedeclareerd in de class.
 
 ## Pointer Parameters
+
 Deze moeten altijd worden gecontroleerd op NULL, voordat deze wordt gedereferenced.
 
 ## Pointer to Memory after Free
+
 Altijd een pointer op NULL zetten nadat geheugen is vrijgegeven, om eventuele memoryleaks te voorkomen
 
 ```cpp
@@ -190,3 +198,16 @@ using namespace std;
 Dit is nooit toegestaan.
 
 💻 - *Geautomatiseerd getest*
+
+## Afkortingen
+
+Veel gebruikte (vak)termen zijn toegestaan om te gebruiken in code, alles wat hier niet aan voldoet moet worden uitgeschreven.
+
+Als je een afkorting gebruikt, moet dit worden nagevraagd bij minstens 1 gitmaster. Is de afkorting eerder gebruikt, dan is is deze stap niet nodig.
+
+**Voorbeelden** van veel gebruikte afkortingen:
+
+- PWM
+- USB
+- GPIO
+- NFC
