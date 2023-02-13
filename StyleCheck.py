@@ -13,8 +13,10 @@ def printError(index:int, lineContents:str, path:str, errorMessage:str, optional
     printToStderr("Forbidden Style Found")
     printToStderr("Line " + str(index) + " in " + path + ", " + errorMessage)
     printToStderr("\tLine: " + lineContents.strip())
+
     if optionalMessage != "":
         printToStderr("\t" + optionalMessage)
+
     printToStderr("\r")
 
 def printToStderr(string:str):
@@ -34,6 +36,7 @@ def printToStderr(string:str):
 
 def checkCCPPCommonStyle(path:str):
     failed = False
+
     with open(path, "r") as file:
 
         for index, line in enumerate(file, 1):
@@ -51,6 +54,7 @@ def checkCCPPCommonStyle(path:str):
             def checkForOpeningBracket(lineAfterStatement:str, statement:str):
                 indexStatement = line.find(statement) + statement.__len__()
                 indexBracket = line.find("(")
+
                 if indexBracket == -1:
                     printError(index, line, path, "has no opening bracket on the same line as statement")
                     failed = True
@@ -61,9 +65,9 @@ def checkCCPPCommonStyle(path:str):
             if line.find("if") != -1:
                 if line.find("else") != -1:
                     checkBeforeStatement(line[:line.find("else")])
-
                     indexElse = line.find("else") + 4
                     indexIf = line.find("if")
+
                     if indexIf - indexElse != 1:
                         printError(index, line, path, "has incorrect spacing between else and if", ("Spaces: " + str(indexIf - indexElse)))
                         failed = True
@@ -71,7 +75,6 @@ def checkCCPPCommonStyle(path:str):
                     checkBeforeStatement(line[:line.find("if")])
 
                 checkForOpeningBracket(line[line.find("if") + 2:], "if")
-
                 checkAfterStatement(line[line.find("if") + 2:])
 
             elif line.find("else") != -1:
@@ -80,16 +83,12 @@ def checkCCPPCommonStyle(path:str):
 
             elif line.find("for") != -1:
                 checkBeforeStatement(line[:line.find("for")])
-
                 checkForOpeningBracket(line[line.find("for") + 3:], "for")
-
                 checkAfterStatement(line[line.find("for") + 3:])
             
             elif line.find("while") != -1:
                 checkBeforeStatement(line[:line.find("while")])
-
                 checkForOpeningBracket(line[line.find("while") + 5:], "while")
-
                 checkAfterStatement(line[line.find("while") + 5:])
 
             elif line.find("using namespace") != -1:
@@ -108,25 +107,21 @@ def checkCCPPCommonStyle(path:str):
 
 def CheckHHPPCommonStyle(path:str):
     failed = False
+
     with open(path, "r") as file:
-
-        nrOfLines = sum(1 for line in open(path))
-
         includeGuardIfndefPresent = False
         includeGuardDefinePresent = False
         includeGuardEndifPresent = False
-
         fileName = path[path.rfind("\\") + 1:]
         fileExtension = fileName[fileName.rfind(".") + 1:]
         fileName = fileName[:fileName.rfind(".")]
-
         words = re.sub( r"([A-Z])", r" \1", fileName).split()
-
         includeGuard = ""
         nrOfWords = sum(1 for word in words)
 
         for index, word in enumerate(words, 1):
             includeGuard += word.upper()
+
             if index != nrOfWords:
                 includeGuard += "_"
             else:
@@ -185,6 +180,14 @@ def CheckHHPPCommonStyle(path:str):
                     printError(index, line, path, "whitespace at end of line")
                     failed = True
 
+        if not includeGuardIfndefPresent and not includeGuardDefinePresent and not includeGuardEndifPresent:
+            printError(0, "", path, "missing include guard")
+            failed = True
+
+        elif not includeGuardIfndefPresent or not includeGuardDefinePresent or not includeGuardEndifPresent:
+            printError(0, "", path, "partially missing include guard")
+            failed = True
+
     return failed
 
 #------------------------------------------------#
@@ -219,9 +222,14 @@ def checkCStyle(path:str):
     failed = checkCCPPCommonStyle(path)
     return failed
 
+#--------------------------------------------------------------------------------------------------#
+#                                                                                                  #
+#                                      Global Checking Logic                                       #
+#                                                                                                  #
+#--------------------------------------------------------------------------------------------------#
+
 def checkFolder(folderPath:str):
     failed = False
-
     files = os.listdir(folderPath)
 
     for file in files:
@@ -229,11 +237,13 @@ def checkFolder(folderPath:str):
 
         if os.path.isdir(absPath):
             folderName = os.path.basename(absPath)
+
             if (folderName != ".git"
                 and folderName != ".github"
                 and folderName != "build"
                 and folderName != "lib"):
                 failed = checkFolder(absPath)
+
             continue
 
         if not os.path.isfile(absPath):
@@ -258,9 +268,7 @@ def checkFolder(folderPath:str):
 
 def main():
     failed = False
-
     dir = os.path.abspath(os.path.dirname(__file__))
-
     failed = checkFolder(dir)
 
     if (failed == True):
