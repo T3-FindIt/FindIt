@@ -4,7 +4,8 @@
 
 ### C++
 
-Deze dienen opgeslagen te worden als .hpp bestanden. <br>
+Deze dienen opgeslagen te worden als .hpp bestanden.
+
 Deze moet ook multiple include bescherming te hebben.
 
 ```cpp
@@ -36,14 +37,14 @@ Dezelfde regels gelden voor C bestanden, echter hoeven deze niet de .*pp extensi
 De volgende volgorde moet worden gehanteerd voor source bestanden.
 
 - Includes
-    - Eerst je eigen includes
-    - Systeem includes
+  - Eerst je eigen includes
+  - Systeem includes
 - Lokale constantes & defines
 - Klasse
-    - Constructor
-    - Destructor
-    - Publieke functies
-    - Prive functies
+  - Constructor
+  - Destructor
+  - Publieke functies
+  - Prive functies
 
 ```cpp
 // Own Includes
@@ -69,7 +70,7 @@ De volgende volgorde moet worden gehanteerd voor source bestanden.
     // Prive functies
 ```
 
-*Gebruik Class alleen als je CPP gebruikt*
+Gebruik Class alleen als je CPP gebruikt
 
 ## Naming Convention
 
@@ -83,12 +84,14 @@ De volgende volgorde moet worden gehanteerd voor source bestanden.
 | Enum | PascalCase | enum SubStates |
 | Enum Label | ALL_CAPS | SUBSTATE_IDLE |
 | Interface | Moet starten met I | IPayout|
+| Bestands Naam | PascalCase | MotorExample.cpp |
 
 ## Code Stijl
 
 ## Krulhaken
 
 Krulhaken moeten altijd starten op een nieuwe regel.
+
 ```cpp
 while (true)
 {
@@ -103,14 +106,18 @@ while (true)
 
 ## One-Liners
 
-❌<br>
+❌
+
 In verband met de vorige regel over krulhaken, zijn one-liners verboden. Het volgende is dus verboden:
+
 ```cpp
 if (true) DoAThing();
 ```
 
-✔️<br>
+✔️
+
 Daarvoor zou in de plaats moeten komen:
+
 ```cpp
 if (true)
 {
@@ -118,8 +125,10 @@ if (true)
 }
 ```
 
-❌<br>
+❌
+
 Dit geld ook voor Getter en Setter functies.
+
 ```cpp
 public int GetSpeed() {return speed;}
 ```
@@ -129,14 +138,14 @@ public int GetSpeed() {return speed;}
 ## Whitespace
 
 Er dient altijd Whitespace tussen/rondom bepaalde elementen te zitten:
+
 - Na de komma (,)
 - Voor en na binaire operaties (+ , - , & , == , etc.)
 - Voor haakjes, tenzij je een functie aanroept
-    - while ()
-    - if ()
-    - for ()
-    - int speed = GetSpeed();
-
+  - while ()
+  - if ()
+  - for ()
+  - int speed = GetSpeed();
 
 Tabs zijn 4 spaties breed.
 
