@@ -3,7 +3,9 @@
 ## Header Files
 
 ### C++
-Deze dienen opgeslagen te worden als .hpp bestanden. <br>
+
+Deze dienen opgeslagen te worden als .hpp bestanden.
+
 Deze moet ook multiple include bescherming te hebben.
 
 ```cpp
@@ -18,6 +20,7 @@ Geen variablen buiten klasse definitie, tenzij ze constant zijn.
 💻 - *Geautomatiseerd getest*
 
 ### C
+
 Dezelfde regels gelden voor C bestanden, echter hoeven deze niet de .*pp extensie te hebben.
 
 ```c
@@ -30,17 +33,18 @@ Dezelfde regels gelden voor C bestanden, echter hoeven deze niet de .*pp extensi
 💻 - *Geautomatiseerd getest*
 
 ## Source Files
+
 De volgende volgorde moet worden gehanteerd voor source bestanden.
 
 - Includes
-    - Eerst je eigen includes
-    - Systeem includes
+  - Eerst je eigen includes
+  - Systeem includes
 - Lokale constantes & defines
 - Klasse
-    - Constructor
-    - Destructor
-    - Publieke functies
-    - Prive functies
+  - Constructor
+  - Destructor
+  - Publieke functies
+  - Prive functies
 
 ```cpp
 // Own Includes
@@ -66,9 +70,11 @@ De volgende volgorde moet worden gehanteerd voor source bestanden.
     // Prive functies
 ```
 
-*Gebruik Class alleen als je CPP gebruikt*
+Gebruik Class alleen als je CPP gebruikt
 
 ## Naming Convention
+
+### Namen
 
 | Symbol | Naming Convention | Example |
 |---|---|---|
@@ -80,11 +86,32 @@ De volgende volgorde moet worden gehanteerd voor source bestanden.
 | Enum | PascalCase | enum SubStates |
 | Enum Label | ALL_CAPS | SUBSTATE_IDLE |
 | Interface | Moet starten met I | IPayout|
+| Bestands Naam | PascalCase | MotorExample.cpp |
+
+### Extensies
+
+| Bestandstype | Extensie |
+|---|---|
+| C++ Header | .hpp |
+| C++ Source | .cpp |
+| C Header | .h |
+| C Source | .c |
+| PlantUML | .wsd |
+
+## Design
+
+Er word geen code geschreven waarvan geen design bestaat. Private code hoeft niet perse in een design te staan, maar het wordt sterk aangeraden.
+
+Er moet minstens een UML class diagram zijn.
+
+Een uitzondering hierop zijn POCs.
 
 ## Code Stijl
 
 ## Krulhaken
+
 Krulhaken moeten altijd starten op een nieuwe regel.
+
 ```cpp
 while (true)
 {
@@ -98,14 +125,19 @@ while (true)
 💻 - *Gedeeltjelijk geautomatiseerd getest*
 
 ## One-Liners
-❌<br>
+
+❌
+
 In verband met de vorige regel over krulhaken, zijn one-liners verboden. Het volgende is dus verboden:
+
 ```cpp
 if (true) DoAThing();
 ```
 
-✔️<br>
+✔️
+
 Daarvoor zou in de plaats moeten komen:
+
 ```cpp
 if (true)
 {
@@ -113,8 +145,10 @@ if (true)
 }
 ```
 
-❌<br>
+❌
+
 Dit geld ook voor Getter en Setter functies.
+
 ```cpp
 public int GetSpeed() {return speed;}
 ```
@@ -124,20 +158,21 @@ public int GetSpeed() {return speed;}
 ## Whitespace
 
 Er dient altijd Whitespace tussen/rondom bepaalde elementen te zitten:
+
 - Na de komma (,)
 - Voor en na binaire operaties (+ , - , & , == , etc.)
 - Voor haakjes, tenzij je een functie aanroept
-    - while ()
-    - if ()
-    - for ()
-    - int speed = GetSpeed();
-
+  - while ()
+  - if ()
+  - for ()
+  - int speed = GetSpeed();
 
 Tabs zijn 4 spaties breed.
 
 💻 - *Geautomatiseerd getest*
 
 ## Goto, Continue & break
+
 Deze mogen nooit worden gebruikt.
 
 Voor break geld een uitzondering, mits het binnen een switch statement wordt gebruikt.
@@ -170,9 +205,11 @@ De ':' van het begin van de initializer list moet op dezelfde colom staan als de
 De volgorde van de intializer list moet hetzelfde zijn als de volgorde waarop de variabelen zijn gedeclareerd in de class.
 
 ## Pointer Parameters
+
 Deze moeten altijd worden gecontroleerd op NULL, voordat deze wordt gedereferenced.
 
 ## Pointer to Memory after Free
+
 Altijd een pointer op NULL zetten nadat geheugen is vrijgegeven, om eventuele memoryleaks te voorkomen
 
 ```cpp
@@ -190,3 +227,16 @@ using namespace std;
 Dit is nooit toegestaan.
 
 💻 - *Geautomatiseerd getest*
+
+## Afkortingen
+
+Veel gebruikte (vak)termen zijn toegestaan om te gebruiken in code, alles wat hier niet aan voldoet moet worden uitgeschreven.
+
+Als je een afkorting gebruikt, moet dit worden nagevraagd bij minstens 1 gitmaster. Is de afkorting eerder gebruikt, dan is is deze stap niet nodig.
+
+**Voorbeelden** van veel gebruikte afkortingen:
+
+- PWM
+- USB
+- GPIO
+- NFC
