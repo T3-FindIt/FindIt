@@ -86,6 +86,14 @@ Gebruik Class alleen als je CPP gebruikt
 | Interface | Moet starten met I | IPayout|
 | Bestands Naam | PascalCase | MotorExample.cpp |
 
+## Design
+
+Er word geen code geschreven waarvan geen design bestaat. Private code hoeft niet perse in een design te staan, maar het wordt sterk aangeraden.
+
+Er moet minstens een UML class diagram zijn.
+
+Een uitzondering hierop zijn POCs.
+
 ## Code Stijl
 
 ## Krulhaken
