@@ -266,6 +266,18 @@ def checkFolder(folderPath:str):
             file_failed_check = checkHStyle(absPath)
         elif extension == ".c":
             file_failed_check = checkCStyle(absPath)
+        elif extension == ".pu":
+            printFileTypeError(absPath, "PlantUML file with wrong extension (.pu)")
+            file_failed_check = True
+        elif extension == ".puml":
+            printFileTypeError(absPath, "PlantUML file with wrong extension (.puml)")
+            file_failed_check = True
+        elif extension == ".plantuml":
+            printFileTypeError(absPath, "PlantUML file with wrong extension (.plantuml)")
+            file_failed_check = True
+        elif extension == ".iuml":
+            printFileTypeError(absPath, "PlantUML file with wrong extension (.iuml)")
+            file_failed_check = True
 
         if file_failed_check == True:
             failed = True
