@@ -8,6 +8,12 @@ import re
 #                                                                                                  #
 #--------------------------------------------------------------------------------------------------#
 
+def printFileTypeError(path:str, errorMessage:str):
+    printToStderr("\r")
+    printToStderr("Forbidden File Found")
+    printToStderr("File " + path + ", " + errorMessage)
+    printToStderr("\r")
+
 def printError(index:int, lineContents:str, path:str, errorMessage:str, optionalMessage:str = ""):
     printToStderr("\r")
     printToStderr("Forbidden Style Found")
