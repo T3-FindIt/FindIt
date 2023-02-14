@@ -74,6 +74,8 @@ Gebruik Class alleen als je CPP gebruikt
 
 ## Naming Convention
 
+### Namen
+
 | Symbol | Naming Convention | Example |
 |---|---|---|
 | Class | PascalCase | class MotorExample |
@@ -85,6 +87,16 @@ Gebruik Class alleen als je CPP gebruikt
 | Enum Label | ALL_CAPS | SUBSTATE_IDLE |
 | Interface | Moet starten met I | IPayout|
 | Bestands Naam | PascalCase | MotorExample.cpp |
+
+### Extensies
+
+| Bestandstype | Extensie |
+|---|---|
+| C++ Header | .hpp |
+| C++ Source | .cpp |
+| C Header | .h |
+| C Source | .c |
+| PlantUML | .wsd |
 
 ## Design
 
