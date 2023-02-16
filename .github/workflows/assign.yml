@@ -9,12 +9,13 @@ on:
       - opened
 
 jobs:
-  add-reviewers:
+# Give me a job that automatically assigns NathanThus as a reviewer
+  assign:
     runs-on: ubuntu-latest
     steps:
-    - name: Add Reviewers
-      uses: peter-evans/add-reviewers@v1.2.0
-      with:
-        reviewers: NathanThus
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses:
+          repo: kentaro-m/auto-assign-action
+          ref: v1.2.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          assignees: NathanThus
