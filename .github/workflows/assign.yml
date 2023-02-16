@@ -9,44 +9,12 @@ on:
       - opened
 
 jobs:
-  add-reviews:
+  add-reviewers:
     runs-on: ubuntu-latest
     steps:
-      - uses: kentaro-m/auto-assign-action@v1.2.4
-        with:
-          configuration-path: '.github/auto_assign_config.yml'
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # run:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # - name: Add assignee
-  #     #   uses: wow-actions/auto-assign@v3
-  #     #   with:
-  #     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #     #     addAssignees: true
-  #     #     numberOfAssignees: 1
-  #     #     assignees: |
-  #     #       ${{ github.event.pull_request.user.login }}
-
-  #     - uses: actions/checkout@v2
-
-  #     - name: Add Nathan as reviewer
-  #       if: github.event.pull_request.user.login != 'NathanThus'
-  #       uses: peter-evans/create-pull-request@v4
-  #       with:
-  #         # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         reviewers: NathanThus
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Add Tom as reviewer
-      #   if: github.event.pull_request.user.login != 'TomVer99'
-      #   uses: wow-actions/auto-assign@v3
-      #   with:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     addReviewers: true
-      #     numberOfReviewers: 1
-      #     reviewers: |
-      #       TomVer99
+    - name: Add Reviewers
+      uses: peter-evans/add-reviewers@v1.2.0
+      with:
+        reviewers: user1,user2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
