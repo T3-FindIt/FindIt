@@ -9,14 +9,29 @@ on:
     #   - opened
 
 jobs:
-  add-reviews:
+  assign:
+    name: Use this action for check
     runs-on: ubuntu-latest
     steps:
-      - uses: kentaro-m/auto-assign-action@v1.2.4
+      - name: Check out
+        uses: actions/checkout@v1
+      - name: Use this action
+        uses: hkusu/review-assign-action@v1.3.0
+        id: assign
         with:
-          configuration-path: '.github/auto_assign_config.yml'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          assignees: ${{ github.actor }}
+          reviewers: NathanThus, TomVer99
+      - name: Show result
+        if: always()
+        run: echo '${{ steps.assign.outputs.result }}'
+  # add-reviews:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: kentaro-m/auto-assign-action@v1.2.4
+  #       with:
+  #         configuration-path: '.github/auto_assign_config.yml'
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # run:
   #   runs-on: ubuntu-latest
