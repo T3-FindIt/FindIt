@@ -5,8 +5,8 @@ on:
     branches:
       - main
       - development
-    types:
-      - opened
+    # types:
+    #   - opened
 
 jobs:
 # Give me a job that automatically assigns NathanThus as a reviewer
