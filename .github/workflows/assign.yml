@@ -23,14 +23,10 @@ jobs:
 
       - name: Add Nathan as reviewer
         if: github.event.pull_request.user.login != 'NathanThus'
-        uses: wow-actions/auto-assign@v3
+        uses: peter-evans/create-pull-request@v4
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          addReviewers: true
-          numberOfReviewers: 0
-          reviewers: |
-            Nathan Thus
-            NathanThus
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          reviewers: NathanThus
 
       # - name: Add Tom as reviewer
       #   if: github.event.pull_request.user.login != 'TomVer99'
