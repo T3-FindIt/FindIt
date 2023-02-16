@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - main
-      - development
+      # - development
   workflow_dispatch:
     inputs:
       reason:
