@@ -2,14 +2,15 @@ name: Auto Assign
 
 on:
   pull_request:
-    types: [opened]
+    branches: [main]
+    # types: [opened]
 
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
       - name: Add assignee
-        uses: wow-actions/auto-assign@v1
+        uses: wow-actions/auto-assign@v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           assignees: |
@@ -17,7 +18,7 @@ jobs:
 
       - name: Add Nathan as reviewer
         if: github.event.pull_request.user.login != 'NathanThus'
-        uses: wow-actions/auto-assign@v1
+        uses: wow-actions/auto-assign@v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           reviewers: |
@@ -25,7 +26,7 @@ jobs:
 
       - name: Add Tom as reviewer
         if: github.event.pull_request.user.login != 'TomVer99'
-        uses: wow-actions/auto-assign@v1
+        uses: wow-actions/auto-assign@v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           reviewers: |
