@@ -14,8 +14,7 @@ jobs:
     steps:
       - uses: kentaro-m/auto-assign-action@v1.2.4
         with:
-          addReviewers: true
-          reviewers: 'NathanThus'
+          configuration-path: '.github/auto_assign_config.yml'
 
   # run:
   #   runs-on: ubuntu-latest
