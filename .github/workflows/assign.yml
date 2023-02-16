@@ -16,6 +16,8 @@ jobs:
         uses: wow-actions/auto-assign@v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          addAssignees: true
+          numberOfAssignees: 1
           assignees: |
             ${{ github.event.pull_request.user.login }}
 
@@ -24,6 +26,8 @@ jobs:
         uses: wow-actions/auto-assign@v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          addReviewers: true
+          numberOfReviewers: 1
           reviewers: |
             Nathan Thus
 
@@ -32,5 +36,7 @@ jobs:
         uses: wow-actions/auto-assign@v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          addReviewers: true
+          numberOfReviewers: 1
           reviewers: |
             TomVer99
