@@ -17,7 +17,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           assignees: |
-            github.event.pull_request.user.login
+            ${{ github.event.pull_request.user.login }}
 
       - name: Add Nathan as reviewer
         if: github.event.pull_request.user.login != 'NathanThus'
@@ -25,7 +25,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           reviewers: |
-            NathanThus
+            Nathan Thus
 
       - name: Add Tom as reviewer
         if: github.event.pull_request.user.login != 'TomVer99'
