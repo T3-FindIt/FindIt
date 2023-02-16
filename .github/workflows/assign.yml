@@ -12,14 +12,14 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Add assignee
-        uses: wow-actions/auto-assign@v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          addAssignees: true
-          numberOfAssignees: 1
-          assignees: |
-            ${{ github.event.pull_request.user.login }}
+      # - name: Add assignee
+      #   uses: wow-actions/auto-assign@v3
+      #   with:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     addAssignees: true
+      #     numberOfAssignees: 1
+      #     assignees: |
+      #       ${{ github.event.pull_request.user.login }}
 
       - name: Add Nathan as reviewer
         if: github.event.pull_request.user.login != 'NathanThus'
@@ -30,13 +30,14 @@ jobs:
           numberOfReviewers: 1
           reviewers: |
             Nathan Thus
+            NathanThus
 
-      - name: Add Tom as reviewer
-        if: github.event.pull_request.user.login != 'TomVer99'
-        uses: wow-actions/auto-assign@v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          addReviewers: true
-          numberOfReviewers: 1
-          reviewers: |
-            TomVer99
+      # - name: Add Tom as reviewer
+      #   if: github.event.pull_request.user.login != 'TomVer99'
+      #   uses: wow-actions/auto-assign@v3
+      #   with:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     addReviewers: true
+      #     numberOfReviewers: 1
+      #     reviewers: |
+      #       TomVer99
