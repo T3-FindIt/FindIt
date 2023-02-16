@@ -21,12 +21,16 @@ jobs:
       #     assignees: |
       #       ${{ github.event.pull_request.user.login }}
 
+      - uses: actions/checkout@v2
+
       - name: Add Nathan as reviewer
         if: github.event.pull_request.user.login != 'NathanThus'
         uses: peter-evans/create-pull-request@v4
         with:
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           reviewers: NathanThus
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Add Tom as reviewer
       #   if: github.event.pull_request.user.login != 'TomVer99'
