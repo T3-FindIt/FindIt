@@ -15,6 +15,6 @@ jobs:
     - name: Add Reviewers
       uses: peter-evans/add-reviewers@v1.2.0
       with:
-        reviewers: user1,user2
+        reviewers: NathanThus
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
