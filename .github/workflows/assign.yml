@@ -10,10 +10,22 @@ on:
 
 jobs:
 # Give me a job that automatically assigns NathanThus as a reviewer
-  assign:
+  add-reviewers:
     runs-on: ubuntu-latest
     steps:
-      - uses: kentaro-m/auto-assign-action@v1.2.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          assignees: NathanThus
+    - name: Add Reviewers
+      uses: actions/github-script@v5
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const { data: pullRequest } = await github.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.payload.number
+          });
+          await github.pulls.createReviewRequest({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.payload.number,
+            reviewers: ['NathanThus']
+          });
