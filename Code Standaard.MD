@@ -88,6 +88,8 @@ Gebruik Class alleen als je CPP gebruikt
 | Interface | Moet starten met I | IPayout|
 | Bestands Naam | PascalCase | MotorExample.cpp |
 
+💻 - *Gedeeltjelijk geautomatiseerd getest*
+
 ### Extensies
 
 | Bestandstype | Extensie |
@@ -97,6 +99,8 @@ Gebruik Class alleen als je CPP gebruikt
 | C Header | .h |
 | C Source | .c |
 | PlantUML | .wsd |
+
+💻 - *Geautomatiseerd getest*
 
 ## Design
 
@@ -153,7 +157,7 @@ Dit geld ook voor Getter en Setter functies.
 public int GetSpeed() {return speed;}
 ```
 
-💻 - *Gedeeltjelijk geautomatiseerd getest*
+💻 - *Geautomatiseerd getest*
 
 ## Whitespace
 
@@ -176,6 +180,8 @@ Tabs zijn 4 spaties breed.
 Deze mogen nooit worden gebruikt.
 
 Voor break geld een uitzondering, mits het binnen een switch statement wordt gebruikt.
+
+💻 - *Gedeeltjelijk geautomatiseerd getest*
 
 ## End of File Newline
 
