@@ -42,4 +42,4 @@ jobs:
             python -m pip install --upgrade pip
 
       - name: Check Style
-        run: python StyleCheck.py
+        run: python StyleChecker/StyleChecker.py
