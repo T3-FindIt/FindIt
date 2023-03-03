@@ -126,21 +126,17 @@ while (true)
 }
 ```
 
-💻 - *Gedeeltjelijk geautomatiseerd getest*
+💻 - *Geautomatiseerd getest*
 
 ## One-Liners
 
-❌
-
-In verband met de vorige regel over krulhaken, zijn one-liners verboden. Het volgende is dus verboden:
+❌ In verband met de vorige regel over krulhaken, zijn one-liners verboden. Het volgende is dus verboden:
 
 ```cpp
 if (true) DoAThing();
 ```
 
-✔️
-
-Daarvoor zou in de plaats moeten komen:
+✔️ Daarvoor zou in de plaats moeten komen:
 
 ```cpp
 if (true)
@@ -149,9 +145,7 @@ if (true)
 }
 ```
 
-❌
-
-Dit geld ook voor Getter en Setter functies.
+❌ Dit geld ook voor Getter en Setter functies.
 
 ```cpp
 public int GetSpeed() {return speed;}
