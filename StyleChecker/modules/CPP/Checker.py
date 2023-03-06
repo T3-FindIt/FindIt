@@ -59,6 +59,7 @@ def CheckSource(sourcePath):
 def CheckHeader(headerPath):
     '''Check a C++ header file.'''
     failed = False
+    includeGuardPresent = [False, False, False]
     
     if CheckFileName(headerPath) is True:
         failed = True
@@ -75,8 +76,13 @@ def CheckHeader(headerPath):
             if CheckForOperator(line, index, headerPath) is True:
                 failed = True
 
-            if CheckIncludeGuard(line, index, headerPath) is True:
-                failed = True
+            includeGuardCheck =CheckIncludeGuard(line, headerPath)
+            if includeGuardCheck[0] is False:
+                includeGuardPresent[0] = True
+            if includeGuardCheck[1] is False:
+                includeGuardPresent[1] = True
+            if includeGuardCheck[2] is False:
+                includeGuardPresent[2] = True
             
             if CheckCurlyBrackets(line, index, headerPath) is True:
                 failed = True
@@ -95,6 +101,9 @@ def CheckHeader(headerPath):
 
             if CheckTrailingWhiteSpace(line, index, headerPath) is True:
                 failed = True
+
+    if CheckIncludeGuardAtEndOfFileCheck(headerPath, includeGuardPresent) is True:
+        failed = True
 
     return failed
 
@@ -295,11 +304,42 @@ def CheckForStatementSimple(line:str, index:int, currentFilePath:str):
 
     return failed
 
-def CheckIncludeGuard(line:str, index:int, currentFilePath:str):
+def CheckIncludeGuardAtEndOfFileCheck(currentFilePath:str, results):
+    failed = False
+    fileName = os.path.basename(currentFilePath)
+    fileName = os.path.splitext(fileName)[0]
+
+    words = re.sub('([A-Z])', r' \1', fileName).split()
+
+    guardName = ''
+
+    for word in words:
+        guardName += word.upper() + '_'
+
+    guardName = guardName.upper() + 'HPP'
+
+    if results[0] is False and results[1] is False and results [2] is False:
+        PrintFileError(currentFilePath, '(Correct) Include guard not found.', 'Include guard must be \'#ifndef/#define/#endif ' + guardName + '\'.')
+        failed = True
+        return failed
+
+    if results[0] is False:
+        PrintFileError(currentFilePath, '(Correct) #ifndef Include guard not found.', 'Include guard must be \'#ifndef ' + guardName + '\'.')
+        failed = True
+    if results[1] is False:
+        PrintFileError(currentFilePath, '(Correct) #define Include guard not found.', 'Include guard must be \'#define ' + guardName + '\'.')
+        failed = True
+    if results[2] is False:
+        PrintFileError(currentFilePath, '(Correct) #endif Include guard not found.', 'Include guard must be \'#endif ' + guardName + '\'.')
+        failed = True
+
+    return failed
+
+def CheckIncludeGuard(line:str, currentFilePath:str):
     '''Checks if a header file has an include guard.\n
     Returns if the check failed or not.'''
 
-    failed = False
+    failed = [True, True, True]
 
     fileName = os.path.basename(currentFilePath)
     fileName = os.path.splitext(fileName)[0]
@@ -318,25 +358,28 @@ def CheckIncludeGuard(line:str, index:int, currentFilePath:str):
     endifIndex = line.find('#endif')
 
     if ifndefIndex != -1:
+        tempFailed = False
         for _index, character in enumerate(guardName, (ifndefIndex + 8)):
             if character != line[_index]:
-                PrintStyleError(index, line, currentFilePath, 'Incorrect include guard.', 'Include guard must be \'#ifndef ' + guardName + '\'.')
-                failedGuafailedrdIfndef = True
+                tempFailed = True
                 break
+        failed[0] = tempFailed
 
     elif defineIndex != -1:
+        tempFailed = False
         for _index, character in enumerate(guardName, (defineIndex + 8)):
             if character != line[_index]:
-                PrintStyleError(index, line, currentFilePath, 'Incorrect include guard.', 'Include guard must be \'#define ' + guardName + '\'.')
-                failed = True
+                tempFailed = True
                 break
+        failed[1] = tempFailed
 
     elif endifIndex != -1:
+        tempFailed = False
         guardName = '// ' + guardName
         for _index, character in enumerate(guardName, (endifIndex + 7)):
             if character != line[_index]:
-                PrintStyleError(index, line, currentFilePath, 'Incorrect include guard.', 'Include guard must be \'#endif // ' + guardName + '\'.')
-                failed = True
+                tempFailed = True
                 break
+        failed[2] = tempFailed
 
     return failed
