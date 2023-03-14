@@ -33,7 +33,10 @@ def CheckFolder(folderPath:str, supported_extensions:list, ignored_folders:list)
 
         if extension == CChecker.supported_extensions[0]:
             if files.count(name + CChecker.supported_extensions[1]) == 0:
-                logger.PrintFileWarning(absPath, 'C source file found without a corresponding header file.')
+                if 'TEST' in name.upper():
+                    logger.PrintFileInfo(absPath, 'C source file found without a corresponding header file. This is expected for test files.\n\tIf this is not a test file, please rename it to it does not contain the word \'test\'.')
+                else:
+                    logger.PrintFileWarning(absPath, 'C source file found without a corresponding header file.')
             
             if CChecker.CheckSource(absPath) is True:
                 failed = True
@@ -47,7 +50,10 @@ def CheckFolder(folderPath:str, supported_extensions:list, ignored_folders:list)
 
         elif extension == CPPChecker.supported_extensions[0]:
             if files.count(name + CPPChecker.supported_extensions[1]) == 0:
-                logger.PrintFileWarning(absPath, 'C++ source file found without a corresponding header file.')
+                if 'TEST' in name.upper():
+                    logger.PrintFileInfo(absPath, 'C++ source file found without a corresponding header file. This is expected for test files.\n\tIf this is not a test file, please rename it to it does not contain the word \'test\'.')
+                else:
+                    logger.PrintFileWarning(absPath, 'C++ source file found without a corresponding header file.')
 
             if CPPChecker.CheckSource(absPath) is True:
                 failed = True
