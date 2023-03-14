@@ -74,6 +74,9 @@ def PrintFileError(path:str, errorMessage:str, optionalMessage:str = ''):
 def PrintFileWarning(path:str, errorMessage:str, optionalMessage:str = ''):
     GenericPrint('warning', bcolors.WARNING, 'File Warning', 'File ' + path + ', ' + bcolors.WARNING + errorMessage + bcolors.ENDC, True, True)
 
+def PrintFileInfo(path:str, errorMessage:str, optionalMessage:str = ''):
+    GenericPrint('info', bcolors.OKGREEN, 'File Info', 'File ' + path + ', ' + bcolors.OKGREEN + errorMessage + bcolors.ENDC, True, True)
+
 #==============================================================================#
 #                                                                              #
 #                                 Info Prints                                  #
