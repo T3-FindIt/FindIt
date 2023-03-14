@@ -1,14 +1,16 @@
 jobs:
-  build_debug_and_test_linux:
-
+  NAME_HERE:
     runs-on: ubuntu-latest
 
     env:
       BUILD_TYPE: Debug
 
     steps:
-    
     - uses: actions/checkout@v3
+    
+    # CD to CMake project directory
+    - name: Navigate
+        run: cd ./ #The directory that needs to be tested
     
     - name: configure
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}

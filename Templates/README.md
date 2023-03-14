@@ -66,6 +66,7 @@ add_subdirectory(test) # add test subdirectory
 Om er voor te zorgen dat je tests gevonden kunnen worden, moet je een CmakeLists.txt aanmaken in de test folder. Hierin moet je de volgende code toevoegen.
 
 ```cmake
+# Add test source files here
 set(Sources
     gtest_validation_test.cpp
 )
@@ -83,13 +84,42 @@ add_test(
 )
 ```
 
-In de `Sources` variabele kan je de bestanden toevoegen die je wilt testen. Deze moeten wel in de test folder staan. Let op dat bestanden die hier niet in staan niet getest worden.
+In de `Sources` variabele kan je de bestanden toevoegen die je wilt testen. Deze moeten wel in de test folder staan. Let op dat bestanden die hier niet benoemd worden, niet getest worden.
 
 De rest zou je niet aan hoeven te passen. Als er iets niet werkt, contacteer een van de gitmasters.
 
 ### Uitvoeren van de tests
 
-Net zoals de PlatformIO tests, worden deze automatisch uitgevoerd bij het mergen van een branch. Deze moeten allemaal slagen, anders wordt dit niet gemerged.
+Voordat de tests automatisch worden uitgevoerd moet je de workflow aanpassen. Je voegt simpelweg het volgende toe aan de CI.yml file.
+
+```yaml
+jobs:
+  NAME_HERE:
+    runs-on: ubuntu-latest
+
+    env:
+      BUILD_TYPE: Debug
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    # CD to CMake project directory
+    - name: Navigate
+        run: cd ./ #The directory that needs to be tested
+    
+    - name: configure
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+    
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C ${{env.BUILD_TYPE}}
+
+```
+
+Net zoals de PlatformIO tests, worden deze hierna automatisch uitgevoerd bij het mergen van een branch. Deze moeten allemaal slagen, anders wordt dit niet gemerged.
 
 De tests kunnen ook lokaal worden uitgevoerd. Dit is makkelijk te doen via de CMake extension in Visual Studio Code. Er staat een Erlenmeyer Flask waar je op kan klikken om tests uit te voeren.
 
