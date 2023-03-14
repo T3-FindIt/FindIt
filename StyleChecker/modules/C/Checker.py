@@ -154,7 +154,10 @@ def CheckForOperator(line:str, index:int, currentFilePath:str):
     failed = False
 
     # Regex to check for correct operators.
-    if re.search('(\\b(\+|-|=|\/|\*|%|==|!=|>|<|>=|<=|&&|\|\||&|\||\^|~|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)\\b)|((\+|-|=|\/|\*|%|==|!=|>|<|>=|<=|&&|\|\||&|\||\^|~|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)\\b)|(\\b(\+|-|=|\/|\*|%|==|!=|>|<|>=|<=|&&|\|\||&|\||\^|~|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>))', line) is not None:
+    # singleRegex = '(\+|-|=|\/|\*|%|==|!=|>|<|>=|<=|&&|\|\||&|\||\^|~|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
+    singleRegex = '(\+|-|=|\/|%|==|!=|>|<|>=|<=|&&|\|\||\||\^|~|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
+    completeRegex = '(\\b' + singleRegex + '\\b)|(' + singleRegex + '\\b)|(\\b' + singleRegex + ')'
+    if re.search(completeRegex, line) is not None:
         PrintStyleError(index, line, currentFilePath, 'Incorrect operator.', 'Operators must be preceded and followed by a whitespace.')
         failed = True
 
