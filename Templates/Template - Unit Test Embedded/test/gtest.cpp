@@ -7,7 +7,7 @@ TEST(DummyTest, ShouldPass)
 
 TEST(DummyTest, ShouldFail)
 {
-	EXPECT_EQ(1, 2);
+    EXPECT_EQ(1, 2);
 }
 
 #if defined(ARDUINO)
@@ -24,20 +24,20 @@ void setup()
 
 void loop()
 {
-	// Run tests
-	if (RUN_ALL_TESTS())
-	;
+    // Run tests
+    if (RUN_ALL_TESTS())
+    ;
 
-	// sleep 1 sec
-	delay(1000);
+    // sleep 1 sec
+    delay(1000);
 }
 
 #else
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
-	if (RUN_ALL_TESTS())
-	;
-	return 0;
+    if (RUN_ALL_TESTS())
+    ;
+    return 0;
 }
 #endif
