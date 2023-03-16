@@ -1,0 +1,45 @@
+name: Code Hygiene
+
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason/Run name'
+        required: true
+        default: 'Manual trigger'
+
+run-name: ${{ inputs.reason || github.event.pull_request.title || github.event.head_commit.message || 'unexpected workflow trigger' }}
+
+jobs:
+  linelint:
+    runs-on: ubuntu-latest
+    name: Check for newline at end of files
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Linelint
+        uses: fernandrone/linelint@0.0.4
+
+  codeStyle:
+    runs-on: ubuntu-latest
+    name: Check code style
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Python Setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install python packages
+        run: |
+            python -m pip install --upgrade pip
+
+      - name: Check Style
+        run: python StyleChecker/StyleChecker.py
