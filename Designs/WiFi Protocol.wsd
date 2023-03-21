@@ -1,0 +1,111 @@
+
+@startuml WiFiProtocolRequestMessages
+title WiFi Protocol Request Messages
+
+json ServerRequestProduct {
+    "Action": "RequestProduct",
+    "Product": "ProductName",
+    "Activate": true
+}
+
+json NodeRespondToProductRequest {
+    "Action": "ResponseProduct",
+    "Product": "ProductName",
+    "Result": true
+}
+
+json NodeEventProductFound {
+    "Action": "ProductFound",
+    "Product": "ProductName",
+    "Result": true
+}
+
+@enduml
+
+'====================== HeatBeat ======================
+
+@startuml WiFiProtocolHeartBeat
+title WiFi Protocol Heart Beat
+
+json WiFiProtocolHeartBeatRequest {
+    "Action": "HeartBeat"
+}
+
+json WiFiProtocolHeartBeatResponse {
+    "Action": "HeartBeat",
+    "Node": "NodeName",
+    "Places": 4
+}
+
+@enduml
+
+'====================== SignIn ======================
+
+@startuml WiFiProtocolSignIn
+title WiFi Protocol Sign In
+
+json WiFiProtocolSignIn {
+    "Action": "SignIn",
+    "Node": "NodeName",
+    "Places": 4
+}
+
+json WiFiProtocolSignInResponse {
+    "Action": "SignIn",
+    "Node": "NodeName",
+    "Places": 4,
+    "Result": true
+}
+
+@enduml
+
+'====================== Notify ======================
+
+@startuml WiFiProtocolNotify
+title WiFi Protocol Notify
+
+json WiFiProtocolNotifyNewProduct {
+    "Action": "NotifyNewProduct",
+    "Product": "ProductName"
+}
+
+json WiFiProtocolNotifyNewProductResponse {
+    "Action": "NotifyNewProduct",
+    "Product": "ProductName",
+    "Result": true
+}
+
+@enduml
+
+'====================== Sequence ======================
+
+@startuml WiFiProtocolSequence
+title WiFi Protocol Sequence Sign In
+
+participant Server
+collections Nodes
+
+activate Server
+
+Nodes -> Server: SignIn
+Server -> Nodes: SignInResponse (Result = true)
+
+activate Nodes
+
+newpage WiFi Protocol Sequence Request Product
+
+Server -> Nodes: RequestProduct (Product = "Pepper")
+
+alt Product is present
+    Nodes -> Server: ResponseProduct (Product = "Pepper", Result = true)
+else Product is not present
+    Nodes -> Server: ResponseProduct (Product = "Pepper", Result = false)
+end
+
+newpage WiFi Protocol Sequence Notify New Product
+
+Nodes -> Nodes : New Product Placed
+Nodes -> Server: NotifyNewProduct (Product = "Salt")
+Server -> Nodes: NotifyNewProductResponse (Product = "Salt", Result = true)
+
+@enduml
