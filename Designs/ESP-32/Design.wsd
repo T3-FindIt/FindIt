@@ -76,18 +76,21 @@ enum Node_Registers
 '     Places = "Places"
 ' }
 
+Class JsonBuilder
+{
+    {method} + char[] Serialize(string action)
+    {method} + bool Deserialize(char[] json)
+}
+
+note left of JsonBuilder : Implementatie wordt geleverd door de\nArduinoJson Library
+note top of JsonBuilder : Kijk naar gebruik van pointers
+note bottom of WiFiClient : Implementatie wordt geleverd door de\nESP8266WiFi Library
+
+' EMPTY CLASSES
 Class I2C
 Class CANBus
 Class WiFi
 Class WiFiClient
-
-Class JsonBuilder
-{
-    {method} + Serialize(JSON_Action Action)
-}
-
-note left of JsonBuilder : Implementatie wordt geleverd door de\nArduinoJson Library
-note bottom of WiFiClient : Implementatie wordt geleverd door de\nESP8266WiFi Library
 
 MasterSlave <|.. I2C
 MasterSlave <|.. CANBus
