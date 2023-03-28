@@ -13,5 +13,5 @@
 
 ## Sequence Diagrams
 
-![""](out/Design/RequestData.png)
-![""](out/Design/SendData.png)
+!["Request Data Sequence Diagram"](out/Design/RequestData.png)
+!["Send Data Sequence Diagram"](out/Design/SendData.png)
