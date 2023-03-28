@@ -14,4 +14,5 @@
 ## Sequence Diagrams
 
 !["Request Data Sequence Diagram"](RequestData.png)
+
 !["Send Data Sequence Diagram"](SendData.png)
