@@ -1,0 +1,105 @@
+@startuml ClassDiagram
+Title Class Diagram
+
+Class Controller
+Class WiFiHandler
+{
+    {field} - WiFiData Data
+    {field} - WebsocketData Websocket
+
+    {method} + WiFiHandler(WiFiData Data, WebsocketData Websocket)
+
+    {method} + void Send(string Json)
+    {method} + string Receive()
+    {method} + bool IsConnected()
+    {method} + void Connect()
+    {method} + void Disconnect()
+}
+
+Struct WebsocketData
+{
+    {field} - string IP
+    {field} - int Port
+
+    {method} + WebsocketData(string IP, int Port)
+}
+
+Struct WiFiData
+{
+    {field} - string SSID
+    {field} - string Password
+
+    {method} + WiFiHandlerData(string SSID, string Password)
+}
+
+class DipSwitch
+{
+    {method} + DipSwitch(int[] pins)
+    {method} + int Read()
+    {method} + bool Read(int Bit)
+}
+
+
+Interface MasterSlave
+{
+    {abstract} + void Send(int Address, Node_Registers Register, int Data)
+    {abstract} + char[] Receive(int Address, Node_Registers Register)
+}
+
+enum Node_Registers
+{
+    RequestForm = 0x0,
+    Notificatie = 0x1,
+    RGB = 0x2,
+    Item = 0x3,
+    Actief = 0x4,
+    Error = 0x5
+}
+
+' enum JSON_Action
+' {
+'     HeartBeat = "HeartBeat",
+'     NotifyNewProduct = "NotifyNewProduct",
+'     RespondProduct = "RespondProduct",
+'     ProductFound = "ProductFound",
+'     SignIn = "SignIn"
+' }
+
+' note left of JSON_Action : Kan eventueel met een andere\nimplementatie worden vervangen.
+
+' enum JSON_Topics
+' {
+'     Node = "Node",
+'     Product = "Product",
+'     Activate = "Activate",
+'     Result = "Result",
+'     Places = "Places"
+' }
+
+Class I2C
+Class CANBus
+Class WiFi
+Class WiFiClient
+
+Class JsonBuilder
+{
+    {method} + Serialize(JSON_Action Action)
+}
+
+note left of JsonBuilder : Implementatie wordt geleverd door de\nArduinoJson Library
+note bottom of WiFiClient : Implementatie wordt geleverd door de\nESP8266WiFi Library
+
+MasterSlave <|.. I2C
+MasterSlave <|.. CANBus
+
+Controller --> WiFiHandler
+Controller --> MasterSlave
+Controller --> JsonBuilder
+Controller --> DipSwitch
+
+WiFiHandler --> WiFiData
+WiFiHandler --> WebsocketData
+WiFiHandler --> WiFi
+WiFiHandler --> WiFiClient
+
+@enduml
