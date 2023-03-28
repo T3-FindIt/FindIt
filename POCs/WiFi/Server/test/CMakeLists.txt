@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION ${CMakeMinimumVersion})
+
 set(Sources
     mockTest.cpp
 )

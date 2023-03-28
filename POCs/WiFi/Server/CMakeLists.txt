@@ -1,5 +1,7 @@
 set(CMakeMinimumVersion 3.22.1)
 
+cmake_minimum_required(VERSION ${CMakeMinimumVersion})
+
 set(ProjectName FindItServer)
 set(ProjectRunName ${ProjectName}_Run)
 set(ProjectTestName ${ProjectName}_Test)
