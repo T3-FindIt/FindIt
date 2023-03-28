@@ -4,7 +4,7 @@
 
 ![WiFiProtocolNotify](WiFiProtocolNotify.png)
 
-![WiFiProtocolHeartbeat](WiFiProtocolHeartbeat.png)
+![WiFiProtocolHeartBeat](WiFiProtocolHeartBeat.png)
 
 ![WiFiProtocolSequencePage1](WiFiProtocolSequence-page1.png)
 
