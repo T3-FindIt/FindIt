@@ -182,7 +182,7 @@ void loop()
 	Serial.println();
 	Serial.println("Writing string to sector 0");
 
-	char inputString[49] = "this is the max stringsize 123456789012345678901";
+	char inputString[49] = "this is the max stringsize 12345678901234567890\n";
 	int stringLength = strlen(inputString);
 	for (int i = 0; i < stringLength; i++)
 	{
