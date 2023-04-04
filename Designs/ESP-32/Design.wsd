@@ -63,6 +63,7 @@ Interface IMasterSlave
 {
     {abstract} + void Send(int Address, Node_Registers Register, int Data)
     {abstract} + char[] Receive(int Address, Node_Registers Register)
+    {abstract} + int[]  Scan()
 }
 
 enum Node_Registers
@@ -75,15 +76,13 @@ enum Node_Registers
     Error = 0x5
 }
 
-class I2C
+enum NotifcationBits 
 {
-    ' {field} - int Address
-    ' {field} - int[] KnownAddresses
-    ' {method} + I2C_Controller(int Address)
-    ' {method} + void Scan()
-    ' {method} + void Send(int Address, Node_Registers Register, int Data)
-    ' {method} + char[] Receive(int Address, Node_Registers Register)
+    Sound = 0x0,
+    Vibration = 0x1,
+    RGB = 0x2
 }
+
 
 Class JsonBuilder
 {
@@ -97,6 +96,7 @@ note top of JsonBuilder : Kijk naar gebruik van pointers
 
 ' EMPTY CLASSES
 Class CANBus
+Class I2C
 ' END OF EMPYY CLASSES 
 
 IMasterSlave <|.. I2C
@@ -112,6 +112,5 @@ Controller "1" o-- "1" WebSocketHandler
 WiFiHandler "1" o-- "1" WiFiData
 WebSocketHandler "1" o-- "1" WebsocketData
 
-' See if we should separate WebSocket & WiFi
 
 @enduml
