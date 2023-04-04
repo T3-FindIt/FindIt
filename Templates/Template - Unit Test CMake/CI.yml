@@ -8,16 +8,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    # CD to CMake project directory
-    - name: Navigate
-        run: cd ./ #The directory that needs to be tested
-    
     - name: configure
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      working-directory: ./POCs/WiFi/Server/ # Pas dit aan naar jouw project folder
+      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      working-directory: ./POCs/WiFi/Server/ # Pas dit aan naar jouw project folder
+      run: cmake --build ./build --config ${{env.BUILD_TYPE}}
     
     - name: Test
-      working-directory: ${{github.workspace}}/build
+      working-directory: ./POCs/WiFi/Server/ # Pas dit aan naar jouw project folder
       run: ctest -C ${{env.BUILD_TYPE}}
