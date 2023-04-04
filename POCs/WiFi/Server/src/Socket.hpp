@@ -18,7 +18,7 @@ private:
     std::string m_ipAddress;
     int m_port;
     MessageReceivedHandler m_messageReceived;
-    
+
     SOCKET CreateSocket();
     SOCKET WaitForConnection(SOCKET listening);
 public:
