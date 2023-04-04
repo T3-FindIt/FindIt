@@ -155,7 +155,7 @@ def CheckForOperator(line:str, index:int, currentFilePath:str):
 
     # Regex to check for correct operators.
     # singleRegex = '(\+|-|=|\/|\*|%|==|!=|>|<|>=|<=|&&|\|\||&|\||\^|~|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
-    singleRegex = '(\+|-|=|\/|%|==|!=|>|<|>=|<=|&&|\|\||\||\^|~|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
+    singleRegex = '(?(?!=(->))(\+|-|=|\/|%|==|!=|>|<|>=|<=|&&|\|\||\||\^|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>))'
     completeRegex = '(\\b' + singleRegex + '\\b)|(' + singleRegex + '\\b)|(\\b' + singleRegex + ')'
     if re.search(completeRegex, line) is not None:
         PrintStyleError(index, line, currentFilePath, 'Incorrect operator.', 'Operators must be preceded and followed by a whitespace.')
