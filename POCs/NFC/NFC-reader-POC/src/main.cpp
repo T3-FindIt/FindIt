@@ -34,15 +34,13 @@ void dump_byte_array(byte *buffer, byte bufferSize)
 
 void setup()
 {
-    // put your setup code here, to run once:
-    Serial.begin(9600); // Initialize serial communications with the PC
+    Serial.begin(9600);
     while (!Serial)
-        ;               // Do nothing if no serial port is opened (added for Arduinos based on ATMEGA32U4)
-    SPI.begin();        // Init SPI bus
-    mfrc522.PCD_Init(); // Init MFRC522 card
+    {
+    }
+    SPI.begin();
+    mfrc522.PCD_Init();
 
-    // Prepare the key (used both as key A and as key B)
-    // using FFFFFFFFFFFFh which is the default at chip delivery from the factory
     for (byte i = 0; i < 6; i++)
     {
         key.keyByte[i] = 0xFF;
@@ -58,12 +56,14 @@ void loop()
 {
 
     if (!mfrc522.PICC_IsNewCardPresent())
+    {
         return;
-    // Select one of the cards
+    }
     if (!mfrc522.PICC_ReadCardSerial())
+    {        
         return;
+    }
 
-    // Show some details of the PICC (that is: the tag/card)
     Serial.print(F("Card UID:"));
     dump_byte_array(mfrc522.uid.uidByte, mfrc522.uid.size);
     Serial.println();
@@ -71,19 +71,15 @@ void loop()
     MFRC522::PICC_Type piccType = mfrc522.PICC_GetType(mfrc522.uid.sak);
     Serial.println(mfrc522.PICC_GetTypeName(piccType));
 
-    // Check for compatibility
     if (piccType != MFRC522::PICC_TYPE_MIFARE_MINI && piccType != MFRC522::PICC_TYPE_MIFARE_1K && piccType != MFRC522::PICC_TYPE_MIFARE_4K)
     {
         Serial.println(F("This sample only works with MIFARE Classic cards."));
         return;
     }
 
-    // In this sample we use the second sector,
-    // that is: sector #1, covering block #4 up to and including block #7
     byte trailerBlock = 7;
     MFRC522::StatusCode status;
 
-    // Authenticate using key A
     Serial.println(F("Authenticating using key A..."));
     status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &key, &(mfrc522.uid));
     if (status != MFRC522::STATUS_OK)
@@ -112,15 +108,13 @@ void loop()
             }
             for (int j = 0; j < 16; j++)
             {
+                if (readBuffer[j] == '\n')
                 {
-                    if (readBuffer[j] == '\n')
-                    {
-                        OutputString[i * 16 + j] = '\0';
-                    }
-                    else
-                    {
-                        OutputString[i * 16 + j] = readBuffer[j];
-                    }
+                    OutputString[i * 16 + j] = '\0';
+                }
+                else
+                {
+                    OutputString[i * 16 + j] = readBuffer[j];
                 }
             }
         }
@@ -129,8 +123,6 @@ void loop()
     Serial.println("output is:");
     Serial.println(OutputString);
 
-    // Halt PICC
     mfrc522.PICC_HaltA();
-    // Stop encryption on PCD
     mfrc522.PCD_StopCrypto1();
 }
