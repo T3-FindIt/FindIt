@@ -12,9 +12,10 @@ set(CMAKE_C_STANDARD 99) # C standard is C99
 set(CMAKE_CXX_STANDARD 17) # C++ standard is C++17
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-add_compile_options(-Wall -Wextra -Wpedantic)
-
-# add_compile_options(-Werror)
+if(CMAKE_COMPILER_IS_GNUCXX)
+    add_compile_options(-Wall -Wextra -Wpedantic)
+    # add_compile_options(-Werror)
+endif(CMAKE_COMPILER_IS_GNUCXX)
 
 enable_testing()
 
