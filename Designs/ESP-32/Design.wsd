@@ -3,8 +3,9 @@ Title Class Diagram
 
 Class Controller
 {
-    {method} + void Setup()
-    {method} + void Loop()
+    {method} - void Setup()
+    {method} - void Loop()
+    {method} + void Run()
 }
 
 Class WiFiHandler
