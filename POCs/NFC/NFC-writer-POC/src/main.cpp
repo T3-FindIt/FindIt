@@ -177,7 +177,7 @@ void loop()
 
 
 
-	//WRITING STRING TO SECTOR 0 AND ON - COEN
+	//WRITING STRING TO SECTOR 1 AND ON - COEN
 	Serial.println();
 	Serial.println();
 	Serial.println("Writing string to sector 0");
