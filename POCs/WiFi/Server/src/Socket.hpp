@@ -15,18 +15,18 @@ using MessageReceivedHandler = void (*)(Socket *listener, int socketId, std::str
 class Socket
 {
 private:
-	std::string m_ipAddress;
-	int m_port;
-	MessageReceivedHandler m_messageReceived;
+    std::string m_ipAddress;
+    int m_port;
+    MessageReceivedHandler m_messageReceived;
     
-	SOCKET CreateSocket();
-	SOCKET WaitForConnection(SOCKET listening);
+    SOCKET CreateSocket();
+    SOCKET WaitForConnection(SOCKET listening);
 public:
     Socket(const std::string& ipAddress, int port, MessageReceivedHandler handler);
-	~Socket();
-	void Send(int clientSocket, const std::string& message);
-	bool Init();
-	[[noreturn]] void Run();
+    ~Socket();
+    void Send(int clientSocket, const std::string& message);
+    bool Init();
+    [[noreturn]] void Run();
 };
 
 } // namespace FindIt
