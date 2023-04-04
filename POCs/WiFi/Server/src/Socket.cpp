@@ -17,7 +17,6 @@ Socket::Socket(const std::string& ipAddress,
 void Socket::Send(int clientSocket, const std::string& message)
 {
     std::size_t messageLen = message.size() + 1;
-    
     if (messageLen <= INT_MAX)
     {
         send(clientSocket, message.c_str(), (int)messageLen, 0);
