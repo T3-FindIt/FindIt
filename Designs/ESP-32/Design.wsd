@@ -44,15 +44,19 @@ Struct WiFiData
     {method} + string GetPassword()
 }
 
+Interface IDipSwitch
+{
+    {abstract} + bool Read(int Bit)
+}
+
 class DipSwitch
 {
     {method} + DipSwitch(int[] pins)
-    {method} + int Read()
     {method} + bool Read(int Bit)
 }
 
 
-Interface MasterSlave
+Interface IMasterSlave
 {
     {abstract} + void Send(int Address, Node_Registers Register, int Data)
     {abstract} + char[] Receive(int Address, Node_Registers Register)
@@ -87,16 +91,14 @@ Class JsonBuilder
 
 note left of JsonBuilder : Implementatie wordt geleverd door de\nArduinoJson Library
 note top of JsonBuilder : Kijk naar gebruik van pointers
-note bottom of WiFiClient : Implementatie wordt geleverd door de\nESP8266WiFi Library
 
 ' EMPTY CLASSES
 Class CANBus
-Class WiFi
-Class WiFiClient
 ' END OF EMPYY CLASSES 
 
 MasterSlave <|.. I2C
 MasterSlave <|.. CANBus
+IDipSwitch <|.. DipSwitch
 
 Controller "1" o-- "1" WiFiHandler
 Controller "1" o-- "1" MasterSlave
