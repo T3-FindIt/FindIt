@@ -67,8 +67,9 @@ class DipSwitch
 Interface IMasterSlave
 {
     {abstract} + void Send(int Address, Node_Registers Register, int Data)
-    {abstract} + char[] Receive(int Address, Node_Registers Register)
-    {abstract} + int[]  Scan()
+    {abstract} + bool Receive(int Address, Node_Registers Register, int* data)
+    {abstract} + bool Receive(int Address, Node_Registers Register, char* array, int size)
+    {abstract} + bool Scan(int* Addresses, int size)
 }
 
 enum Node_Registers
