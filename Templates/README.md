@@ -32,10 +32,8 @@ NAME_HERE: # Dit moet je aanpassen
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
 
-      - name: Navigate
-        run: cd ./ # Dit moet je aanpassen naar de pad van je PlatformIO directory (Vanuit de git root)
-
-      - name: Run Unit Tests
+      - name: Test
+        working-directory: ./POCs/WiFi/Server/ # Pas dit aan naar jouw project folder
         run: platformio test --environment native -f unit -v
 ```
 
@@ -90,11 +88,11 @@ De rest zou je niet aan hoeven te passen. Als er iets niet werkt, contacteer een
 
 ### Uitvoeren van de tests
 
-Voordat de tests automatisch worden uitgevoerd moet je de workflow aanpassen. Je voegt simpelweg het volgende toe aan de CI.yml file.
+Voordat de tests automatisch worden uitgevoerd moet je de workflow aanpassen. Je voegt simpelweg het volgende toe aan de CI.yml file die in `.github/workflows/` staat.
 
 ```yaml
 jobs:
-  NAME_HERE:
+  NAME_HERE: # Dit moet je aanpassen
     runs-on: ubuntu-latest
 
     env:
@@ -103,18 +101,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    # CD to CMake project directory
-    - name: Navigate
-        run: cd ./ #The directory that needs to be tested
-    
     - name: configure
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      working-directory: ./POCs/WiFi/Server/ # Pas dit aan naar jouw project folder
+      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      working-directory: ./POCs/WiFi/Server/ # Pas dit aan naar jouw project folder
+      run: cmake --build ./build --config ${{env.BUILD_TYPE}}
     
     - name: Test
-      working-directory: ${{github.workspace}}/build
+      working-directory: ./POCs/WiFi/Server/ # Pas dit aan naar jouw project folder
       run: ctest -C ${{env.BUILD_TYPE}}
 
 ```

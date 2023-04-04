@@ -23,9 +23,6 @@ jobs:
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
 
-      # CD to Platform IO directory 
-      - name: Navigate
-        run: cd ./ #The directory that needs to be tested
-
-      - name: Run Unit Tests
+      - name: Test
+        working-directory: ./POCs/WiFi/Server/ # Pas dit aan naar jouw project folder
         run: platformio test --environment native -f unit -v
