@@ -3,7 +3,6 @@ Title Class Diagram
 
 Class Controller
 {
-    {method} + Controller()
     {method} + void Setup()
     {method} + void Loop()
 }
@@ -11,17 +10,21 @@ Class Controller
 Class WiFiHandler
 {
     {field} - WiFiData Data
-    {field} - WebsocketData Websocket
+    {method} + WiFiHandler(WiFiData Data)
+    {method} + bool IsConnected()
+    {method} + void Connect()
+    {method} + void Disconnect()
+}
 
-    {method} + WiFiHandler(WiFiData Data, WebsocketData Websocket)
-
+Class WebSocketHandler
+{
+    {field} - WebsocketData Data
+    {method} + WebSocketHandler(WebsocketData Data)
     {method} + void Send(string Json)
     {method} + string Receive()
-    {method} + bool IsConnected_WiFi()
-    {method} + bool IsConnected_Websocket()
-    {method} + void Connect()
-    {method} + void Disconnect_WiFi()
-    {method} + void Disconnect_Websocket()
+    {method} + bool Connect()
+    {method} + bool IsConnected()
+    {method} + void Disconnect()
 }
 
 Struct WebsocketData
@@ -104,9 +107,10 @@ Controller "1" o-- "1" WiFiHandler
 Controller "1" o-- "1" IMasterSlave
 Controller "1" o-- "1" JsonBuilder
 Controller "1" o-down- "1" IDipSwitch
+Controller "1" o-- "1" WebSocketHandler
 
 WiFiHandler "1" o-- "1" WiFiData
-WiFiHandler "1" o-- "1" WebsocketData
+WebSocketHandler "1" o-- "1" WebsocketData
 
 ' See if we should separate WebSocket & WiFi
 
