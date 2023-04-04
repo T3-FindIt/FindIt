@@ -7,21 +7,6 @@ Class NodeController
     {method} + void Run()
 }
 
-class SPIHandelar
-{
-
-}
-
-Interface INFCReader
-{
-
-}
-
-class NFCReader
-{
-
-}
-
 Interface IMasterSlave
 {
     {abstract} + void Send(int Address, Node_Registers Register, int Data)
@@ -48,6 +33,7 @@ class NotificatieVibration
 
 NodeController "1" o-left- "1" INotificatieOutput
 NodeController "1" o-- "1" IMasterSlave
+NodeController "1" o-- "1" IReader
 
 INotificatieOutput <|.. NotificatieLight
 INotificatieOutput <|.. NotificatieSound
@@ -56,34 +42,23 @@ INotificatieOutput <|.. NotificatieVibration
 IMasterSlave <|.. I2C
 IMasterSlave <|.. CANBus
 
-class NFCMFRC522 {
-    -ssPin: int
-    -bitOrder: uint8_t
-    -dataMode: uint8_t
-    -clockDivider: uint8_t
 
-    +NFCMFRC522(ssPin: int)
-    +setBitOrder(order: uint8_t)
-    +setDataMode(mode: uint8_t)
-    +setClockDivider(divider: uint8_t)
-    +writeRegister(regAddr: uint8_t, value: uint8_t)
-    +readRegister(regAddr: uint8_t): uint8_t
-    +reset()
-    +initialize()
-    +dumpVersionToSerial()
-    +waitForCardPresent(): bool
-    +selectCard(uid: uint8_t[]): bool
-    +authenticate(authMode: uint8_t, blockAddr: uint8_t, key: uint8_t[], uid: uint8_t[]): bool
-    +readBlock(blockAddr: uint8_t, data: uint8_t[]): bool
+class SPI {
+    +transfer(data: byte) : byte
+}
+
+
+
+interface IReader {
+    +checkForCard(uid: byte[]) : bool
+    +readCard() : string
 }
 
 class MFRC522Reader {
-    -nfc: NFCMFRC522
-
-    +MFRC522Reader(nfc: NFCMFRC522)
-    +readCard(uid: uint8_t[]): bool
+    +MFRC522Reader(nfc: NFCModule)
 }
 
-NFCMFRC522 --> MFRC522Reader
+IReader <|.. MFRC522Reader
+MFRC522Reader o-- SPI
 
 @enduml
