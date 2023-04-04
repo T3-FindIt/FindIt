@@ -74,10 +74,10 @@ Interface IMasterSlave
 enum Node_Registers
 {
     RequestForm = 0x0,
-    Notificatie = 0x1,
+    Notifications = 0x1,
     RGB = 0x2,
     Item = 0x3,
-    Actief = 0x4,
+    Active = 0x4,
     Error = 0x5
 }
 
