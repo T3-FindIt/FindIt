@@ -1,1 +1,1 @@
-!["Class Diagram"](/ClassDiagram.png)
+!["Class Diagram"](ClassDiagram.png)
