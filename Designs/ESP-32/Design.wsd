@@ -56,29 +56,20 @@ enum Node_Registers
     Error = 0x5
 }
 
-' enum JSON_Action
-' {
-'     HeartBeat = "HeartBeat",
-'     NotifyNewProduct = "NotifyNewProduct",
-'     RespondProduct = "RespondProduct",
-'     ProductFound = "ProductFound",
-'     SignIn = "SignIn"
-' }
-
-' note left of JSON_Action : Kan eventueel met een andere\nimplementatie worden vervangen.
-
-' enum JSON_Topics
-' {
-'     Node = "Node",
-'     Product = "Product",
-'     Activate = "Activate",
-'     Result = "Result",
-'     Places = "Places"
-' }
+class I2C
+{
+    ' {field} - int Address
+    ' {field} - int[] KnownAddresses
+    ' {method} + I2C_Controller(int Address)
+    ' {method} + void Scan()
+    ' {method} + void Send(int Address, Node_Registers Register, int Data)
+    ' {method} + char[] Receive(int Address, Node_Registers Register)
+}
 
 Class JsonBuilder
 {
-    {method} + char[] Serialize(string action)
+    {method} + char[] Serialize(string action, int data)
+    {method} + char[] Serialize(string[] actions, int[] data, int size)
     {method} + bool Deserialize(char[] json)
 }
 
@@ -87,7 +78,6 @@ note top of JsonBuilder : Kijk naar gebruik van pointers
 note bottom of WiFiClient : Implementatie wordt geleverd door de\nESP8266WiFi Library
 
 ' EMPTY CLASSES
-Class I2C
 Class CANBus
 Class WiFi
 Class WiFiClient
@@ -96,14 +86,14 @@ Class WiFiClient
 MasterSlave <|.. I2C
 MasterSlave <|.. CANBus
 
-Controller --> WiFiHandler
-Controller --> MasterSlave
-Controller --> JsonBuilder
-Controller --> DipSwitch
+Controller o-- WiFiHandler
+Controller o-- MasterSlave
+Controller o-- JsonBuilder
+Controller o-down- DipSwitch
 
-WiFiHandler --> WiFiData
-WiFiHandler --> WebsocketData
-WiFiHandler --> WiFi
-WiFiHandler --> WiFiClient
+WiFiHandler o-- WiFiData
+WiFiHandler o-- WebsocketData
+WiFiHandler o-- WiFi
+WiFiHandler o-- WiFiClient
 
 @enduml
