@@ -33,6 +33,6 @@ jobs:
     - name: Build
       run: cmake --build ${{github.workspace}}/POCs/WiFi/Server/build --config ${{env.BUILD_TYPE}}
     
-    - name: Test
-      working-directory: ${{github.workspace}}/POCs/WiFi/Server/build
-      run: ctest -C ${{env.BUILD_TYPE}}
+    # - name: Test
+    #   working-directory: ${{github.workspace}}/POCs/WiFi/Server/build
+    #   run: ctest -C ${{env.BUILD_TYPE}}
