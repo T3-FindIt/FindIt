@@ -16,7 +16,7 @@ run-name: ${{ inputs.reason || github.event.pull_request.title || github.event.h
 
 jobs: 
   WiFI-POC:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     env:
       BUILD_TYPE: Debug
