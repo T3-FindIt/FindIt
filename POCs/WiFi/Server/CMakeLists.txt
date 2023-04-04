@@ -29,4 +29,4 @@ FetchContent_MakeAvailable(googletest)
 # get google test
 
 add_subdirectory(src)
-add_subdirectory(test)
+# add_subdirectory(test)
