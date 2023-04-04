@@ -2,6 +2,11 @@
 Title Class Diagram
 
 Class Controller
+{
+    {method} + Controller()
+    {method} + void Setup()
+    {method} + void Loop()
+}
 Class WiFiHandler
 {
     {field} - WiFiData Data
@@ -22,6 +27,8 @@ Struct WebsocketData
     {field} - int Port
 
     {method} + WebsocketData(string IP, int Port)
+    {method} + string GetIP()
+    {method} + int GetPort()
 }
 
 Struct WiFiData
@@ -30,6 +37,8 @@ Struct WiFiData
     {field} - string Password
 
     {method} + WiFiHandlerData(string SSID, string Password)
+    {method} + string GetSSID()
+    {method} + string GetPassword()
 }
 
 class DipSwitch
@@ -86,14 +95,14 @@ Class WiFiClient
 MasterSlave <|.. I2C
 MasterSlave <|.. CANBus
 
-Controller o-- WiFiHandler
-Controller o-- MasterSlave
-Controller o-- JsonBuilder
-Controller o-down- DipSwitch
+Controller "1" o-- "1" WiFiHandler
+Controller "1" o-- "1" MasterSlave
+Controller "1" o-- "1" JsonBuilder
+Controller "1" o-down- "1" DipSwitch
 
-WiFiHandler o-- WiFiData
-WiFiHandler o-- WebsocketData
-WiFiHandler o-- WiFi
-WiFiHandler o-- WiFiClient
+WiFiHandler "1" o-- "1" WiFiData
+WiFiHandler "1" o-- "1" WebsocketData
+WiFiHandler "1" o-- "1" WiFi
+WiFiHandler "1" o-- "1" WiFiClient
 
 @enduml
