@@ -196,7 +196,7 @@ def CheckCurlyBrackets(line:str, index:int, currentFilePath:str):
 
     if line.find('}') != -1:
         # Regex to check for correct closing curly brackets.
-        if re.search('^(?![^\s}]+).*\}([^;]*\;)?$', line) is None:
+        if re.search('^(?![^\s}]+).*\}([^;]*\;)?$', line) is None and line.find('namespace') == -1:
             PrintStyleError(index, line, currentFilePath, 'Incorrect curly brackets.', 'Closing curly brackets may not be preceded or followed by any text except when the text is between the bracket and a \';\'.')
             failed = True
         
