@@ -34,7 +34,9 @@ def CheckFolder(folderPath:str, supported_extensions:list, ignored_folders:list)
         if extension == CChecker.supported_extensions[0]:
             if files.count(name + CChecker.supported_extensions[1]) == 0:
                 if 'TEST' in name.upper():
-                    logger.PrintFileInfo(absPath, 'C source file found without a corresponding header file. This is expected for test files.', 'If this is not a test file, please rename it to it does not contain the word \'test\'.')
+                    logger.PrintFileInfo(absPath, 'C source file found without a corresponding header file. This is expected for test files.', 'If this is not a test file, please rename it so it does not contain the word \'test\'.')
+                elif 'MAIN' in name.upper():
+                    logger.PrintFileInfo(absPath, 'C source file found without a corresponding header file. This is expected for main files.', 'If this is not a main file, please rename it so it does not contain the word \'main\'.')
                 else:
                     logger.PrintFileWarning(absPath, 'C source file found without a corresponding header file.')
             
@@ -51,7 +53,9 @@ def CheckFolder(folderPath:str, supported_extensions:list, ignored_folders:list)
         elif extension == CPPChecker.supported_extensions[0]:
             if files.count(name + CPPChecker.supported_extensions[1]) == 0:
                 if 'TEST' in name.upper():
-                    logger.PrintFileInfo(absPath, 'C++ source file found without a corresponding header file. This is expected for test files.', 'If this is not a test file, please rename it to it does not contain the word \'test\'.')
+                    logger.PrintFileInfo(absPath, 'C++ source file found without a corresponding header file. This is expected for test files.', 'If this is not a test file, please rename it so it does not contain the word \'test\'.')
+                elif 'MAIN' in name.upper():
+                    logger.PrintFileInfo(absPath, 'C++ source file found without a corresponding header file. This is expected for main files.', 'If this is not a main file, please rename it so it does not contain the word \'main\'.')
                 else:
                     logger.PrintFileWarning(absPath, 'C++ source file found without a corresponding header file.')
 
