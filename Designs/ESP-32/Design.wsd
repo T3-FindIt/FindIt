@@ -8,6 +8,15 @@ Class Controller
     {method} + void Run()
 }
 
+Interface IServerHandler
+{
+    {abstract} + void Send(string Json)
+    {abstract} + string Receive()
+    {abstract} + bool Connect()
+    {abstract} + bool IsConnected()
+    {abstract} + void Disconnect()
+}
+
 Class WiFiHandler
 {
     {field} - WiFiData Data
@@ -21,11 +30,6 @@ Class WebSocketHandler
 {
     {field} - WebsocketData Data
     {method} + WebSocketHandler(WebsocketData Data)
-    {method} + void Send(string Json)
-    {method} + string Receive()
-    {method} + bool Connect()
-    {method} + bool IsConnected()
-    {method} + void Disconnect()
 }
 
 Struct WebsocketData
@@ -92,7 +96,7 @@ Class JsonBuilder
     {method} + bool Deserialize(char[] json)
 }
 
-note left of JsonBuilder : Implementatie wordt geleverd door de\nArduinoJson Library
+note right of JsonBuilder : Implementatie wordt geleverd door de\nArduinoJson Library
 note top of JsonBuilder : Kijk naar gebruik van pointers
 
 ' EMPTY CLASSES
@@ -103,12 +107,13 @@ Class I2C
 IMasterSlave <|.. I2C
 IMasterSlave <|.. CANBus
 IDipSwitch <|.. DipSwitch
+IServerHandler <|.. WebSocketHandler
 
 Controller "1" o-- "1" WiFiHandler
 Controller "1" o-- "1" IMasterSlave
 Controller "1" o-- "1" JsonBuilder
-Controller "1" o-down- "1" IDipSwitch
-Controller "1" o-- "1" WebSocketHandler
+Controller "1" o-left- "1" IDipSwitch
+Controller "1" o-- "1" IServerHandler
 
 WiFiHandler "1" o-- "1" WiFiData
 WebSocketHandler "1" o-- "1" WebsocketData
