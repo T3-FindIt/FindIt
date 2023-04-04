@@ -154,11 +154,11 @@ def CheckForOperator(line:str, index:int, currentFilePath:str):
     failed = False
 
     # Regex to check for correct operators.
-    # TODO: Add check for ~ character.
-    # singleRegex = '(\+|-|=|\/|\*|%|==|!=|>|<|>=|<=|&&|\|\||&|\||\^|~|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
-    singleRegex = '(\+|-|=|\/|%|==|!=|>|<|>=|<=|&&|\|\||\||\^|~|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
+    singleRegex = '(\+|-|=|\/|%|==|!=|>|<|>=|<=|&&|\|\||\||\^|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
+    exceptionRegex = '(->)'
     completeRegex = '(\\b' + singleRegex + '\\b)|(' + singleRegex + '\\b)|(\\b' + singleRegex + ')'
-    if re.search(completeRegex, line) is not None:
+    completeExceptionRegex = '(\\b' + exceptionRegex + '\\b)|(' + exceptionRegex + '\\b)|(\\b' + exceptionRegex + ')'
+    if re.search(completeRegex, line) is not None and re.search(completeExceptionRegex, line) is None:
         PrintStyleError(index, line, currentFilePath, 'Incorrect operator.', 'Operators must be preceded and followed by a whitespace.')
         failed = True
 
@@ -195,7 +195,7 @@ def CheckCurlyBrackets(line:str, index:int, currentFilePath:str):
 
     if line.find('}') != -1:
         # Regex to check for correct closing curly brackets.
-        if re.search('^(?![^\s}]+).*\}([^;]*\;)?$', line) is None:
+        if re.search('^(?![^\s}]+).*\}([^;]*\;)?$', line) is None and line.find('namespace') == -1:
             PrintStyleError(index, line, currentFilePath, 'Incorrect curly brackets.', 'Closing curly brackets may not be preceded or followed by any text except when the text is between the bracket and a \';\'.')
             failed = True
         
