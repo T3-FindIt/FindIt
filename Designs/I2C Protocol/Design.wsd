@@ -1,0 +1,31 @@
+@startuml RequestData
+Title I2C - Request Data
+Entity Master
+Entity Node
+
+Master -> Master : Wire.StartTransmission(DeviceID)
+Master -> Node : Wire.Write(RequestFormAddress)
+Master -> Master : Wire.EndTransmission()
+Master -> Node : Wire.RequestFrom(DeviceID, NumberOfBytes)
+Node -> Master : Wire.Write(data)
+
+
+@enduml
+
+@startuml SendData
+Title I2C - Send Data
+Entity Master
+Entity Node
+
+Master -> Master : Wire.StartTransmission(DeviceID)
+Master -> Node : Wire.Write(SendFormAddress)
+Master -> Node : Wire.Write(data)
+Master -> Master : Wire.EndTransmission()
+Master -> RequestFrom: Wire.RequestFrom(DeviceID, NumberOfBytes)
+Node -> Master : Wire.Write(data)
+
+alt Error message is recieved
+Master -> Node : Wire.RequestFrom(DeviceID, NumberOfBytes)
+Node -> Master : Wire.Write(data)
+end
+@enduml
