@@ -24,9 +24,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    # - name: Navigate
-    #   run: cd ${{github.workspace}}/POCs/WiFi/Server/
-    
     - name: configure
       working-directory: ./POCs/WiFi/Server/
       run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
@@ -36,5 +33,5 @@ jobs:
       run: cmake --build ./build --config ${{env.BUILD_TYPE}}
     
     # - name: Test
-    #   working-directory: ${{github.workspace}}/POCs/WiFi/Server/build
-    #   run: ctest -C ${{env.BUILD_TYPE}}
+      # working-directory: ./POCs/WiFi/Server/
+      # run: ctest -C ${{env.BUILD_TYPE}}
