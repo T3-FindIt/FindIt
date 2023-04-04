@@ -96,18 +96,18 @@ note top of JsonBuilder : Kijk naar gebruik van pointers
 Class CANBus
 ' END OF EMPYY CLASSES 
 
-MasterSlave <|.. I2C
-MasterSlave <|.. CANBus
+IMasterSlave <|.. I2C
+IMasterSlave <|.. CANBus
 IDipSwitch <|.. DipSwitch
 
 Controller "1" o-- "1" WiFiHandler
-Controller "1" o-- "1" MasterSlave
+Controller "1" o-- "1" IMasterSlave
 Controller "1" o-- "1" JsonBuilder
-Controller "1" o-down- "1" DipSwitch
+Controller "1" o-down- "1" IDipSwitch
 
 WiFiHandler "1" o-- "1" WiFiData
 WiFiHandler "1" o-- "1" WebsocketData
-WiFiHandler "1" o-- "1" WiFi
-WiFiHandler "1" o-- "1" WiFiClient
+
+' See if we should separate WebSocket & WiFi
 
 @enduml
