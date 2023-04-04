@@ -24,14 +24,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Navigate
-      run: cd ${{github.workspace}}/POCs/WiFi/Server/
+    # - name: Navigate
+    #   run: cd ${{github.workspace}}/POCs/WiFi/Server/
     
     - name: configure
-      run: cmake -B ${{github.workspace}}/POCs/WiFi/Server/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      working-directory: ./POCs/WiFi/Server/
+      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     
     - name: Build
-      run: cmake --build ${{github.workspace}}/POCs/WiFi/Server/build --config ${{env.BUILD_TYPE}}
+      working-directory: ./POCs/WiFi/Server/
+      run: cmake --build ./build --config ${{env.BUILD_TYPE}}
     
     # - name: Test
     #   working-directory: ${{github.workspace}}/POCs/WiFi/Server/build
