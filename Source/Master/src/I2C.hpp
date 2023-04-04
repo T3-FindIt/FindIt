@@ -2,6 +2,7 @@
 #define I2C_HPP
 
 #include <Wire.h>
+#include "IMasterSlave.hpp"
 
 class I2C : public IMasterSlave
 {
