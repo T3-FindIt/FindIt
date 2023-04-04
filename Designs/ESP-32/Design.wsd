@@ -7,6 +7,7 @@ Class Controller
     {method} + void Setup()
     {method} + void Loop()
 }
+
 Class WiFiHandler
 {
     {field} - WiFiData Data
@@ -16,9 +17,11 @@ Class WiFiHandler
 
     {method} + void Send(string Json)
     {method} + string Receive()
-    {method} + bool IsConnected()
+    {method} + bool IsConnected_WiFi()
+    {method} + bool IsConnected_Websocket()
     {method} + void Connect()
-    {method} + void Disconnect()
+    {method} + void Disconnect_WiFi()
+    {method} + void Disconnect_Websocket()
 }
 
 Struct WebsocketData
