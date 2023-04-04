@@ -1,0 +1,77 @@
+@startuml ClassDiagram
+Title Class Diagram
+
+' websocket code in github
+Class Communication
+{
+    {field} + int port
+    {field} +  IPAddress ip
+    {field} +  String[1024] buffer
+    {method} + void Setup()
+    {method} + void Listen()
+    {method} + void Send()
+    {method} + void Broadcast()
+    {method} + void Connect()
+}
+
+Class Database
+{
+    {field} + txtFile database
+    {method} + void Add()
+    {method} + void Delete()
+    {method} + void SearchID()
+    {method} + void Searchtype()
+}
+
+' enum with types, or a simple string?
+' struct instead of class?
+Class Object
+{
+    {field} + String name
+    {field} + int id
+    {field} + String type
+}
+
+Class Protocol
+{
+    {method} + void Prepare()
+    {method} + void Interpret()
+}
+
+' simple terminal UI
+Class UserInterface
+{
+    {field} + MultithreadingStuff
+    {method} + void Terminal
+    {method} + void Read()
+    {method} + void Write()
+}
+
+Class Main
+{
+    {method} + void Main()
+}
+
+' note left of JsonBuilder : Implementatie wordt geleverd door de\nArduinoJson Library
+' note top of JsonBuilder : Kijk naar gebruik van pointers
+
+' EMPTY CLASSES
+' Class CANBus
+' END OF EMPYY CLASSES 
+
+' IMasterSlave <|.. I2C
+' IMasterSlave <|.. CANBus
+' IDipSwitch <|.. DipSwitch
+
+' Controller "1" o-- "1" WiFiHandler
+' Controller "1" o-- "1" IMasterSlave
+' Controller "1" o-- "1" JsonBuilder
+' Controller "1" o-down- "1" IDipSwitch
+' Controller "1" o-- "1" WebSocketHandler
+
+' WiFiHandler "1" o-- "1" WiFiData
+' WebSocketHandler "1" o-- "1" WebsocketData
+
+' See if we should separate WebSocket & WiFi
+
+@enduml
