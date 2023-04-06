@@ -17,6 +17,11 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     # add_compile_options(-Werror)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
+if(MSVC)
+    add_compile_options(/W4)
+    # add_compile_options(/WX)
+endif(MSVC)
+
 enable_testing()
 
 # get google test
