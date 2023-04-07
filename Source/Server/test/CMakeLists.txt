@@ -7,6 +7,7 @@ add_executable(${ProjectTestName} ${Sources})
 
 target_link_libraries(${ProjectTestName} PUBLIC
     gtest_main
+    nlohmann_json::nlohmann_json
     ${ProjectName}
 )
 

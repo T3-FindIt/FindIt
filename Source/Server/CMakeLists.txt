@@ -24,8 +24,9 @@ endif(MSVC)
 
 enable_testing()
 
-# get google test
 include(FetchContent)
+
+# get google test
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
@@ -33,6 +34,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 # get google test
+
+# get nlohmann json
+FetchContent_Declare(
+  json
+  URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz
+)
+FetchContent_MakeAvailable(json)
+# get nlohmann json
 
 add_subdirectory(src)
 # add_subdirectory(test)
