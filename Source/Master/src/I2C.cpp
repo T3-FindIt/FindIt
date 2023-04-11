@@ -20,16 +20,12 @@ char Error[MAX_STRING_SIZE];
 // ===== REGISTER ===== //
 // ===================== //
 
-
 I2C::I2C(int address)
 {
     this->address = address;
+    Wire.onReceive(receiveEvent);
 }
 
-void requestEvent() // A node makes a request
-{
-    // Need to discuss how this is handled
-}
 
 void receiveEvent(int howMany) // A node sends data, not making a request.
 {
@@ -50,8 +46,7 @@ void receiveEvent(int howMany) // A node sends data, not making a request.
             }
             case Node_Registers::Error:
             {
-                strcpy(Error, data.c_str());
-                break;
+                break; // Do the thing
             }
             default:
             {
@@ -77,37 +72,6 @@ void I2C::Send(int address,Node_Registers nodeRegister, int data)
     Wire.endTransmission();
 }
 
-// bool I2C::Recieve(int address,Node_Registers nodeRegister, int* data)
-// {
-//     Wire.beginTransmission(address);
-//     Wire.write(nodeRegister);
-//     Wire.endTransmission();
-//     Wire.requestFrom(address, 1);
-//     if (Wire.available())
-//     {
-//         *data = Wire.read();
-//         return true;
-//     }
-//     return false;
-// }
-
-// bool I2C::Recieve(int address, Node_Registers nodeRegister, char* data, int size)
-// {
-//     Wire.beginTransmission(address);
-//     Wire.write(nodeRegister);
-//     Wire.endTransmission();
-//     Wire.requestFrom(address, size);
-//     if (Wire.available())
-//     {
-//         for (int i = 0; i < size; i++)
-//         {
-//             data[i] = Wire.read();
-//         }
-//         return true;
-//     }
-//     return false;
-// }
-
 void I2C::Scan(int* addresses, int size)
 {
     int address = 0;
@@ -123,6 +87,39 @@ void I2C::Scan(int* addresses, int size)
             {
                 break;
             }
+        }
+    }
+}
+
+int GetRegister(Node_Registers my_register, void* data)
+{
+    switch (my_register)
+    {
+        case Node_Registers::Notification:
+        {
+            return Notification;
+        }
+        case Node_Registers::RGB:
+        {
+            return RGB;
+        }
+        case Node_Registers::Item:
+        {
+            strcpy((char*)data, Item);
+            return 0;
+        }
+        case Node_Registers::Active:
+        {
+            return Active;
+        }
+        case Node_Registers::Error:
+        {
+            strcpy((char*)data, Error);
+            return 0;
+        }
+        default:
+        {
+            throw "Invalid Register!"; // This should never happen
         }
     }
 }
