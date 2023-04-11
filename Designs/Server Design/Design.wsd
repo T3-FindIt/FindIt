@@ -5,17 +5,20 @@ Title Class Diagram
 Class Communication
 {
     -- fields --
+    ' client class/struct maken?
     {field} - int: port
-    {field} - IPAddress: ip
+    {field} - IPAddress: myip
+    {field} - IPAddress<vector>: clients
     {field} - char[1024]: buffer
+    ' change char array to string?
     -- getters & setters --
-    {method} + void SetPort(int port)
+    ' {method} + void SetPort(int port)
     {method} + int GetPort()
-    {method} + void setIP(IPAdress IP)
-    {method} + IPAdress GetIP()
+    ' {method} + void setIP(IPAdress IP)
+    {method} + IPAdress GetmyIP()
+    {method} + IPAddress<vector> GetClients()
     -- functions & methods --
-    {method} + void Communication()
-    {method} + void SetupSocket(int port, IPAddress ip)
+    {method} + Communication(int port, IPAddress ip)
     {method} + void Listen(int port)
     {method} + void Send()
     {method} + void Broadcast()
@@ -30,7 +33,7 @@ Class Database
     ' change txtFile
     {field} - txtFile: database
     -- functions & methods --
-    {method} + void Database()
+    {method} + Database()
     {method} + void Add()
     {method} + void Delete()
     {method} + object SearchID()
@@ -54,17 +57,26 @@ Class Object
     ' {method} + void SetType(string type)
     ' {method} + string GetType()
     -- functions & methods --
-    {method} + void Object()
+    {method} + Object(string name, int id)
     {method} + string ToString(Object Object)
 }
 
-Class JsonBuilder
+Class ProtocolParserInterface
 {
     -- fields --
     -- functions & methods --
-    {method} + void JsonBuilder()
+    ' pointers?
     {method} + string Prepare(string data)
-    {method} + string Interpret()
+    {method} + string Interpret(string data)
+}
+
+Class ProtocolParser
+{
+    -- fields --
+    -- functions & methods --
+    {method} + ProtocolParser()
+    {method} + string Prepare(string data)
+    {method} + string Interpret(string data)
 }
 
 ' simple terminal UI
@@ -72,7 +84,7 @@ Class UserInterface
 {
     -- fields --
     -- functions & methods --
-    {method} + void UserInterface(mutex mutex)
+    {method} + UserInterface(mutex mutex)
     {method} + void Terminal()
     {method} + string Read()
     {method} + void Write(string input)
@@ -81,7 +93,7 @@ Class UserInterface
 Class Main
 {
     -- fields --
-    {field} - mutex: Mutex
+    {field} - mutex: mutex
     {field} - UserInterface: terminal
     -- functions & methods --
     {method} + void Main()
@@ -94,6 +106,12 @@ Class Main
 ' Class CANBus
 ' END OF EMPYY CLASSES
 
+Main -o UserInterface
+Main o-- Object
+Main -- Database
+Main -- Communication
+ProtocolParserInterface <|.. ProtocolParser
+Communication -- ProtocolParserInterface
 ' IMasterSlave <|.. I2C
 ' IMasterSlave <|.. CANBus
 ' IDipSwitch <|.. DipSwitch
@@ -108,5 +126,5 @@ Class Main
 ' WebSocketHandler "1" o-- "1" WebsocketData
 
 ' See if we should separate WebSocket & WiFi
-
+' object opslaan als JSON objecten?
 @enduml
