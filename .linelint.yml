@@ -4,4 +4,5 @@ rules:
 
     disable-autofix: false
     ignore:
-      - *.svg
+      - Logo.svg
+      - Naam.svg
