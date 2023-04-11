@@ -1,4 +1,7 @@
-# FindIt
+<p float="left">
+  <img src="./img/Logo.svg" height="210px" />
+  <img src="./img/Naam.svg" height="210px" /> 
+</p>
 
 ## Introductie
 
