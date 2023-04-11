@@ -2,33 +2,58 @@
 
 Class NodeController
 {
-    {method} - void Setup()
-    {method} - void Loop()
-    {method} + void Run()
+    {method} - Setup() : void 
+    {method} - Loop() : void
+    {method} + Run() : void
 }
 
 Interface IMasterSlave
 {
-    {abstract} + void Send(int Address, Node_Registers Register, int Data)
-    {abstract} + char[] Receive()
+    {abstract} + Send(Address : int, Register : Node_Registers, Data : int)  : void
+    {abstract} + Receive() : char[]
 }
 
 Interface INotificatieOutput
 {
-    {abstract} + bool handelNotificatie(int[] notificatieBits)
+    {abstract} + handelNotificatie(notificatieBits : int[]) : bool
 }
 
 class NotificatieLight
 {
-    {method} + void write(bool state)
+    {method} + Write(state : bool) : void
 }
+
 class NotificatieSound
 {
-    {method} + void write(bool state)
+    {method} + Write(state : bool) : void
 }
+
 class NotificatieVibration
 {
-    {method} + void write(bool state)
+    {method} + Write(state : bool) : void
+}
+
+class SPI {
+   {method} + Transfer(data: byte) : byte
+}
+
+interface IReader {
+    {abstract} + CheckForCard(uid: byte[]) : bool
+    {abstract} + ReadCard() : string
+}
+
+class MFRC522Reader {
+    {method} + MFRC522Reader(nfc: NFCModule)
+}
+
+enum Node_Registers
+{
+    RequestForm = 0x0,
+    Notifications = 0x1,
+    RGB = 0x2,
+    Item = 0x3,
+    Active = 0x4,
+    Error = 0x5
 }
 
 NodeController "1" o-left- "1" INotificatieOutput
@@ -42,23 +67,7 @@ INotificatieOutput <|.. NotificatieVibration
 IMasterSlave <|.. I2C
 IMasterSlave <|.. CANBus
 
-
-class SPI {
-    +transfer(data: byte) : byte
-}
-
-
-
-interface IReader {
-    +checkForCard(uid: byte[]) : bool
-    +readCard() : string
-}
-
-class MFRC522Reader {
-    +MFRC522Reader(nfc: NFCModule)
-}
-
 IReader <|.. MFRC522Reader
-MFRC522Reader o-- SPI
+MFRC522Reader "1" o-- "1" SPI
 
 @enduml
