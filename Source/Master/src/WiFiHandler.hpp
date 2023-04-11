@@ -32,10 +32,9 @@ class WiFiHandler
 {
     private:
     WiFiData data;
-    WiFiClient client;
     public:
-    WiFiHandler(WiFiData data);
-    bool isConnectedD();
+    WiFiHandler(WiFiData& data);
+    bool isConnected();
     void Connect();
     void Disconnect();
 };
