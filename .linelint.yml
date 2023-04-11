@@ -3,3 +3,6 @@ rules:
     enable: true
 
     disable-autofix: false
+    ignore:
+      - Logo.svg
+      - Naam.svg
