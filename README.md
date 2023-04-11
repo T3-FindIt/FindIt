@@ -1,6 +1,6 @@
 <p float="left">
-  <img src="./img/Logo.svg" height="210px" />
-  <img src="./img/Naam.svg" height="210px" /> 
+  <img src="./img/Logo.svg" height="10vh" />
+  <img src="./img/Naam.svg" height="10vh" /> 
 </p>
 
 ## Introductie
