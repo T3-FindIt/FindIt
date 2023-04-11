@@ -11,6 +11,12 @@ struct WiFiData
     std::string Password;
 
     public:
+    WiFiData()
+    {
+        SSID = "";
+        Password = "";
+    }
+
     WiFiData(std::string ssid, std::string password)
     {
         SSID = ssid;

@@ -1,7 +1,11 @@
 #include "WiFiHandler.hpp"
 
-WiFiHandler::WiFiHandler(WiFiData& data)
+WiFiHandler::WiFiHandler(WiFiData &data)
 {
+    if(data.GetSSID() == "" || data.GetPassword() == "")
+    {
+        throw "Invalid WiFiData";
+    }
     this->data = data;
 }
 
