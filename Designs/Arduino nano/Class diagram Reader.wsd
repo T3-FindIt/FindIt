@@ -9,28 +9,18 @@ Class NodeController
 
 Interface IMasterSlave
 {
-    {abstract} + Send(Address : int, Register : Node_Registers, Data : int)  : void
+    {abstract} + Send(Address : int, Register : Node_Registers, Data : int)  : int
     {abstract} + Receive() : char[]
 }
 
-Interface INotificatieOutput
+Interface INotificationOutput
 {
-    {abstract} + handelNotificatie(notificatieBits : int[]) : bool
+    {abstract} + SetNotificationStyle(notificationBits : Notification) : int
+    {abstract} + SetNotifictionState(state : bool) : int
 }
 
-class NotificatieLight
+class NotificationOutput
 {
-    {method} + Write(state : bool) : void
-}
-
-class NotificatieSound
-{
-    {method} + Write(state : bool) : void
-}
-
-class NotificatieVibration
-{
-    {method} + Write(state : bool) : void
 }
 
 class SPI {
@@ -46,6 +36,14 @@ class MFRC522Reader {
     {method} + MFRC522Reader(nfc: NFCModule)
 }
 
+interface IMessageHandler {
+    {abstract} + HandleReceiveMessage( Message : char[]) : Node_Registers
+    {abstract} + HandleSendMessage( Data : Node_Registers) : int
+}
+
+class MessageHandler {
+}
+
 enum Node_Registers
 {
     RequestForm = 0x0,
@@ -56,16 +54,24 @@ enum Node_Registers
     Error = 0x5
 }
 
-NodeController "1" o-left- "1" INotificatieOutput
-NodeController "1" o-- "1" IMasterSlave
-NodeController "1" o-- "1" IReader
+enum Notification
+{
+    Light,
+    Sound,
+    Vibration
+}
 
-INotificatieOutput <|.. NotificatieLight
-INotificatieOutput <|.. NotificatieSound
-INotificatieOutput <|.. NotificatieVibration
+NodeController "1" o-left- "1" INotificationOutput
+NodeController "1" o-- "1" IReader
+NodeController "1" o-- "1" IMessageHandler
+
+IMessageHandler <|.. MessageHandler
+
+MessageHandler "1" o-- "1" IMasterSlave
+
+INotificationOutput <|.. NotificationOöutput
 
 IMasterSlave <|.. I2C
-IMasterSlave <|.. CANBus
 
 IReader <|.. MFRC522Reader
 MFRC522Reader "1" o-- "1" SPI

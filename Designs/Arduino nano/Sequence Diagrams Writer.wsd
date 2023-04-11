@@ -1,0 +1,31 @@
+@startuml RequestData
+Title SPI - Request Data
+Entity arduino
+Entity NFC_Mudle
+
+arduino -> arduino : Wire.StartTransmission(DeviceID)
+arduino -> NFC_Mudle : write(dataSize, data)
+arduino -> arduino : Wire.EndTransmission()
+arduino -> NFC_Mudle : Wire.RequestFrom(DeviceID, NumberOfBytes)
+NFC_Mudle -> arduino : Wire.Write(data)
+
+
+@enduml
+
+@startuml SendData
+Title SPI - Send Data
+Entity arduino
+Entity NFC_Mudle
+
+arduino -> arduino : Wire.StartTransmission(DeviceID)
+arduino -> NFC_Mudle : Wire.Write(SendFormAddress)
+arduino -> NFC_Mudle : Wire.Write(data)
+arduino -> arduino : Wire.EndTransmission()
+arduino -> RequestFrom: Wire.RequestFrom(DeviceID, NumberOfBytes)
+NFC_Mudle -> arduino : Wire.Write(data)
+
+alt Error message is recieved
+arduino -> NFC_Mudle : Wire.RequestFrom(DeviceID, NumberOfBytes)
+NFC_Mudle -> arduino : Wire.Write(data)
+end
+@enduml
