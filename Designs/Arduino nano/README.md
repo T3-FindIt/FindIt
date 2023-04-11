@@ -1,12 +1,16 @@
 
-Reader Schematic:
+        Reader Schematic:
+
 ![Reader_Schematic](Reader_Schematic.png)
 
-Class Diagram Reader:
+        Class Diagram Reader:
+
 ![ClassDiagram](ClassDiagramReader.png)
 
-Writer Schematic:
+        Writer Schematic:
+
 ![Writer_Schematic](Writer_Schematic.png)
 
-Class Diagram Writer:
+        Class Diagram Writer:
+
 ![ClassDiagram](ClassDiagramWriter.png)
