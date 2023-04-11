@@ -1,0 +1,55 @@
+@startuml Domain Model
+title Domain Model
+
+skinparam linetype polyline
+skinparam linetype ortho
+
+object FindIt
+object Server
+object Database
+object UI
+object Object
+object Tag
+    Tag : Desc
+object Cluster
+object Master
+object Node
+object NodeController
+object Reader
+object Light
+object Programmer
+object Writer
+object ProgrammerController
+object ObjectDescription
+
+FindIt "1" -- "1" Server
+FindIt "1" -- "1" Database
+FindIt "1" -- "1" Cluster
+FindIt "1" -- "1" Programmer
+FindIt "1" -- "1" Object
+
+Server . Database : <<Data Exchange>>
+
+Server "1" -- "1" UI
+
+Database "1" -- "*" ObjectDescription
+
+Cluster "1" -- "1" Master
+Cluster "1" -- "*" Node
+
+Node "1" -- "1" NodeController
+Node "1" -- "1" Reader
+Node "1" .. "1" Reader : <<SPI>>
+Node "1" -- "1" Light
+
+Programmer "1" -- "1" ProgrammerController
+Programmer "1" --- "1" Writer
+
+Object "1" --- "1" Tag
+
+Reader .. Tag : <<Reads>> >
+Writer .. Tag : <<Writes>> >
+
+Server .. Master : <<WiFi>>
+
+@enduml
