@@ -3,3 +3,5 @@ rules:
     enable: true
 
     disable-autofix: false
+    ignore:
+      - *.svg
