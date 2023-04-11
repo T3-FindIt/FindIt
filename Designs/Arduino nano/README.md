@@ -6,7 +6,7 @@ Class Diagram Reader:
 ![ClassDiagram](ClassDiagramReader.png)
 
 Writer Schematic:
-![Writer_Schematic](ClassDiagramWriter.png)
+![Writer_Schematic](Writer_Schematic.png)
 
 Class Diagram Writer:
-![ClassDiagram](Writer_Schematic.png)
+![ClassDiagram](ClassDiagramWriter.png)
