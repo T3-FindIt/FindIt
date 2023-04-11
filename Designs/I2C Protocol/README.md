@@ -2,7 +2,7 @@
 
 ## Protocol Definition
 
-| Register | Address | Data Size | R/W | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+| Register | Address | Data Size | R/W | (LSB) 0 | 1 | 2 | 3 | 4 | 5 | 6 | (MSB) 7 |
 |----------|---------|-----------|-----|---|---|---|---|---|---|---|---
 | RequestForm | 0x00 | 1 | W | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0
 | Notificatie | 0x01 | 1 | W | GELUID | TRILLING | LICHT | RGB | \ | \ | \ | \ |
