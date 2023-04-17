@@ -4,20 +4,17 @@ Title Class Diagram
 ' websocket code in github
 Class Communication
 {
-    -- fields --
     ' client class/struct maken?
     {field} - int: port
     {field} - IPAddress: myip
     {field} - IPAddress<vector>: clients
     {field} - char[1024]: buffer
     ' change char array to string?
-    -- getters & setters --
     ' {method} + void SetPort(int port)
     {method} + int GetPort()
     ' {method} + void setIP(IPAdress IP)
     {method} + IPAdress GetmyIP()
     {method} + IPAddress<vector> GetClients()
-    -- functions & methods --
     {method} + Communication(int port, IPAddress ip)
     {method} + void Listen(int port)
     {method} + void Send()
@@ -29,10 +26,8 @@ Class Communication
 
 Class Database
 {
-    -- fields --
     ' change txtFile
     {field} - txtFile: database
-    -- functions & methods --
     {method} + Database()
     {method} + void Add()
     {method} + void Delete()
@@ -45,11 +40,9 @@ Class Database
 ' struct instead of class?
 Class Object
 {
-    -- fields --
     {field} - string: name
     {field} - int: id
     ' {field} - string type
-    -- getters & setters --
     {method} + void SetName(string name)
     {method} + string GetName()
     {method} + void SetId(int id)
@@ -63,17 +56,12 @@ Class Object
 
 Class ProtocolParserInterface
 {
-    -- fields --
-    -- functions & methods --
-    ' pointers?
     {method} + string Prepare(string data)
     {method} + string Interpret(string data)
 }
 
 Class ProtocolParser
 {
-    -- fields --
-    -- functions & methods --
     {method} + ProtocolParser()
     {method} + string Prepare(string data)
     {method} + string Interpret(string data)
@@ -82,8 +70,6 @@ Class ProtocolParser
 ' simple terminal UI
 Class UserInterface
 {
-    -- fields --
-    -- functions & methods --
     {method} + UserInterface(mutex mutex)
     {method} + void Terminal()
     {method} + string Read()
@@ -92,10 +78,8 @@ Class UserInterface
 
 Class Main
 {
-    -- fields --
     {field} - mutex: mutex
     {field} - UserInterface: terminal
-    -- functions & methods --
     {method} + void Main()
 }
 
