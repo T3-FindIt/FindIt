@@ -54,20 +54,41 @@ Class Object
     {method} + string ToString(Object Object)
 }
 
+enum MessageType
+{
+    SERVER_REQUEST_PRODUCT,
+    NODE_RESPOND_TO_PRODUCT_REQUEST,
+    NODE_EVENT_PRODUCT_FOUND,
+    NODE_SIGN_IN,
+    NODE_SIGN_IN_RESPONSE,
+    NODE_NOTIFY_NEW_PRODUCT,
+    NODE_NOTIFY_NEW_PRODUCT_RESPONSE,
+    HEARTBEAT,
+    HEARTBEAT_RESPONSE,
+}
+
+interface IMessage
+{
+    {field} - IMessageType: type
+    {method} + IMessageType GetType()
+}
+
+note bottom of IMessage
+Each MessageType has its own class.
+They are not listed here because it would create clutter.
+end note
+
 interface IProtocolParser
 {
-    {method} + string Prepare(string data)
-    {method} + string Interpret(string data)
+    {method} + IMessage Parse(std::string data)
+    {method} + std::string Interpret(IMessage data)
 }
 
-Class ProtocolParser
+Class JSONProtocolParser
 {
-    {method} + ProtocolParser()
-    {method} + string Prepare(string data)
-    {method} + string Interpret(string data)
+    {method} + JSONProtocolParser()
 }
 
-' simple terminal UI
 Class UserInterface
 {
     {method} + UserInterface(mutex mutex)
@@ -93,7 +114,10 @@ Main -o UserInterface
 Main o-- Object
 Main -- Database
 Main -- Communication
-IProtocolParser <|.. ProtocolParser
+Main *-- IMessage
+Communication o-- IMessage
+IProtocolParser <|.. JSONProtocolParser
+IProtocolParser - IMessage
 Communication o-- IProtocolParser
 
 ' Controller "1" o-- "1" WiFiHandler
