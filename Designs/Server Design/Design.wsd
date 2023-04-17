@@ -54,7 +54,7 @@ Class Object
     {method} + string ToString(Object Object)
 }
 
-Class ProtocolParserInterface
+interface IProtocolParser
 {
     {method} + string Prepare(string data)
     {method} + string Interpret(string data)
@@ -87,18 +87,14 @@ Class Main
 ' note top of JsonBuilder : Kijk naar gebruik van pointers
 
 ' EMPTY CLASSES
-' Class CANBus
 ' END OF EMPYY CLASSES
 
 Main -o UserInterface
 Main o-- Object
 Main -- Database
 Main -- Communication
-ProtocolParserInterface <|.. ProtocolParser
-Communication -- ProtocolParserInterface
-' IMasterSlave <|.. I2C
-' IMasterSlave <|.. CANBus
-' IDipSwitch <|.. DipSwitch
+IProtocolParser <|.. ProtocolParser
+Communication o-- IProtocolParser
 
 ' Controller "1" o-- "1" WiFiHandler
 ' Controller "1" o-- "1" IMasterSlave
