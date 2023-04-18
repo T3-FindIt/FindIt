@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION ${CMakeMinimumVersion})
 
 set(Sources
+    empty.cpp
 )
 
 add_executable(${ProjectTestName} ${Sources})
