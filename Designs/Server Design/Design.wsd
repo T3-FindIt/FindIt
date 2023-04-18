@@ -24,20 +24,15 @@ Class Communication
     {method} + bool CloseConnection()
 }
 
-Class Database
+Class PlainFileDatabase
 {
-    ' change txtFile
-    {field} - txtFile: database
-    {method} + Database()
-    {method} + void Add()
-    {method} + void Delete()
-    {method} + object SearchID()
-    {method} + object SearchName()
-    ' {method} + void Searchtype()
+    {field} - std::string: path
+    {method} + Database(std::string path)
+    {method} + void Add(Object object)
+    {method} + void Remove(Object object)
+    {method} + bool SearchIfPresent(Object object)
 }
 
-' enum with types, or a simple string?
-' struct instead of class?
 Class Object
 {
     {field} - string: name
@@ -104,8 +99,7 @@ Class Main
     {method} + void Main()
 }
 
-' note left of JsonBuilder : Implementatie wordt geleverd door de\nArduinoJson Library
-' note top of JsonBuilder : Kijk naar gebruik van pointers
+Main "1" *-- "1" PlainFileDatabase
 
 ' EMPTY CLASSES
 ' END OF EMPYY CLASSES
