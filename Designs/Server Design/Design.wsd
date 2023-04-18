@@ -1,10 +1,12 @@
 @startuml ClassDiagram
 Title Class Diagram
 
-' websocket code in github
 Class Communication
 {
-    ' client class/struct maken?
+    {method} + [[noreturn]] void Run()
+    {method} + void Stop()
+}
+
     {field} - int: port
     {field} - IPAddress: myip
     {field} - IPAddress<vector>: clients
