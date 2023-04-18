@@ -84,10 +84,9 @@ Class JSONProtocolParser
 
 Class UserInterface
 {
-    {method} + UserInterface(mutex mutex)
-    {method} + void Terminal()
-    {method} + string Read()
-    {method} + void Write(string input)
+    {field} - Get_objects_t get_unique_objects
+    {method} + [[noreturn]] void Run()
+    {method} + void Stop()
 }
 
 Class Main
