@@ -13,6 +13,7 @@ class I2C : public IMasterSlave
     void Send(int address,Node_Registers register, int data);
     void Scan(int* addresses, int size);
     int GetRegister(Node_Registers my_register, void* data);
+    Node_Registers GetLastChange();
 };
 
 #endif

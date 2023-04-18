@@ -124,3 +124,10 @@ int I2C::GetRegister(Node_Registers my_register, void* data)
         }
     }
 }
+
+Node_Registers I2C::GetLastChange()
+{
+    Node_Registers returnVal = lastRecieved;
+    lastRecieved = Node_Registers::NR_None;
+    return lastRecieved;
+}
