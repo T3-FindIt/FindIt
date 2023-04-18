@@ -1,5 +1,9 @@
 #include "WiFiHandler.hpp"
 
+WiFiHandler::WiFiHandler()
+{
+}
+
 WiFiHandler::WiFiHandler(WiFiData &data)
 {
     if(data.GetSSID() == "" || data.GetPassword() == "")

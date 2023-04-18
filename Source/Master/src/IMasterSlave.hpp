@@ -17,8 +17,6 @@ class IMasterSlave
     
     public:
     void virtual Send(int address,Node_Registers register, int data) = 0;
-    bool virtual Recieve(int address,Node_Registers register, int* data) = 0;
-    bool virtual Recieve(int address, Node_Registers register, char* data, int size) = 0;
     void virtual Scan(int* addresses, int size) = 0;
 };
 

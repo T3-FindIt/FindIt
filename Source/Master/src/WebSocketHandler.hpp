@@ -38,6 +38,7 @@ class WebSocketHandler : public IServerHandler
     private:
     WebSocketData data;
     public:
+    WebSocketHandler();
     WebSocketHandler(WebSocketData& data);
     void Send(std::string json);
     std::string Recieve();

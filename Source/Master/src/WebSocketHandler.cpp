@@ -3,6 +3,10 @@
 
 WiFiClient client;
 
+WebSocketHandler::WebSocketHandler()
+{
+}
+
 WebSocketHandler::WebSocketHandler(WebSocketData &data)
 {
     if(data.GetIP() == "" || data.GetPort() == 0)

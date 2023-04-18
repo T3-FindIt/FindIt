@@ -50,6 +50,7 @@ void receiveEvent(int howMany) // A node sends data, not making a request.
 I2C::I2C(int address)
 {
     this->address = address;
+    Wire.begin(address);
     Wire.onReceive(receiveEvent);
 }
 
@@ -80,7 +81,7 @@ void I2C::Scan(int* addresses, int size)
     }
 }
 
-int GetRegister(Node_Registers my_register, void* data)
+int I2C::GetRegister(Node_Registers my_register, void* data)
 {
     switch (my_register)
     {
@@ -94,7 +95,7 @@ int GetRegister(Node_Registers my_register, void* data)
         }
         case Node_Registers::NR_Item:
         {
-            strcpy((char*)data, (char*)Item[0]);
+            strcpy((char*)data, (char*)Item);
             return 0;
         }
         case Node_Registers::NR_Active:
@@ -103,7 +104,7 @@ int GetRegister(Node_Registers my_register, void* data)
         }
         case Node_Registers::NR_Error:
         {
-            strcpy((char*)data, (char*)Error[0]);
+            strcpy((char*)data, (char*)Error);
             return 0;
         }
         default:

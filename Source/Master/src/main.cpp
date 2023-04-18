@@ -13,12 +13,16 @@
 #define SERVER_ADDRESS "SERVER IP"
 #define SERVER_PORT 80
 
+WiFiHandler wifiHandler = WiFiHandler();
+WebSocketHandler webSocketHandler = WebSocketHandler();
+I2C i2c = I2C(LOCAL_ADDRESS);
+
 void setup() {
   WiFiData wifiData(SSID, PASSWORD);
-  WiFiHandler wifiHandler(wifiData);
+  wifiHandler = WiFiHandler(wifiData);
 
   WebSocketData webSocketData(SERVER_ADDRESS, SERVER_PORT);
-  WebSocketHandler webSocketHandler(webSocketData);
+  webSocketHandler = WebSocketHandler(webSocketData);
 
   wifiHandler.Connect();
   if(!wifiHandler.isConnected())
@@ -31,10 +35,25 @@ void setup() {
   {
     return;
   }
-
-  I2C i2c(0x1);
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void loop()
+{
+  if(webSocketHandler.isConnected())
+  {
+    std::string websocketData = webSocketHandler.Recieve();
+    if(websocketData != "")
+    {
+      // Decompile with JSON parser
+      // Do some stuff with the data
+    }
+  }
+  int request = 0;
+  i2c.GetRegister(Node_Registers::NR_RequestForm, &request);
+  
+  if(request == 0)
+  {
+    // Do some writing shenanigans, or send some stuff to the server.
+  }
+
 }

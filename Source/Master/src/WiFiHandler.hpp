@@ -39,6 +39,7 @@ class WiFiHandler
     private:
     WiFiData data;
     public:
+    WiFiHandler();
     WiFiHandler(WiFiData& data);
     bool isConnected();
     void Connect();

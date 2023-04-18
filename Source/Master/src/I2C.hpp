@@ -11,9 +11,8 @@ class I2C : public IMasterSlave
     public:
     I2C(int address);
     void Send(int address,Node_Registers register, int data);
-    bool Recieve(int address,Node_Registers register, int* data);
-    bool Recieve(int address, Node_Registers register, char* data, int size);
     void Scan(int* addresses, int size);
+    int GetRegister(Node_Registers my_register, void* data);
 };
 
 #endif
