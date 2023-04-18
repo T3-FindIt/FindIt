@@ -89,6 +89,10 @@ Class UserInterface
     {method} + void Stop()
 }
 
+note bottom of UserInterface
+using Get_objects_t = vector<std::string>();
+end note
+
 Class Main
 {
     {field} - mutex: mutex
