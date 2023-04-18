@@ -10,6 +10,7 @@
 ![ClassDiagram](ClassDiagramReader.png)
 
         Sequence Diagrams Reader:
+Sequence diagram Scenario: De Reader leest een tag en stuurt de tag-data naar esp32
 
 ![SequenceDiagram](SequenceDiagramsReader.png)
 
@@ -22,5 +23,6 @@
 ![ClassDiagram](ClassDiagramWriter.png)
 
         Sequence Diagrams Writer:
+Sequence diagram Scenario: De Writer schrijft data naar een tag
         
 ![SequenceDiagram](SequenceDiagramsWriter.png)
