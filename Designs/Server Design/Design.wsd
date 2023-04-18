@@ -98,6 +98,13 @@ Class Main
     {method} + int main()
 }
 
+Class MessageQueue
+{
+    {field} - queue<IMessage> myQueue
+    {field} - mutex myMutex
+    {method} + void push(IMessage)
+    {method} + IMessage pop()
+}
 Main "1" *-- "1" PlainFileDatabase
 
 ' EMPTY CLASSES
