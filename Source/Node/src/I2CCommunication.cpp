@@ -1,12 +1,12 @@
 #include "I2CCommunication.hpp"
 
-volatile uint8_t activeRegisterAdress = 0;
-volatile uint8_t Item[48];
+volatile uint8_t activeRegisterAdress;
+volatile uint8_t Item[49];
 volatile uint8_t RGBValues[3];
-volatile uint8_t notificationModeRegistry = 0;
-volatile bool notificationState = 0;
-volatile uint8_t recievedErrorState = 0;
-volatile uint8_t errorState = 0;
+volatile uint8_t notificationModeRegistry;
+volatile bool notificationState;
+volatile uint8_t recievedErrorState;
+volatile uint8_t errorState;
 
 void OnRecieve(int HowMany)
 {
@@ -59,13 +59,17 @@ void OnRequest()
 
 I2CCommunication::I2CCommunication()
 {
+    activeRegisterAdress = 0xFF;
     RGBValues[0] = 0;
     RGBValues[1] = 0;
     RGBValues[2] = 0;
     notificationModeRegistry = 0;
     notificationState = false;
-    activeRegisterAdress = 0xFF;
+    recievedErrorState = 0;
+    errorState = 0;
     Wire.begin(NODE_ADRESS);
+    Wire.onReceive(OnRecieve);
+    Wire.onRequest(OnRequest);
 }
 
 I2CCommunication::~I2CCommunication()
@@ -77,11 +81,21 @@ int I2CCommunication::SendNewItemToHub(char* itemString)
 {
     Wire.beginTransmission(HUB_ADDRESS);
     Wire.write(ITEM_REG);
-    for(int i = 0; i < 48; i++)
+    bool endofstring = false;
+    for(int i = 0; i < 49; i++)
     {
-        Wire.write(itemString[i]);
+        if (!endofstring)
+        {
+            Wire.write(itemString[i]);
+        }
+        if(itemString[i+1] == '\0')
+        {
+            endofstring = true;
+        }
     }
     Wire.endTransmission();
+
+    return 0;
 }
 
 void I2CCommunication::GetRGBValues(uint8_t* OutputArray)
