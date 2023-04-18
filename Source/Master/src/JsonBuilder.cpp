@@ -1,4 +1,5 @@
 #include "JsonBuilder.hpp"
+#include "../lib/json.hpp"
 #include <string>
 
 JsonBuilder::JsonBuilder()
@@ -13,19 +14,10 @@ bool JsonBuilder::Deserialize(std::string Json)
         return false;
     }
 
-    StaticJsonDocument<200> doc;
-    DeserializationError error = deserializeJson(doc, Json);
-    if (error)
-    {
-        return false;
-    }
-
-    std::string action = doc["Action"];
-
-    if(strcmp(action.c_str(), "HeartBeat") != 0)
-    {
-        return false;
-    }
+    // if(strcmp(action.c_str(), "HeartBeat") != 0)
+    // {
+    //     return false;
+    // }
 
     return true;
 
@@ -37,14 +29,6 @@ bool JsonBuilder::Serialize(std::string actions[], int data[], int size, std::st
     {
         return false;
     }
-
-    StaticJsonDocument<200> doc;
-
-    for (size_t i = 0; i < size; i++)
-    {
-        /* code */
-    }
-    
 
     return false;
 }

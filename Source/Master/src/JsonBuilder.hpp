@@ -1,5 +1,3 @@
-#include <ArduinoJson.h>
-
 class JsonBuilder
 {
 public:
