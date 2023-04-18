@@ -1,0 +1,136 @@
+@startuml ClassDiagram
+Title Class Diagram
+
+Class Communication
+{
+    {method} + [[noreturn]] void Run()
+    {method} + void Stop()
+}
+
+' using Event_function_t = void();
+interface IClusterConnection
+{
+    {field} - Event_function_t onMessageHandler
+    {method} + [[noreturn]] void Run()
+    {method} + void Stop()
+    {method} + void Broadcast(IMessage message)
+    ' {method} + void Send(IMessage message, IPAdress myip)
+    {method} + void SetOnMessageHandler(Event_function_t handler)
+}
+
+note bottom of IClusterConnection
+using Event_function_t = void();
+end note
+
+class TCPClusterConnection
+{
+    {field} - int: port
+    {field} - IPAddress: myip
+}
+
+interface IDataBase
+{
+    {method} + void Add(Object object)
+    {method} + void Remove(Object object)
+    {method} + bool SearchIfPresent(Object object)
+    {method} + vector<object> GetAllObjects()
+}
+
+Class PlainFileDatabase
+{
+    {field} - std::string: path
+}
+
+Class Object
+{
+    {field} - string: name
+    {field} - int: id
+    {method} + string GetName()
+    {method} + int GetID()
+    {method} + Object(string name, int id)
+}
+
+enum MessageType
+{
+    SERVER_REQUEST_PRODUCT,
+    NODE_RESPOND_TO_PRODUCT_REQUEST,
+    NODE_EVENT_PRODUCT_FOUND,
+    NODE_SIGN_IN,
+    NODE_SIGN_IN_RESPONSE,
+    NODE_NOTIFY_NEW_PRODUCT,
+    NODE_NOTIFY_NEW_PRODUCT_RESPONSE,
+    HEARTBEAT,
+    HEARTBEAT_RESPONSE,
+}
+
+interface IMessage
+{
+    {field} - IMessageType: type
+    {method} + IMessageType GetType()
+}
+
+note bottom of IMessage
+Each MessageType has its own class.
+They are not listed here because it would create clutter.
+end note
+
+interface IProtocolParser
+{
+    {method} + IMessage Parse(std::string data)
+    {method} + std::string Parse(IMessage data)
+}
+
+Class JSONProtocolParser
+{
+    {method} + JSONProtocolParser()
+}
+
+Class UserInterface
+{
+    {field} - Get_objects_t get_unique_objects
+    {method} + [[noreturn]] void Run()
+    {method} + void Stop()
+}
+
+note bottom of UserInterface
+using Get_objects_t = vector<std::string>();
+end note
+
+Class Main
+{
+    {method} + int main()
+}
+
+Class MessageQueue
+{
+    {field} - queue<IMessage> myQueue
+    {field} - mutex myMutex
+    {method} + void push(IMessage)
+    {method} + IMessage pop()
+}
+
+Main "1" *-- "1" UserInterface
+Main "1" *-- "*" Object
+Main "1" *-- "1" IDataBase
+Main "1" *-- "1" Communication
+Main "1" *-- "2" MessageQueue
+
+Communication "1" o-- "*" IMessage
+Communication "1" o-- "1" IProtocolParser
+Communication "1" o-- "1" IClusterConnection
+
+IProtocolParser <|.. JSONProtocolParser
+IProtocolParser . IMessage
+
+IClusterConnection <|.. TCPClusterConnection
+IClusterConnection . IMessage
+
+IDataBase . Object
+IDataBase <|.. PlainFileDatabase
+
+MessageQueue . IMessage
+
+UserInterface "1" o- "2" MessageQueue
+Communication "1" o- "2" MessageQueue
+
+@enduml
