@@ -68,7 +68,9 @@ Interface IMasterSlave
 {
     {abstract} + void Send(int Address, Node_Registers Register, int Data)
     {abstract} + bool Scan(int* Addresses, int size)
-    {abstract} + int GetRegister(Node_Registers my_register, void* data);
+    {abstract} + int GetRegister(Node_Registers my_register, void* data)
+    {abstract} + Node_Registers GetLastChange()
+
 }
 
 enum Node_Registers
