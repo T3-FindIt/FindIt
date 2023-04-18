@@ -35,6 +35,7 @@ Class PlainFileDatabase
     {method} + void Add(Object object)
     {method} + void Remove(Object object)
     {method} + bool SearchIfPresent(Object object)
+    {method} + vector<object> GetAllObjects()
 }
 
 Class Object
