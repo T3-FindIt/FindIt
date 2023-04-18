@@ -14,7 +14,7 @@ interface IClusterConnection
     {method} + [[noreturn]] void Run()
     {method} + void Stop()
     {method} + void Broadcast(IMessage message)
-    ' {method} + void Send(IMessage message, IPAdress myip)
+    ' {method} + void Send(IMessage message, IPAdress ip)
     {method} + void SetOnMessageHandler(Event_function_t handler)
 }
 
@@ -25,7 +25,7 @@ end note
 class TCPClusterConnection
 {
     {field} - int: port
-    {field} - IPAddress: myip
+    {field} - std::string: ip
 }
 
 interface IDatabase
@@ -103,8 +103,8 @@ Class Main
 
 Class MessageQueue
 {
-    {field} - queue<IMessage> myQueue
-    {field} - mutex myMutex
+    {field} - std::queue<IMessage> queue
+    {field} - std::mutex mutex
     {method} + void push(IMessage)
     {method} + IMessage pop()
 }
