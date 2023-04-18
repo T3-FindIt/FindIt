@@ -28,7 +28,7 @@ class TCPClusterConnection
     {field} - IPAddress: myip
 }
 
-interface IDataBase
+interface IDatabase
 {
     {method} + void Add(Object object)
     {method} + void Remove(Object object)
@@ -111,7 +111,7 @@ Class MessageQueue
 
 Main "1" *-- "1" UserInterface
 Main "1" *-- "*" Object
-Main "1" *-- "1" IDataBase
+Main "1" *-- "1" IDatabase
 Main "1" *-- "1" Communication
 Main "1" *-- "2" MessageQueue
 
@@ -125,8 +125,8 @@ IProtocolParser . IMessage
 IClusterConnection <|.. TCPClusterConnection
 IClusterConnection . IMessage
 
-IDataBase . Object
-IDataBase <|.. PlainFileDatabase
+IDatabase . Object
+IDatabase <|.. PlainFileDatabase
 
 MessageQueue . IMessage
 
