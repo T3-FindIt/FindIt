@@ -4,8 +4,6 @@
 
 #define MAX_STRING_SIZE 48
 
-Node_Registers incomingRegister = Node_Registers::NR_RequestForm;
-
 // ===================== //
 // ===== REGISTER ===== //
 // ===================== //
@@ -18,6 +16,9 @@ char Error[MAX_STRING_SIZE];
 // ===== REGISTER ===== //
 // ===================== //
 
+Node_Registers incomingRegister = Node_Registers::NR_None;
+Node_Registers lastRecieved;
+
 void receiveEvent(int howMany) // A node sends data, not making a request.
 {
     std::string data = "";
@@ -26,7 +27,7 @@ void receiveEvent(int howMany) // A node sends data, not making a request.
         data += (char)Wire.read();
     }
     
-    if (data.length() > 0)
+    if (data.length() > 1)
     {
         switch (incomingRegister)
         {
@@ -44,7 +45,17 @@ void receiveEvent(int howMany) // A node sends data, not making a request.
                 throw "Invalid Register!"; // This should never happen
             }
         }
+        lastRecieved = incomingRegister;
+        incomingRegister = Node_Registers::NR_None;
+
+        return;
     }
+    else if(data.length() == 1)
+    {
+        incomingRegister = (Node_Registers)data[0];
+        return;
+    }
+
 }
 
 I2C::I2C(int address)
