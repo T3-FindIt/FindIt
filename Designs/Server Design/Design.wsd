@@ -28,14 +28,17 @@ class TCPClusterConnection
     {field} - IPAddress: myip
 }
 
-Class PlainFileDatabase
+interface IDataBase
 {
-    {field} - std::string: path
-    {method} + Database(std::string path)
     {method} + void Add(Object object)
     {method} + void Remove(Object object)
     {method} + bool SearchIfPresent(Object object)
     {method} + vector<object> GetAllObjects()
+}
+
+Class PlainFileDatabase
+{
+    {field} - std::string: path
 }
 
 Class Object
@@ -108,7 +111,7 @@ Class MessageQueue
 
 Main "1" *-- "1" UserInterface
 Main "1" *-- "*" Object
-Main "1" *-- "1" PlainFileDatabase
+Main "1" *-- "1" IDataBase
 Main "1" *-- "1" Communication
 Main "1" *-- "2" MessageQueue
 
@@ -122,7 +125,8 @@ IProtocolParser . IMessage
 IClusterConnection <|.. TCPClusterConnection
 IClusterConnection . IMessage
 
-PlainFileDatabase . Object
+IDataBase . Object
+IDataBase <|.. PlainFileDatabase
 
 MessageQueue . IMessage
 
