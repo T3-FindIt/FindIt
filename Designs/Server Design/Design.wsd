@@ -7,6 +7,21 @@ Class Communication
     {method} + void Stop()
 }
 
+' using Event_function_t = void();
+interface IClusterConnection
+{
+    {field} - Event_function_t onMessageHandler
+    {method} + [[noreturn]] void Run()
+    {method} + void Stop()
+    {method} + void Broadcast(IMessage message)
+    ' {method} + void Send(IMessage message, IPAdress myip)
+    {method} + void SetOnMessageHandler(Event_function_t handler)
+}
+
+note bottom of IClusterConnection
+using Event_function_t = void();
+end note
+
     {field} - int: port
     {field} - IPAddress: myip
     {field} - IPAddress<vector>: clients
