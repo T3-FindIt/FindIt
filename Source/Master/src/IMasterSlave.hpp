@@ -3,12 +3,12 @@
 
 enum Node_Registers
 {
-    RequestForm = 0x0,
-    Notification = 0x1, // | SOUND | VIBRATION | LED | RGB | 0 | 0 | 0 | 0 |
-    RGB = 0x2, // | R | G | B | 0 | 0 | 0 | 0 | 0 |
-    Item = 0x3, // Points to a char[] of size 48.
-    Active = 0x4, // 0 = inactive, 1 = active
-    Error = 0x5,
+    NR_RequestForm = 0x0,
+    NR_Notification = 0x1, // | SOUND | VIBRATION | LED | RGB | 0 | 0 | 0 | 0 |
+    NR_RGB = 0x2, // | R | G | B | 0 | 0 | 0 | 0 | 0 |
+    NR_Item = 0x3, // Points to a char[] of size 48.
+    NR_Active = 0x4, // 0 = inactive, 1 = active
+    NR_Error = 0x5,
 };
 
 class IMasterSlave
