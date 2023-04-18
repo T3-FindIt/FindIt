@@ -33,7 +33,7 @@ interface IDatabase
     {method} + void Add(Object object)
     {method} + void Remove(Object object)
     {method} + bool SearchIfPresent(Object object)
-    {method} + vector<object> GetAllObjects()
+    {method} + std::vector<object> GetAllObjects()
 }
 
 Class PlainFileDatabase
@@ -43,11 +43,11 @@ Class PlainFileDatabase
 
 Class Object
 {
-    {field} - string: name
+    {field} - std::string: name
     {field} - int: id
-    {method} + string GetName()
+    {method} + std::string GetName()
     {method} + int GetID()
-    {method} + Object(string name, int id)
+    {method} + Object(std::string name, int id)
 }
 
 enum MessageType
@@ -93,7 +93,7 @@ Class UserInterface
 }
 
 note bottom of UserInterface
-using Get_objects_t = vector<std::string>();
+using Get_objects_t = std::vector<std::string>();
 end note
 
 Class Main
