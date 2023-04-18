@@ -95,9 +95,7 @@ end note
 
 Class Main
 {
-    {field} - mutex: mutex
-    {field} - UserInterface: terminal
-    {method} + void Main()
+    {method} + int main()
 }
 
 Main "1" *-- "1" PlainFileDatabase
