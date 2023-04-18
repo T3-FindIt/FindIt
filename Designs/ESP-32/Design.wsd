@@ -100,7 +100,6 @@ Class JsonBuilder
 }
 
 note right of JsonBuilder : Implementatie wordt geleverd door de\nArduinoJson Library
-note top of JsonBuilder : Kijk naar gebruik van pointers
 
 ' EMPTY CLASSES
 Class CANBus
