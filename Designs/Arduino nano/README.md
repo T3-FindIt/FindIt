@@ -9,6 +9,10 @@
 
 ![ClassDiagram](ClassDiagramReader.png)
 
+        Sequence Diagrams Reader:
+
+![SequenceDiagram](SequenceDiagramsReader.png)
+
         Writer Schematic:
 
 ![Writer_Schematic](Writer_Schematic.png)
@@ -16,3 +20,7 @@
         Class Diagram Writer:
 
 ![ClassDiagram](ClassDiagramWriter.png)
+
+        Sequence Diagrams Writer:
+        
+![SequenceDiagram](SequenceDiagramsWriter.png)

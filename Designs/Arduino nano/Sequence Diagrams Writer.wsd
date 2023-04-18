@@ -1,6 +1,15 @@
-@startuml RequestData
-Title SPI - Request Data
-Entity arduino
-Entity NFC_Mudle
+@startuml
+Title Writer - write data
+Entity MFRC522Writer
+Entity NodeController
+Entity SPI
+
+
+MFRC522Writer -> MFRC522Writer : CheckForCard()
+MFRC522Writer --> NodeController : CardAvailable
+NodeController -> MFRC522Writer :  write()
+MFRC522Writer -> SPI :Transfer()
+SPI --> MFRC522Writer :1
+MFRC522Writer --> NodeController :1
 
 @enduml

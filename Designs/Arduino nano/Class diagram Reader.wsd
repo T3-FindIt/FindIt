@@ -69,7 +69,7 @@ IMessageHandler <|.. MessageHandler
 
 MessageHandler "1" o-- "1" IMasterSlave
 
-INotificationOutput <|.. NotificationOöutput
+INotificationOutput <|.. NotificationOutput
 
 IMasterSlave <|.. I2C
 

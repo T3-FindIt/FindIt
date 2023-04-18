@@ -7,30 +7,20 @@ Class NodeController
     {method} + Run() : void
 }
 
-Interface IMasterSlave
-{
-    {abstract} + Send(Address : int, Data : int)  : void
-    {abstract} + Receive() : char[]
-}
 
 class SPI {
-   {method} + Transfer(data: byte) : byte
+   {method} + Transfer(data: byte) : int
 }
 
 interface IWriter {
-    {abstract} + write(dataSize : size_t, data : char[]) : void
+    {abstract} + write(dataSize : size_t, data : char[]) : int
 }
 
 class MFRC522Writer {
     {method}  + MFRC522Writer(NFCModule& nfc)
 }
 
-NodeController "1" o-- "1" IMasterSlave
 NodeController "1" o-- "1" IWriter
-
-
-IMasterSlave <|.. I2C
-IMasterSlave <|.. CANBus
 
 IWriter <|.. MFRC522Writer
 MFRC522Writer "1" o-- "1" SPI
