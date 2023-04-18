@@ -4,26 +4,26 @@ namespace FindIt
 {
     TCPClusterConnection::TCPClusterConnection()
     {
-        //ctor
+        // TODO:
     }
 
     [[noreturn]] void TCPClusterConnection::Run()
     {
-        //fillin
+        // TODO:
     }
 
     void TCPClusterConnection::Stop()
     {
-        //fillin
+        // TODO:
     }
 
     void TCPClusterConnection::Broadcast(iMessage message)
     {
-        //fillin
+        // TODO:
     }
 
     void TCPClusterConnection::SetOnMessagehandler(Event_function_t handler)
     {
-        //fillin
+        // TODO:
     }
 } // namespace FindIt
