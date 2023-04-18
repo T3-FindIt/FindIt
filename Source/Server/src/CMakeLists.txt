@@ -6,6 +6,8 @@ set(Headers
 set(Sources
 )
 
+include(UserInterface/CMakeLists.txt)
+
 # Builds a static library for gtest
 add_library(${ProjectName} STATIC ${Sources} ${Headers})
 
