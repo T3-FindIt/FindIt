@@ -35,7 +35,12 @@ void setup() {
   {
     return;
   }
+
+  Serial.begin(9600);
+
 }
+
+Node_Registers lastRequest = NR_None;
 
 void loop()
 {
@@ -46,14 +51,21 @@ void loop()
     {
       // Decompile with JSON parser
       // Do some stuff with the data
+
+      Serial.print("Websocket data: ");
+      Serial.println(websocketData.c_str());
     }
   }
-  int request = 0;
-  i2c.GetRegister(Node_Registers::NR_RequestForm, &request);
-  
-  if(request == 0)
+
+  if(lastRequest != NR_None)
   {
-    // Do some writing shenanigans, or send some stuff to the server.
+    Serial.println("Last request: " + lastRequest);
   }
+  else
+  {
+    lastRequest = i2c.GetLastChange();
+  }
+
+  // DIPSWITCH
 
 }
