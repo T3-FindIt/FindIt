@@ -74,7 +74,7 @@ end note
 interface IProtocolParser
 {
     {method} + IMessage Parse(std::string data)
-    {method} + std::string Interpret(IMessage data)
+    {method} + std::string Parse(IMessage data)
 }
 
 Class JSONProtocolParser
