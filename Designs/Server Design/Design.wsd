@@ -42,16 +42,9 @@ Class Object
 {
     {field} - string: name
     {field} - int: id
-    ' {field} - string type
-    {method} + void SetName(string name)
     {method} + string GetName()
-    {method} + void SetId(int id)
-    {method} + int GetPort()
-    ' {method} + void SetType(string type)
-    ' {method} + string GetType()
-    -- functions & methods --
+    {method} + int GetID()
     {method} + Object(string name, int id)
-    {method} + string ToString(Object Object)
 }
 
 enum MessageType
