@@ -3,6 +3,7 @@
 
 enum Node_Registers
 {
+    NR_None = -0x1,
     NR_RequestForm = 0x0,
     NR_Notification = 0x1, // | SOUND | VIBRATION | LED | RGB | 0 | 0 | 0 | 0 |
     NR_RGB = 0x2, // | R | G | B | 0 | 0 | 0 | 0 | 0 |
