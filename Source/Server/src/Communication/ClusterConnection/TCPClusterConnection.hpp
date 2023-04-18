@@ -1,7 +1,7 @@
 #ifndef TCPCLUSTERCONNECTION_HPP
 #define TCPCLUSTERCONNECTION_HPP
 
-#include "IclusterConnection.hpp"
+#include "IClusterConnection.hpp"
 #include <string>
 
 namespace FindIt
