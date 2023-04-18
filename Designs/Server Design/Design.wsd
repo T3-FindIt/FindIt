@@ -105,30 +105,28 @@ Class MessageQueue
     {method} + void push(IMessage)
     {method} + IMessage pop()
 }
+
+Main "1" *-- "1" UserInterface
+Main "1" *-- "*" Object
 Main "1" *-- "1" PlainFileDatabase
+Main "1" *-- "1" Communication
+Main "1" *-- "2" MessageQueue
 
-' EMPTY CLASSES
-' END OF EMPYY CLASSES
+Communication "1" o-- "*" IMessage
+Communication "1" o-- "1" IProtocolParser
+Communication "1" o-- "1" IClusterConnection
 
-Main -o UserInterface
-Main o-- Object
-Main -- Database
-Main -- Communication
-Main *-- IMessage
-Communication o-- IMessage
 IProtocolParser <|.. JSONProtocolParser
-IProtocolParser - IMessage
-Communication o-- IProtocolParser
+IProtocolParser . IMessage
 
-' Controller "1" o-- "1" WiFiHandler
-' Controller "1" o-- "1" IMasterSlave
-' Controller "1" o-- "1" JsonBuilder
-' Controller "1" o-down- "1" IDipSwitch
-' Controller "1" o-- "1" WebSocketHandler
+IClusterConnection <|.. TCPClusterConnection
+IClusterConnection . IMessage
 
-' WiFiHandler "1" o-- "1" WiFiData
-' WebSocketHandler "1" o-- "1" WebsocketData
+PlainFileDatabase . Object
 
-' See if we should separate WebSocket & WiFi
-' object opslaan als JSON objecten?
+MessageQueue . IMessage
+
+UserInterface "1" o- "2" MessageQueue
+Communication "1" o- "2" MessageQueue
+
 @enduml
