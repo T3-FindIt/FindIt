@@ -22,23 +22,10 @@ note bottom of IClusterConnection
 using Event_function_t = void();
 end note
 
+class TCPClusterConnection
+{
     {field} - int: port
     {field} - IPAddress: myip
-    {field} - IPAddress<vector>: clients
-    {field} - char[1024]: buffer
-    ' change char array to string?
-    ' {method} + void SetPort(int port)
-    {method} + int GetPort()
-    ' {method} + void setIP(IPAdress IP)
-    {method} + IPAdress GetmyIP()
-    {method} + IPAddress<vector> GetClients()
-    {method} + Communication(int port, IPAddress ip)
-    {method} + void Listen(int port)
-    {method} + void Send()
-    {method} + void Broadcast()
-    {method} + bool Connect()
-    {method} + bool IsConnected()
-    {method} + bool CloseConnection()
 }
 
 Class PlainFileDatabase
