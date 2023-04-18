@@ -68,10 +68,12 @@ Interface IMasterSlave
 {
     {abstract} + void Send(int Address, Node_Registers Register, int Data)
     {abstract} + bool Scan(int* Addresses, int size)
+    {abstract} + int GetRegister(Node_Registers my_register, void* data);
 }
 
 enum Node_Registers
 {
+    None = -0x1,
     RequestForm = 0x0,
     Notifications = 0x1,
     RGB = 0x2,
