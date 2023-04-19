@@ -317,7 +317,7 @@ def CheckIncludeGuardAtEndOfFileCheck(currentFilePath:str, results):
     guardName = ''
 
     for word in words:
-        guardName += word.upper() + '_'
+        guardName += word.upper() + ''
 
     guardName = guardName.upper() + 'HPP'
 

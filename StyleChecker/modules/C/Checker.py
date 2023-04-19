@@ -347,7 +347,7 @@ def CheckIncludeGuard(line:str, currentFilePath:str):
     guardName = ''
 
     for word in words:
-        guardName += word.upper() + '_'
+        guardName += word.upper() + ''
 
     guardName = guardName.upper() + 'H'
 
