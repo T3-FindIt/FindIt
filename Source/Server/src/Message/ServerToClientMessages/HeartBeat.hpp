@@ -3,21 +3,17 @@
 
 #include "../IMessage.hpp"
 
-#include <string>
-
 namespace FindIt
 {
 
 class HeartBeat : public IMessage
 {
-private:
-    const std::string action = "HeartBeat";
 public:
     HeartBeat();
     ~HeartBeat() = default;
 
     MessageType GetType() final;
-    std::string GetAction() const;
+    std::string GetAction();
 };
 
 }
