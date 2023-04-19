@@ -1,6 +1,8 @@
 #ifndef IMESSAGE_HPP
 #define IMESSAGE_HPP
 
+#include <string>
+
 namespace FindIt
 {
 
@@ -21,6 +23,7 @@ class IMessage
 {
 protected:
     MessageType type;
+    std::string action;
 public:
     virtual MessageType GetType() = 0;
 };
