@@ -136,7 +136,7 @@ def main():
     terminalWidth = int(os.get_terminal_size().columns * 0.9)
 
     if results[0]:
-        logger.Info('StyleChecker: Failed one or more checks.', str(results[2]) + ' file(s) failed checks.')
+        logger.Info('StyleChecker: Failed one or more checks.', str(results[2]) + ' file(s) failed check(s).')
         print('')
         logger.PrintProgressBarWithText(results[1], passedFiles, width=terminalWidth)
         print('')
