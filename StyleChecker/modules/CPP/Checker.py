@@ -312,14 +312,7 @@ def CheckIncludeGuardAtEndOfFileCheck(currentFilePath:str, results):
     fileName = os.path.basename(currentFilePath)
     fileName = os.path.splitext(fileName)[0]
 
-    words = re.sub('([A-Z])', r' \1', fileName).split()
-
-    guardName = ''
-
-    for word in words:
-        guardName += word.upper() + '_'
-
-    guardName = guardName.upper() + 'HPP'
+    guardName = fileName.upper() + '_HPP'
 
     if results[0] is False and results[1] is False and results [2] is False:
         PrintFileError(currentFilePath, '(Correct) Include guard not found.', 'Include guard must be \'#ifndef/#define/#endif ' + guardName + '\'.')
@@ -333,7 +326,7 @@ def CheckIncludeGuardAtEndOfFileCheck(currentFilePath:str, results):
         PrintFileError(currentFilePath, '(Correct) #define Include guard not found.', 'Include guard must be \'#define ' + guardName + '\'.')
         failed = True
     if results[2] is False:
-        PrintFileError(currentFilePath, '(Correct) #endif Include guard not found.', 'Include guard must be \'#endif ' + guardName + '\'.')
+        PrintFileError(currentFilePath, '(Correct) #endif Include guard not found.', 'Include guard must be \'#endif // ' + guardName + '\'.')
         failed = True
 
     return failed
@@ -347,14 +340,7 @@ def CheckIncludeGuard(line:str, currentFilePath:str):
     fileName = os.path.basename(currentFilePath)
     fileName = os.path.splitext(fileName)[0]
 
-    words = re.sub('([A-Z])', r' \1', fileName).split()
-
-    guardName = ''
-
-    for word in words:
-        guardName += word.upper() + '_'
-
-    guardName = guardName.upper() + 'HPP'
+    guardName = fileName.upper() + '_HPP'
 
     ifndefIndex = line.find('#ifndef')
     defineIndex = line.find('#define')
