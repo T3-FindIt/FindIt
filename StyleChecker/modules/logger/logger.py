@@ -95,3 +95,64 @@ def PrintFileInfo(path:str, errorMessage:str, optionalMessage:str = ''):
 
 def Info(message:str, optionalMessage:str = '', beginNewline:bool = False, endNewline:bool = False):
     GenericPrint('info', bcolors.OKGREEN, message, optionalMessage, beginNewline, endNewline)
+
+def __printChar(char):
+    print(char, end='')
+
+def __printColoredChar(char, index, cutoff):
+    if index < cutoff:
+        __printChar(bcolors.OKGREEN + char + bcolors.ENDC)
+    else:
+        __printChar(bcolors.FAIL + char + bcolors.ENDC)
+
+def __printColoredCharConditionalChar(charIfTrue, charIfFalse, index, cutoff):
+    if index < cutoff:
+        __printChar(bcolors.OKGREEN + charIfTrue + bcolors.ENDC)
+    else:
+        __printChar(bcolors.FAIL + charIfFalse + bcolors.ENDC)
+
+def __printStartingChar(char, part):
+    __printColoredChar(char, 0, part)
+
+def __printEndingChar(char, part, total):
+    __printColoredChar(char, ( total - 1 ), part)
+
+def PrintProgressBar(total,
+                     part,
+                     width=100,
+                     startChar='[',
+                     endChar=']',
+                     completeChar='▓',
+                     uncompleteChar='░'):
+    progressCount = int( ( part / total ) * width)
+
+    __printStartingChar(startChar, part)
+
+    for i in range(0, width):
+        __printColoredCharConditionalChar(completeChar, uncompleteChar, i, progressCount)
+
+    __printEndingChar(endChar, part, total)
+    print('')
+
+def PrintProgressBarWithText(total,
+                             part,
+                             textOffset=2,
+                             width=100,
+                             startChar='[',
+                             endChar=']',
+                             completeChar='▓',
+                             uncompleteChar='░'):
+    text = str(part) + '/' + str(total)
+    textLength = len(text)
+    progressCount = int( ( part / total ) * width)
+
+    __printStartingChar(startChar, part)
+
+    for i in range(0, width):
+        if (i - textOffset) < textLength and i >= textOffset:
+            __printColoredChar(text[i - textOffset], i, progressCount)
+        else:
+            __printColoredCharConditionalChar(completeChar, uncompleteChar, i, progressCount)
+
+    __printEndingChar(endChar, part, total)
+    print('')
