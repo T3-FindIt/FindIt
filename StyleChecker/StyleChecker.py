@@ -133,7 +133,10 @@ def main():
 
     passedFiles = ( results[1] - results[2] )
 
-    terminalWidth = int(os.get_terminal_size().columns * 0.9)
+    try:
+        terminalWidth = int(os.get_terminal_size().columns * 0.9)
+    except:
+        terminalWidth = 80
 
     if results[0]:
         logger.Info('StyleChecker: Failed one or more checks.', str(results[2]) + ' file(s) failed check(s).')
