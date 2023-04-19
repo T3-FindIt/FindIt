@@ -78,6 +78,7 @@ Gebruik Class alleen als je CPP gebruikt
 
 | Symbol | Naming Convention | Example |
 |---|---|---|
+| Include Guard | ALLCAPS_H(PP) | #ifndef MYFILENAME_HPP |
 | Class | PascalCase | class MotorExample |
 | Functie | PascalCase | MotorExample::TurnOn(); |
 | Variable | camelCase | int newInteger; |
