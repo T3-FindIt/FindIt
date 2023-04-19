@@ -117,7 +117,13 @@ def __printStartingChar(char, part):
 def __printEndingChar(char, part, total):
     __printColoredChar(char, ( total - 1 ), part)
 
-def PrintProgressBar(total, part, width=100, startChar='[', endChar=']', completeChar='▓', uncompleteChar='░'):
+def PrintProgressBar(total,
+                     part,
+                     width=100,
+                     startChar='[',
+                     endChar=']',
+                     completeChar='▓',
+                     uncompleteChar='░'):
     progressCount = int( ( part / total ) * width)
 
     __printStartingChar(startChar, part)
@@ -128,10 +134,16 @@ def PrintProgressBar(total, part, width=100, startChar='[', endChar=']', complet
     __printEndingChar(endChar, part, total)
     print('')
 
-def PrintProgressBarWithText(total, part, textOffset=2, width=100, startChar='[', endChar=']', completeChar='▓', uncompleteChar='░'):
+def PrintProgressBarWithText(total,
+                             part,
+                             textOffset=2,
+                             width=100,
+                             startChar='[',
+                             endChar=']',
+                             completeChar='▓',
+                             uncompleteChar='░'):
     text = str(part) + '/' + str(total)
     textLength = len(text)
-
     progressCount = int( ( part / total ) * width)
 
     __printStartingChar(startChar, part)
