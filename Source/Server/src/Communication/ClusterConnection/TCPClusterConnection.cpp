@@ -2,28 +2,25 @@
 
 namespace FindIt
 {
-    TCPClusterConnection::TCPClusterConnection()
-    {
-        // TODO:
-    }
 
-    [[noreturn]] void TCPClusterConnection::Run()
-    {
-        // TODO:
-    }
+TCPClusterConnection::TCPClusterConnection(int port, std::string ip)
+{
+}
 
-    void TCPClusterConnection::Stop()
-    {
-        // TODO:
-    }
+void FindIt::TCPClusterConnection::Run()
+{
+}
 
-    void TCPClusterConnection::Broadcast(iMessage message)
-    {
-        // TODO:
-    }
+void FindIt::TCPClusterConnection::Stop()
+{
+}
 
-    void TCPClusterConnection::SetOnMessagehandler(Event_function_t handler)
-    {
-        // TODO:
-    }
-} // namespace FindIt
+void FindIt::TCPClusterConnection::Broadcast(IMessage& message)
+{
+}
+
+void FindIt::TCPClusterConnection::SetOnMessageHandler(Event_function_t handler)
+{
+}
+
+};
