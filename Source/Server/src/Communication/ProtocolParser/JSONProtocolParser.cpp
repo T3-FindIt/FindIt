@@ -10,7 +10,7 @@ namespace FindIt
 
     IMessage* JSONProtocolParser::Parse(std::string data)
     {
-        auto test = json::parse(data);
+        json test = json::parse(data);
         IMessage* message = new HeartBeat();
         return message;
     }
