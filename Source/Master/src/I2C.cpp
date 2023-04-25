@@ -72,7 +72,6 @@ I2C::I2C(int address)
     
     Wire.begin(address);
     Wire.onReceive(receiveEvent);
-
 }
 
 void I2C::Send(int address,Node_Registers nodeRegister, int data)
