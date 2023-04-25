@@ -1,5 +1,5 @@
 #include "I2CCommunication.hpp"
-
+#include <Arduino.h>
 volatile uint8_t activeRegisterAdress;
 volatile uint8_t Item[49];
 volatile uint8_t RGBValues[3];
@@ -10,6 +10,11 @@ volatile uint8_t errorState;
 
 void OnRecieve(int HowMany)
 {
+    Serial.println("HI");
+    while (Wire.available() > 0)
+    {
+    Wire.read();
+    } //TEST RECIEVED MSG
     switch (activeRegisterAdress)
     {
     case REQUESTFROM_REG:
@@ -59,6 +64,7 @@ void OnRequest()
 
 I2CCommunication::I2CCommunication()
 {
+    Serial.begin(9600);
     activeRegisterAdress = 0xFF;
     RGBValues[0] = 0;
     RGBValues[1] = 0;
