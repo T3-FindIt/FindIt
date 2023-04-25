@@ -14,7 +14,7 @@ interface IClusterConnection
     {method} + [[noreturn]] void Run()
     {method} + void Stop()
     {method} + void Broadcast(IMessage message)
-    ' {method} + void Send(IMessage message, IPAdress myip)
+    ' {method} + void Send(IMessage message, IPAdress ip)
     {method} + void SetOnMessageHandler(Event_function_t handler)
 }
 
@@ -25,15 +25,15 @@ end note
 class TCPClusterConnection
 {
     {field} - int: port
-    {field} - IPAddress: myip
+    {field} - std::string: ip
 }
 
-interface IDataBase
+interface IDatabase
 {
     {method} + void Add(Object object)
     {method} + void Remove(Object object)
     {method} + bool SearchIfPresent(Object object)
-    {method} + vector<object> GetAllObjects()
+    {method} + std::vector<object> GetAllObjects()
 }
 
 Class PlainFileDatabase
@@ -43,11 +43,11 @@ Class PlainFileDatabase
 
 Class Object
 {
-    {field} - string: name
+    {field} - std::string: name
     {field} - int: id
-    {method} + string GetName()
+    {method} + std::string GetName()
     {method} + int GetID()
-    {method} + Object(string name, int id)
+    {method} + Object(std::string name, int id)
 }
 
 enum MessageType
@@ -93,7 +93,7 @@ Class UserInterface
 }
 
 note bottom of UserInterface
-using Get_objects_t = vector<std::string>();
+using Get_objects_t = std::vector<std::string>();
 end note
 
 Class Main
@@ -103,15 +103,15 @@ Class Main
 
 Class MessageQueue
 {
-    {field} - queue<IMessage> myQueue
-    {field} - mutex myMutex
+    {field} - std::queue<IMessage> queue
+    {field} - std::mutex mutex
     {method} + void push(IMessage)
     {method} + IMessage pop()
 }
 
 Main "1" *-- "1" UserInterface
 Main "1" *-- "*" Object
-Main "1" *-- "1" IDataBase
+Main "1" *-- "1" IDatabase
 Main "1" *-- "1" Communication
 Main "1" *-- "2" MessageQueue
 
@@ -125,8 +125,8 @@ IProtocolParser . IMessage
 IClusterConnection <|.. TCPClusterConnection
 IClusterConnection . IMessage
 
-IDataBase . Object
-IDataBase <|.. PlainFileDatabase
+IDatabase . Object
+IDatabase <|.. PlainFileDatabase
 
 MessageQueue . IMessage
 
