@@ -183,7 +183,7 @@ Aan het einde van een bestand moet een newline staan. We maken gebruik van Githu
 
 💻 - *Geautomatiseerd getest*
 
-## Initializer lists (C++ specefiek)
+## Initializer lists (C++ specifiek)
 
 Gebruik initializer lists wanner je geen checks hoeft te doen op de paramter en je deze niet veranderd in de methode.
 
