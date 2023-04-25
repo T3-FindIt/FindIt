@@ -22,8 +22,6 @@ Node_Registers lastRecieved;
 
 void receiveEvent(int howMany) // A node sends data, not making a request.
 {
-    digitalWrite(BUILTIN_LED, HIGH);
-    Serial.println("Recieved!");
     std::string data = "";
     while (Wire.available())
     {
@@ -61,7 +59,6 @@ void receiveEvent(int howMany) // A node sends data, not making a request.
     //     incomingRegister = (Node_Registers)data[0];
     //     return;
     // }
-    digitalWrite(BUILTIN_LED, LOW);
 }
 
 I2C::I2C()
@@ -76,10 +73,6 @@ I2C::I2C(int address)
     Wire.begin(address);
     Wire.onReceive(receiveEvent);
 
-    Serial.begin(9600);
-    digitalWrite(BUILTIN_LED, HIGH);
-    delay(2000);
-    digitalWrite(BUILTIN_LED, LOW);
 }
 
 void I2C::Send(int address,Node_Registers nodeRegister, int data)
