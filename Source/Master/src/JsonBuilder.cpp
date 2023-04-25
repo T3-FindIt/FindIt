@@ -1,34 +1,33 @@
-#include "JsonBuilder.hpp"
-#include "../lib/json.hpp"
-#include <string>
+// #include "JsonBuilder.hpp"
+// #include "../lib/json.hpp"
 
-JsonBuilder::JsonBuilder()
-{
-}
+// JsonBuilder::JsonBuilder()
+// {
+// }
 
-bool JsonBuilder::Deserialize(std::string Json)
-{
+// bool JsonBuilder::Deserialize(std::string Json)
+// {
 
-    if(Json == "")
-    {
-        return false;
-    }
+//     if(Json == "")
+//     {
+//         return false;
+//     }
 
-    // if(strcmp(action.c_str(), "HeartBeat") != 0)
-    // {
-    //     return false;
-    // }
+//     // if(strcmp(action.c_str(), "HeartBeat") != 0)
+//     // {
+//     //     return false;
+//     // }
 
-    return true;
+//     return true;
 
-}
+// }
 
-bool JsonBuilder::Serialize(std::string actions[], int data[], int size, std::string &output)
-{
-    if(actions == NULL || data == NULL || size <= 0)
-    {
-        return false;
-    }
+// bool JsonBuilder::Serialize(std::string actions[], int data[], int size, std::string &output)
+// {
+//     if(actions == NULL || data == NULL || size <= 0)
+//     {
+//         return false;
+//     }
 
-    return false;
-}
+//     return false;
+// }
