@@ -1,8 +1,15 @@
-list(APPEND Sources
-    ${CMAKE_CURRENT_LIST_DIR}/PlainFileDatabase.cpp
+cmake_minimum_required(VERSION ${CMakeMinimumVersion})
+
+# Add headers here
+set(Headers
+    IDatabase.hpp
+    PlainFileDatabase.hpp
 )
 
-list(APPEND Headers
-    ${CMAKE_CURRENT_LIST_DIR}/IDatabase.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/PlainFileDatabase.hpp
+# Add sources here
+set(Sources
+    PlainFileDatabase.cpp
 )
+
+# Makes a library from the sources and headers. First argument is the name of the library (used in src/CMakeLists.txt).
+add_library(Database STATIC ${Sources} ${Headers})

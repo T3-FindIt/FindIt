@@ -1,7 +1,11 @@
-list(APPEND Sources
-    ${CMAKE_CURRENT_LIST_DIR}/MessageQueue.cpp
+cmake_minimum_required(VERSION ${CMakeMinimumVersion})
+
+set(Headers
+    MessageQueue.hpp
 )
 
-list(APPEND Headers
-    ${CMAKE_CURRENT_LIST_DIR}/MessageQueue.hpp
+set(Sources
+    MessageQueue.cpp
 )
+
+add_library(MessageQueue STATIC ${Sources} ${Headers})

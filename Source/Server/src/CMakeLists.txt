@@ -1,33 +1,36 @@
 cmake_minimum_required(VERSION ${CMakeMinimumVersion})
 
+# Add headers here. If no headers, leave empty.
 set(Headers
 )
 
+# Add sources here. If no sources, leave empty.
 set(Sources
 )
 
-include(UserInterface/CMakeLists.txt)
-include(Object/CMakeLists.txt)
-include(Message/CMakeLists.txt)
-include(Database/CMakeLists.txt)
-include(Communication/CMakeLists.txt)
-
 # Builds a static library for gtest
-add_library(${ProjectName} STATIC ${Sources} ${Headers})
+# add_library(${ProjectName} STATIC ${Sources} ${Headers}) 
 
 # Builds an executable to run
 add_executable(${ProjectRunName} main.cpp ${Sources} ${Headers})
 
 if(WIN32)
-    target_link_libraries(${ProjectRunName} wsock32 ws2_32 nlohmann_json::nlohmann_json)
+    target_link_libraries(${ProjectRunName} PUBLIC wsock32 ws2_32)
 endif()
 
-# target_link_libraries(${ProjectRunName} PUBLIC
-#     nlohmann_json::nlohmann_json
-#     ${ProjectName}
-# )
+target_link_libraries(${ProjectRunName} PRIVATE nlohmann_json::nlohmann_json)
 
-# add_subdirectory(Example)
+add_subdirectory(UserInterface)
+target_link_libraries(${ProjectRunName} PRIVATE UserInterface)
 
-# target_link_libraries(${ProjectName} Server)
-# target_link_libraries(${ProjectRunName} Server)
+add_subdirectory(Communication)
+target_link_libraries(${ProjectRunName} PRIVATE Communication)
+
+add_subdirectory(Object)
+target_link_libraries(${ProjectRunName} PRIVATE Object)
+
+add_subdirectory(Message)
+target_link_libraries(${ProjectRunName} PRIVATE Message)
+
+add_subdirectory(Database)
+target_link_libraries(${ProjectRunName} PRIVATE Database)

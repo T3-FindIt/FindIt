@@ -1,6 +1,14 @@
-list(APPEND Sources
-    ${CMAKE_CURRENT_LIST_DIR}/UserInterface.cpp
+cmake_minimum_required(VERSION ${CMakeMinimumVersion})
+
+# Add headers here
+set(Headers
+    UserInterface.hpp
 )
-list(APPEND Headers
-    ${CMAKE_CURRENT_LIST_DIR}/UserInterface.hpp
+
+# Add sources here
+set(Sources
+    UserInterface.cpp
 )
+
+# Makes a library from the sources and headers. First argument is the name of the library (used in src/CMakeLists.txt).
+add_library(UserInterface STATIC ${Sources} ${Headers})

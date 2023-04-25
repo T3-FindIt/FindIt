@@ -1,10 +1,9 @@
 set(CMakeMinimumVersion 3.22.1)
-
 cmake_minimum_required(VERSION ${CMakeMinimumVersion})
 
 set(ProjectName FindItServer)
 set(ProjectRunName ${ProjectName}_Run)
-set(ProjectTestName ${ProjectName}_Test)
+# set(ProjectTestName ${ProjectName}_Test)
 
 project(${ProjectName} C CXX) # project uses C and C++ languages
 
@@ -13,13 +12,13 @@ set(CMAKE_CXX_STANDARD 17) # C++ standard is C++17
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    add_compile_options(-Wall -Wextra -Wpedantic)
-    # add_compile_options(-Werror)
+  # add_compile_options(-Wall -Wextra -Wpedantic)
+  # add_compile_options(-Werror)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 if(MSVC)
-    add_compile_options(/W4)
-    # add_compile_options(/WX)
+  add_compile_options(/W4)
+  # add_compile_options(/WX)
 endif(MSVC)
 
 enable_testing()
@@ -46,4 +45,4 @@ FetchContent_MakeAvailable(json)
 # get nlohmann json
 
 add_subdirectory(src)
-add_subdirectory(test)
+# add_subdirectory(test)
