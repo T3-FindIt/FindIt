@@ -59,8 +59,11 @@ Interface IDipSwitch
 
 class DipSwitch
 {
-    {method} + DipSwitch(int[] pins)
-    {method} + bool Read(int Bit)
+    {field} - int Pins[]
+    {field} - int size
+    {method} + DipSwitch(int Pins[], int size)
+    {method} + bool Read()
+    {method} + bool GetNotificationSetting(NotifcationBits* my_Bit)
 }
 
 
