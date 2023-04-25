@@ -1,5 +1,6 @@
 #include "I2C.hpp"
 
+#include <Arduino.h>
 #include <string>
 
 #define MAX_STRING_SIZE 48
@@ -21,56 +22,78 @@ Node_Registers lastRecieved;
 
 void receiveEvent(int howMany) // A node sends data, not making a request.
 {
+    digitalWrite(BUILTIN_LED, HIGH);
+    Serial.println("Recieved!");
     std::string data = "";
     while (Wire.available())
     {
-        data += (char)Wire.read();
-    }
-    
-    if (data.length() > 1)
-    {
-        switch (incomingRegister)
-        {
-            case Node_Registers::NR_Item:
-            {
-                strcpy(Item, data.c_str());
-                break;
-            }
-            case Node_Registers::NR_Error:
-            {
-                break; // Do the thing
-            }
-            default:
-            {
-                throw "Invalid Register!"; // This should never happen
-            }
-        }
-        lastRecieved = incomingRegister;
-        incomingRegister = Node_Registers::NR_None;
-
-        return;
-    }
-    else if(data.length() == 1)
-    {
-        incomingRegister = (Node_Registers)data[0];
-        return;
+        data += (int)Wire.read();
     }
 
+    // Serial.print("Data: ");
+    // Serial.println(data.c_str());
+
+    // if (data.length() > 1)
+    // {
+    //     switch (incomingRegister)
+    //     {
+    //         case Node_Registers::NR_Item:
+    //         {
+    //             strcpy(Item, data.c_str());
+    //             break;
+    //         }
+    //         case Node_Registers::NR_Error:
+    //         {
+    //             break; // Do the thing
+    //         }
+    //         default:
+    //         {
+    //             throw "Invalid Register!"; // This should never happen
+    //         }
+    //     }
+    //     lastRecieved = incomingRegister;
+    //     incomingRegister = Node_Registers::NR_None;
+
+    //     return;
+    // }
+    // else if(data.length() == 1)
+    // {
+    //     incomingRegister = (Node_Registers)data[0];
+    //     return;
+    // }
+    digitalWrite(BUILTIN_LED, LOW);
+}
+
+I2C::I2C()
+{
 }
 
 I2C::I2C(int address)
 {
+    pinMode(BUILTIN_LED, OUTPUT);
     this->address = address;
+    
     Wire.begin(address);
     Wire.onReceive(receiveEvent);
+
+    Serial.begin(9600);
+    digitalWrite(BUILTIN_LED, HIGH);
+    delay(2000);
+    digitalWrite(BUILTIN_LED, LOW);
 }
 
 void I2C::Send(int address,Node_Registers nodeRegister, int data)
 {
+    Wire.end();
+    Wire.begin();
+
     Wire.beginTransmission(address);
-    Wire.write((int)nodeRegister); // What Register to write to // 1 Byte
-    Wire.write(data); // What Register to write to // 1 Byte
+    Wire.write((int)nodeRegister);
+    Wire.write(data);
     Wire.endTransmission();
+
+    Wire.end();
+    Wire.begin(address);
 }
 
 void I2C::Scan(int* addresses, int size)
