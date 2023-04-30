@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION ${CMakeMinimumVersion})
 
 set(ProjectName FindItServer)
 set(ProjectRunName ${ProjectName}_Run)
-# set(ProjectTestName ${ProjectName}_Test)
+set(ProjectTestName ${ProjectName}_Test)
 
 project(${ProjectName} C CXX) # project uses C and C++ languages
 
