@@ -1,7 +1,7 @@
 #ifndef NODENOTIFYNEWPRODUCTRESPONSE_HPP
 #define NODENOTIFYNEWPRODUCTRESPONSE_HPP
 
-#include "../IMessage.hpp"
+#include <IMessage.hpp>
 
 #include <string>
 

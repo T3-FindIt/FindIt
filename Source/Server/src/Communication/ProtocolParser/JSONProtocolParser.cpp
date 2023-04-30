@@ -1,8 +1,9 @@
 #include "JSONProtocolParser.hpp"
 
 #include <nlohmann/json.hpp>
+#include <HeartBeat.hpp>
+
 using json = nlohmann::json;
-#include "../../Message/ServerToClientMessages/HeartBeat.hpp"
 
 namespace FindIt
 {

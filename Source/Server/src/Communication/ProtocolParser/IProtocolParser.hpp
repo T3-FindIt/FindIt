@@ -1,7 +1,7 @@
 #ifndef IPROTOCOLPARSER_HPP
 #define IPROTOCOLPARSER_HPP
 
-#include "../../Message/IMessage.hpp"
+#include <IMessage.hpp>
 
 #include <string>
 

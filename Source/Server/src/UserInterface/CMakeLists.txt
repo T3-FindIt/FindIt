@@ -8,4 +8,10 @@ set(Sources
     UserInterface.cpp
 )
 
+set(GlobalIncludeDirs
+    ${GlobalIncludeDirs}
+    ${CMAKE_CURRENT_LIST_DIR}
+    PARENT_SCOPE
+)
+
 add_library(UserInterface STATIC ${Sources} ${Headers})

@@ -8,6 +8,12 @@ set(Sources
     Communication.cpp
 )
 
+set(GlobalIncludeDirs
+    ${GlobalIncludeDirs}
+    ${CMAKE_CURRENT_LIST_DIR}
+    PARENT_SCOPE
+)
+
 add_library(Communication STATIC ${Sources} ${Headers})
 
 add_subdirectory(ProtocolParser)

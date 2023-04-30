@@ -1,7 +1,7 @@
 #ifndef ICLUSTERCONNECTION_HPP
 #define ICLUSTERCONNECTION_HPP
 
-#include "../../Message/IMessage.hpp"
+#include <IMessage.hpp>
 
 #include <functional>
 

@@ -6,6 +6,10 @@ set(Headers
 set(Sources
 )
 
+set(GlobalIncludeDirs
+    ${CMAKE_CURRENT_LIST_DIR}
+)
+
 # Builds a static library for gtest
 add_library(${ProjectName} STATIC main.cpp ${Sources} ${Headers}) 
 
@@ -38,3 +42,15 @@ target_link_libraries(${ProjectName} PRIVATE Message)
 add_subdirectory(Database)
 target_link_libraries(${ProjectRunName} PRIVATE Database)
 target_link_libraries(${ProjectName} PRIVATE Database)
+
+# Hacky way to get the include directories to work
+target_include_directories(ClusterConnection PRIVATE ${GlobalIncludeDirs})
+target_include_directories(ProtocolParser PRIVATE ${GlobalIncludeDirs})
+target_include_directories(Communication PRIVATE ${GlobalIncludeDirs})
+target_include_directories(Database PRIVATE ${GlobalIncludeDirs})
+target_include_directories(MessageQueue PRIVATE ${GlobalIncludeDirs})
+target_include_directories(Message PRIVATE ${GlobalIncludeDirs})
+target_include_directories(Object PRIVATE ${GlobalIncludeDirs})
+target_include_directories(UserInterface PRIVATE ${GlobalIncludeDirs})
+target_include_directories(${ProjectName} PRIVATE ${GlobalIncludeDirs})
+target_include_directories(${ProjectRunName} PRIVATE ${GlobalIncludeDirs})

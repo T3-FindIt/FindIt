@@ -1,7 +1,7 @@
 #ifndef SERVERREQUESTPRODUCT_HPP
 #define SERVERREQUESTPRODUCT_HPP
 
-#include "../IMessage.hpp"
+#include <IMessage.hpp>
 
 namespace FindIt
 {

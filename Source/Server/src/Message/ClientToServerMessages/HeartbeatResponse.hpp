@@ -1,7 +1,7 @@
 #ifndef HEARTBEATRESPONSE_HPP
 #define HEARTBEATRESPONSE_HPP
 
-#include "../IMessage.hpp"
+#include <IMessage.hpp>
 
 namespace FindIt
 {

@@ -1,7 +1,7 @@
 #ifndef NODENOTIFYNEWPRODUCT_HPP
 #define NODENOTIFYNEWPRODUCT_HPP
 
-#include "../IMessage.hpp"
+#include <IMessage.hpp>
 
 namespace FindIt
 {

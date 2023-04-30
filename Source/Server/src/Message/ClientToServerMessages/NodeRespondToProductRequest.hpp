@@ -1,7 +1,7 @@
 #ifndef NODERESPONDTOPRODUCTREQUEST_HPP
 #define NODERESPONDTOPRODUCTREQUEST_HPP
 
-#include "../IMessage.hpp"
+#include <IMessage.hpp>
 
 namespace FindIt
 {

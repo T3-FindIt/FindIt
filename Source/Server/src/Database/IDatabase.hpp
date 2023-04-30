@@ -1,7 +1,7 @@
 #ifndef IDATABASE_HPP
 #define IDATABASE_HPP
 
-#include "../Object/Object.hpp"
+#include <Object.hpp>
 
 #include <vector>
 

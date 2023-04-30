@@ -1,7 +1,7 @@
 #ifndef NODESIGNINRESPONSE_HPP
 #define NODESIGNINRESPONSE_HPP
 
-#include "../IMessage.hpp"
+#include <IMessage.hpp>
 
 namespace FindIt
 {

@@ -1,7 +1,7 @@
 #ifndef NODEEVENTPRODUCTFOUND_HPP
 #define NODEEVENTPRODUCTFOUND_HPP
 
-#include "../IMessage.hpp"
+#include <IMessage.hpp>
 
 namespace FindIt
 {

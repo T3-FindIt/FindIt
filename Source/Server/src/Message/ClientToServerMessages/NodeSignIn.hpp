@@ -1,7 +1,7 @@
 #ifndef NODESIGNIN_HPP
 #define NODESIGNIN_HPP
 
-#include "../IMessage.hpp"
+#include <IMessage.hpp>
 
 namespace FindIt
 {
