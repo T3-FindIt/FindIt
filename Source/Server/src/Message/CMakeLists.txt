@@ -34,4 +34,3 @@ add_library(Message STATIC ${Sources} ${Headers})
 
 add_subdirectory(MessageQueue)
 target_link_libraries(Message PRIVATE MessageQueue)
-# target_include_directories(Message PRIVATE ${CMAKE_CURRENT_LIST_DIR})

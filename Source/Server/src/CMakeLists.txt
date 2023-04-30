@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION ${CMakeMinimumVersion})
 
-# Add headers here. If no headers, leave empty.
 set(Headers
 )
 
-# Add sources here. If no sources, leave empty.
 set(Sources
 )
 
