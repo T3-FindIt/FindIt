@@ -8,17 +8,17 @@
 namespace FindIt
 {
 
-using Event_function_t = std::function<void()>;
+using Event_function_t = std::function<void(std::string)>;
 
 class IClusterConnection
 {
-private:
+protected:
     Event_function_t onMessageHandler;
+    bool isRunning;
 public:
-    virtual ~IClusterConnection() = default;
     virtual void Run() = 0;
     virtual void Stop() = 0;
-    virtual void Broadcast(IMessage& message) = 0;
+    virtual void Broadcast(std::string& message) = 0;
     virtual void SetOnMessageHandler(Event_function_t handler) = 0;
 };
 
