@@ -107,7 +107,7 @@ void TCPClusterConnection::Run()
 
             // Is it an potential new connection?
             if (sock == this->listeningSock)
-{
+            {
                 // Accept a new connection
                 SOCKET client = accept(this->listeningSock, nullptr, nullptr);
 
@@ -124,7 +124,7 @@ void TCPClusterConnection::Run()
             if (this->broadcast && this->broadcastMsg != nullptr)
             {
                 this->Send(sock, *this->broadcastMsg);
-}
+            }
         }
 
         // Clear broadcast message
@@ -139,12 +139,12 @@ void TCPClusterConnection::Run()
     // to prevent anyone else trying to connect.
     FD_CLR(this->listeningSock, &this->master);
     closesocket(this->listeningSock);
-
+    
     // Message to let users know what's happening.
     // std::string msg = "Server is shutting down.\r\n";
 
     while (this->master.fd_count > 0)
-{
+    {
         // Get the socket number
         SOCKET sock = this->master.fd_array[0];
 
@@ -154,7 +154,7 @@ void TCPClusterConnection::Run()
         // Remove it from the master file list and close the socket
         FD_CLR(sock, &this->master);
         closesocket(sock);
-}
+    }
 
     WSACleanup();
 }
@@ -173,8 +173,9 @@ void TCPClusterConnection::Broadcast(std::string& message)
     }
 }
 
-void FindIt::TCPClusterConnection::SetOnMessageHandler(Event_function_t handler)
+void TCPClusterConnection::SetOnMessageHandler(Event_function_t handler)
 {
+    this->onMessageHandler = handler;
 }
 
 };
