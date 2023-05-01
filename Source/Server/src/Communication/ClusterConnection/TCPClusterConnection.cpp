@@ -1,5 +1,10 @@
 #include "TCPClusterConnection.hpp"
 
+#include <iostream>
+#include <sstream>
+
+#pragma comment (lib, "ws2_32.lib")
+
 namespace FindIt
 {
 
