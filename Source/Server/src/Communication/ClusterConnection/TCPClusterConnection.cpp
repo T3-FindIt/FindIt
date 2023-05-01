@@ -37,6 +37,16 @@ void TCPClusterConnection::Send(SOCKET &clientSocket, std::string msg)
 }
 
 TCPClusterConnection::TCPClusterConnection(int port, std::string ip)
+    : port(port), ip(ip)
+{
+    // Nothing to do here
+}
+
+TCPClusterConnection::~TCPClusterConnection()
+{
+    this->Stop();
+}
+
 {
 }
 
