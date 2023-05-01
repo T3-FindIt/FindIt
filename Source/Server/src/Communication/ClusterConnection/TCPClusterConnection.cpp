@@ -159,7 +159,9 @@ void TCPClusterConnection::Run()
     WSACleanup();
 }
 
+void TCPClusterConnection::Stop()
 {
+    this->isRunning = false;
 }
 
 void FindIt::TCPClusterConnection::Broadcast(IMessage& message)
