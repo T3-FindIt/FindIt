@@ -31,6 +31,11 @@ void TCPClusterConnection::HandleIncomingMessage(SOCKET &clientSocket)
     }
 }
 
+void TCPClusterConnection::Send(SOCKET &clientSocket, std::string msg)
+{
+    send(clientSocket, msg.c_str(), msg.size() + 1, 0);
+}
+
 TCPClusterConnection::TCPClusterConnection(int port, std::string ip)
 {
 }
