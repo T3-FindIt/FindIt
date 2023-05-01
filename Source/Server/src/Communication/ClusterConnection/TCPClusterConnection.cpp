@@ -164,8 +164,13 @@ void TCPClusterConnection::Stop()
     this->isRunning = false;
 }
 
-void FindIt::TCPClusterConnection::Broadcast(IMessage& message)
+void TCPClusterConnection::Broadcast(std::string& message)
 {
+    if (this->isRunning && !this->broadcast)
+    {
+        this->broadcastMsg = &message;
+        this->broadcast = true;
+    }
 }
 
 void FindIt::TCPClusterConnection::SetOnMessageHandler(Event_function_t handler)
