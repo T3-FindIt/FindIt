@@ -8,6 +8,29 @@
 namespace FindIt
 {
 
+void TCPClusterConnection::HandleIncomingMessage(SOCKET &clientSocket)
+{
+    char buf[4096];
+    ZeroMemory(buf, 4096);
+    
+    // Receive message
+    int bytesIn = recv(clientSocket, buf, 4096, 0);
+    if (bytesIn <= 0)
+    {
+        // Drop the client
+        closesocket(clientSocket);
+        FD_CLR(clientSocket, &this->master);
+    }
+    else
+    {
+        std::string inboundMsg = std::string(buf, bytesIn);
+        if (this->onMessageHandler != nullptr)
+        {
+            this->onMessageHandler(inboundMsg);
+        }
+    }
+}
+
 TCPClusterConnection::TCPClusterConnection(int port, std::string ip)
 {
 }
