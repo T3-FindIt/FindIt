@@ -4,30 +4,22 @@
 const char *ssid = "SSID";
 const char *password = "PASSWORD";
 
-const uint16_t hostPort = 8090;
+const uint16_t hostPort = 54000;
 const char *hostIp = "IP";
 
 void readResponse(WiFiClient *client)
 {
-    unsigned long timeout = millis();
-    while (client->available() == 0)
+    if (client->available() == 0)
     {
-        if (millis() - timeout > 5000)
-        {
-            Serial.println(">>> Client Timeout !");
-            client->stop();
+        Serial.println("No data available");
             return;
-        }
     }
 
-    // Read all the lines of the reply from server and print them to Serial
     while (client->available())
     {
         String line = client->readStringUntil('\0'); //\0 because C++ server side is always null terminated.
         Serial.println(line);
     }
-
-    Serial.println("Closing connection");
 }
 
 void setup()
@@ -61,11 +53,13 @@ void loop()
         return;
     }
 
+    while (true)
+    {
     client.print("Hello from ESP32!");
-    long rssi = WiFi.RSSI();
-    Serial.print("RSSI:");
-    Serial.println(rssi);
     readResponse(&client);
+        delay(500);
+    }
+
     client.stop();
     delay(10000);
 }
