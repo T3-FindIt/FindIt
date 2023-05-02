@@ -17,6 +17,7 @@ void TCPClusterConnection::HandleIncomingMessage(SOCKET &clientSocket)
     int bytesIn = recv(clientSocket, buf, 4096, 0);
     if (bytesIn <= 0)
     {
+        std::cout << "Client " << clientSocket << " disconnected" << std::endl;
         // Drop the client
         closesocket(clientSocket);
         FD_CLR(clientSocket, &this->master);
@@ -24,6 +25,7 @@ void TCPClusterConnection::HandleIncomingMessage(SOCKET &clientSocket)
     else
     {
         std::string inboundMsg = std::string(buf, bytesIn);
+        std::cout << "Received message:\r\n" << inboundMsg << std::endl;
         if (this->onMessageHandler != nullptr)
         {
             this->onMessageHandler(inboundMsg);
@@ -74,6 +76,7 @@ void TCPClusterConnection::Run()
     }
 
     this->isRunning = true;
+    std::cout << "Server is running" << std::endl;
 
     // Bind the ip address and port to a socket
     sockaddr_in hint;
@@ -108,6 +111,7 @@ void TCPClusterConnection::Run()
             // Is it an potential new connection?
             if (sock == this->listeningSock)
             {
+                std::cout << "New connection" << std::endl;
                 // Accept a new connection
                 SOCKET client = accept(this->listeningSock, nullptr, nullptr);
 
@@ -117,12 +121,16 @@ void TCPClusterConnection::Run()
             // Handle incoming message
             else
             {
+                std::cout << "Handle incoming message" << std::endl;
                 this->HandleIncomingMessage(sock);
             }
 
             // Broadcast message if there is one
-            if (this->broadcast && this->broadcastMsg != nullptr)
+            if (this->broadcast
+                && this->broadcastMsg != nullptr
+                && sock != this->listeningSock)
             {
+                std::cout << "Broadcast message" << std::endl;
                 this->Send(sock, *this->broadcastMsg);
             }
         }
@@ -134,6 +142,8 @@ void TCPClusterConnection::Run()
             this->broadcastMsg = nullptr;
         }
     }
+
+    std::cout << "Server is shutting down" << std::endl;
 
     // Remove the listening socket from the master file descriptor set and close it
     // to prevent anyone else trying to connect.

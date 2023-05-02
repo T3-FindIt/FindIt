@@ -17,7 +17,7 @@ public:
     Communication(IClusterConnection& clusterConnection, IProtocolParser& protocolParser);
     ~Communication();
 
-    [[noreturn]] void Run();
+    void Run();
     void Stop();
 };
 

@@ -16,3 +16,7 @@ set(GlobalIncludeDirs
 )
 
 add_library(ClusterConnection STATIC ${Sources} ${Headers})
+
+if(WIN32)
+    target_link_libraries(ClusterConnection PUBLIC wsock32 ws2_32)
+endif()

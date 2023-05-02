@@ -9,8 +9,8 @@ namespace FindIt
 class JSONProtocolParser : public IProtocolParser
 {
 public:
-    JSONProtocolParser();
-    ~JSONProtocolParser();
+    JSONProtocolParser() = default;
+    ~JSONProtocolParser() = default;
 
     IMessage* Parse(std::string data) final;
     std::string Parse(IMessage& data) final;
