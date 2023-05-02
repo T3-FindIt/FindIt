@@ -15,13 +15,12 @@ int main()
     std::cout << "Starting communication thread" << std::endl;
 
     std::thread communicationThread(&FindIt::Communication::Run, communication);
+    communicationThread.detach();
 
     std::cin.get();
 
     std::cout << "Stopping communication thread" << std::endl;
     communication->Stop();
-
-    communicationThread.join();
 
     delete communication;
     delete protocolParser;
