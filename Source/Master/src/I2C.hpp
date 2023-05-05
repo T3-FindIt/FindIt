@@ -4,6 +4,8 @@
 #include <Wire.h>
 #include "IMasterSlave.hpp"
 
+#define MAX_STRING_SIZE 48
+
 class I2C : public IMasterSlave
 {
     private:
