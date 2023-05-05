@@ -3,7 +3,6 @@
 #include <Arduino.h>
 #include <string>
 
-#define MAX_STRING_SIZE 48
 
 // ===================== //
 // ===== REGISTER ===== //
@@ -28,37 +27,35 @@ void receiveEvent(int howMany) // A node sends data, not making a request.
         data += (int)Wire.read();
     }
 
-    // Serial.print("Data: ");
-    // Serial.println(data.c_str());
+    if (data.length() > 1)
+    {
+        switch (incomingRegister)
+        {
+            case Node_Registers::NR_Item:
+            {
+                strcpy(Item, data.c_str());
+                break;
+            }
+            case Node_Registers::NR_Error:
+            {
+                strcpy(Error, data.c_str());
+                break;
+            }
+            default:
+            {
+                throw "Invalid Register!"; // This should never happen
+            }
+        }
+        lastRecieved = incomingRegister;
+        incomingRegister = Node_Registers::NR_None;
 
-    // if (data.length() > 1)
-    // {
-    //     switch (incomingRegister)
-    //     {
-    //         case Node_Registers::NR_Item:
-    //         {
-    //             strcpy(Item, data.c_str());
-    //             break;
-    //         }
-    //         case Node_Registers::NR_Error:
-    //         {
-    //             break; // Do the thing
-    //         }
-    //         default:
-    //         {
-    //             throw "Invalid Register!"; // This should never happen
-    //         }
-    //     }
-    //     lastRecieved = incomingRegister;
-    //     incomingRegister = Node_Registers::NR_None;
-
-    //     return;
-    // }
-    // else if(data.length() == 1)
-    // {
-    //     incomingRegister = (Node_Registers)data[0];
-    //     return;
-    // }
+        return;
+    }
+    else if(data.length() == 1)
+    {
+        incomingRegister = (Node_Registers)data[0];
+        return;
+    }
 }
 
 I2C::I2C()
