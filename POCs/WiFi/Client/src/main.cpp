@@ -34,6 +34,7 @@ void setup()
 
     Serial.print("WiFi connected with IP: ");
     Serial.println(WiFi.localIP());
+    delay(1000);
 }
 
 void loop()
@@ -53,13 +54,16 @@ void loop()
         return;
     }
 
-    while (true)
+    int i = 0;
+
+    while (i < 50)
     {
     client.print("Hello from ESP32!");
     readResponse(&client);
         delay(500);
+        i++;
     }
 
     client.stop();
-    delay(10000);
+    delay(1000);
 }
