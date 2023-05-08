@@ -2,11 +2,15 @@ cmake_minimum_required(VERSION ${CMakeMinimumVersion})
 
 set(Headers
     IClusterConnection.hpp
-    TCPClusterConnection.hpp
+    # TCPClusterConnection.hpp
+    TCPConnection.hpp
+    Exceptions/FailedSocketInit.hpp
+    Exceptions/FailedWSAStartup.hpp
 )
 
 set(Sources
-    TCPClusterConnection.cpp
+    # TCPClusterConnection.cpp
+    TCPConnection.cpp
 )
 
 set(GlobalIncludeDirs

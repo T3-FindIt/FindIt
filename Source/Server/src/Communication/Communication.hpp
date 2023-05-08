@@ -4,6 +4,12 @@
 #include "./ClusterConnection/IClusterConnection.hpp"
 #include "./ProtocolParser/IProtocolParser.hpp"
 
+#include <IMessage.hpp>
+#include <HeartBeat.hpp>
+#include <HeartbeatResponse.hpp>
+
+#define MAX_CLIENT_INACTIVITY_TIME 10000
+
 namespace FindIt
 {
 

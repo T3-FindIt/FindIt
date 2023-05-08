@@ -8,18 +8,29 @@
 namespace FindIt
 {
 
-using Event_function_t = std::function<void(std::string)>;
+using on_client_message_callback_t     = std::function<void(const uint64_t, const std::string&)>;
+using on_client_connect_callback_t     = std::function<void(const uint64_t)>;
+using on_client_disconnect_callback_t  = std::function<void(const uint64_t)>;
 
 class IClusterConnection
 {
 protected:
-    Event_function_t onMessageHandler;
-    bool isRunning;
+    bool m_running;
+
+    on_client_message_callback_t    m_on_client_message;
+    on_client_connect_callback_t    m_on_client_connect;
+    on_client_disconnect_callback_t m_on_client_disconnect;
 public:
-    virtual void Run() = 0;
-    virtual void Stop() = 0;
-    virtual void Broadcast(std::string& message) = 0;
-    virtual void SetOnMessageHandler(Event_function_t handler) = 0;
+    virtual void run() = 0;
+    virtual void stop() = 0;
+
+    virtual void setCallbacks(on_client_message_callback_t on_client_message,
+                              on_client_connect_callback_t on_client_connect,
+                              on_client_disconnect_callback_t on_client_disconnect) = 0;
+
+    virtual void broadcastMessage(const std::string& message) = 0;
+
+    virtual void closeClient(const uint64_t client) = 0;
 };
 
 };

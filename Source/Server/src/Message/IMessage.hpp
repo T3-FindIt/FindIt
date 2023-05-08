@@ -17,6 +17,7 @@ enum class MessageType
     NODE_NOTIFY_NEW_PRODUCT_RESPONSE,
     HEARTBEAT,
     HEARTBEAT_RESPONSE,
+    INVALID,
 };
 
 class IMessage
