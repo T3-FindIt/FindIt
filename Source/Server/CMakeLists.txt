@@ -5,6 +5,9 @@ set(ProjectName FindItServer)
 set(ProjectRunName ${ProjectName}_Run)
 set(ProjectTestName ${ProjectName}_Test)
 
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/release )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
+
 project(${ProjectName} C CXX) # project uses C and C++ languages
 
 set(CMAKE_C_STANDARD 99) # C standard is C99
