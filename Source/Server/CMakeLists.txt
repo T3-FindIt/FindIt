@@ -8,7 +8,7 @@ set(ProjectTestName ${ProjectName}_Test)
 project(${ProjectName} C CXX) # project uses C and C++ languages
 
 set(CMAKE_C_STANDARD 99) # C standard is C99
-set(CMAKE_CXX_STANDARD 17) # C++ standard is C++17
+set(CMAKE_CXX_STANDARD 20) # C++ standard is C++17
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
