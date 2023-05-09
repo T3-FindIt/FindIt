@@ -1,5 +1,5 @@
 #ifndef I2CCOMMUNICATION_HPP
-#define I2CCOMMUNICATON_HPP
+#define I2CCOMMUNICATION_HPP
 
 #include <Wire.h>
 
