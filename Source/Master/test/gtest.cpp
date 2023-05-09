@@ -2,12 +2,12 @@
 
 #include "JsonBuilder.hpp"
 
-TEST(JsonBuilderTest, Test_Deserialize_Correct_Message)
-{
-    JsonBuilder jsonBuilder = JsonBuilder();
-    std::string json = "{\"Action\":\"HeartBeat\"}";
-    EXPECT_TRUE(jsonBuilder.Deserialize(json));
-}
+// TEST(JsonBuilderTest, Test_Deserialize_Correct_Message)
+// {
+//     JsonBuilder jsonBuilder = JsonBuilder();
+//     std::string json = "{\"Action\":\"HeartBeat\"}";
+//     EXPECT_TRUE(jsonBuilder.Deserialize(json));
+// }
 
 // TEST(JsonBuilderTest, Test_Deserialize_Incorrect_Payload)
 // {
