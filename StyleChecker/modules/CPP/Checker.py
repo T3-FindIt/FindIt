@@ -154,7 +154,7 @@ def CheckForOperator(line:str, index:int, currentFilePath:str):
     failed = False
 
     # Regex to check for correct operators.
-    singleRegex = '(\+|-|=|\/|%|==|!=|>|<|>=|<=|&&|\|\||\||\^|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
+    singleRegex = '(\+|-|=|\/|%|==|!=|>=|<=|&&|\|\||\||\^|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
     exceptionRegex = '(->|\+\+|--)'
     completeRegex = '(\\b' + singleRegex + '\\b)|(' + singleRegex + '\\b)|(\\b' + singleRegex + ')'
     completeExceptionRegex = '(\\b' + exceptionRegex + '\\b)|(' + exceptionRegex + '\\b)|(\\b' + exceptionRegex + ')'
@@ -189,13 +189,13 @@ def CheckCurlyBrackets(line:str, index:int, currentFilePath:str):
 
     if line.find('{') != -1:
         # Regex to check for correct opening curly brackets.
-        if re.search('^(?![^\s{]+).*\{(?![^{\\n]+)$', line) is None:
+        if re.search('^(?![^\s{]+).*\{(?![^{\\n]+)$', line) is None and re.search('^".*[{?|}?].*"$', line) is not None:
             PrintStyleError(index, line, currentFilePath, 'Incorrect curly brackets.', 'Opening curly brackets may not be preceded or followed by any text.')
             failed = True
 
     if line.find('}') != -1:
         # Regex to check for correct closing curly brackets.
-        if re.search('^(?![^\s}]+).*\}([^;]*\;)?$', line) is None and line.find('namespace') == -1:
+        if re.search('^(?![^\s}]+).*\}([^;]*\;)?$', line) is None and line.find('namespace') == -1 and re.search('^".*[{?|}?].*"$', line) is not None:
             PrintStyleError(index, line, currentFilePath, 'Incorrect curly brackets.', 'Closing curly brackets may not be preceded or followed by any text except when the text is between the bracket and a \';\'.')
             failed = True
         
