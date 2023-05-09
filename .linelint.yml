@@ -3,3 +3,8 @@ rules:
     enable: true
 
     disable-autofix: false
+    ignore:
+      - settings.json
+      - .gitkeep
+      - Logo.svg
+      - Naam.svg

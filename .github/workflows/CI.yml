@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason/Run name'
+        required: true
+        default: 'Manual trigger'
+
+run-name: ${{ inputs.reason || github.event.pull_request.title || github.event.head_commit.message || 'unexpected workflow trigger' }}
+
+jobs: 
+  WiFI-POC:
+    runs-on: windows-latest
+
+    env:
+      BUILD_TYPE: Debug
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: configure
+      working-directory: ./POCs/WiFi/Server/
+      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    
+    - name: Build
+      working-directory: ./POCs/WiFi/Server/
+      run: cmake --build ./build --config ${{env.BUILD_TYPE}}
+    
+    # - name: Test
+      # working-directory: ./POCs/WiFi/Server/
+      # run: ctest -C ${{env.BUILD_TYPE}}
+  # Node: // no test present yet
+  #   runs on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: |
+  #           ~/.cache/pip
+  #           ~/.platformio/.cache
+  #         key: ${{ runner.os }}-pio
+
+  #     - uses: actions/setup-python@v4
+  #       with:
+  #         python-version: '3.9'
+
+  #     - name: Install PlatformIO Core
+  #       run: pip install --upgrade platformio
+
+  #     - name: Test
+  #       working-directory: ./Source/Node/
+  #       run: platformio test --environment native -f unit -v

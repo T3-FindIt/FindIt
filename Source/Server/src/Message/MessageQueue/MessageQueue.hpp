@@ -1,0 +1,4 @@
+#ifndef MESSAGEQUEUE_HPP
+#define MESSAGEQUEUE_HPP
+
+#endif // MESSAGEQUEUE_HPP

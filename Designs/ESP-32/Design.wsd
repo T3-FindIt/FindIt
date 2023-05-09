@@ -1,0 +1,127 @@
+@startuml ClassDiagram
+Title Class Diagram
+
+Class Controller
+{
+    {method} - void Setup()
+    {method} - void Loop()
+    {method} + void Run()
+}
+
+Interface IServerHandler
+{
+    {abstract} + void Send(string Json)
+    {abstract} + string Receive()
+    {abstract} + bool Connect()
+    {abstract} + bool IsConnected()
+    {abstract} + void Disconnect()
+}
+
+Class WiFiHandler
+{
+    {field} - WiFiData Data
+    {method} + WiFiHandler(WiFiData Data)
+    {method} + bool IsConnected()
+    {method} + void Connect()
+    {method} + void Disconnect()
+}
+
+Class WebSocketHandler
+{
+    {field} - WebsocketData Data
+    {method} + WebSocketHandler(WebsocketData Data)
+}
+
+Struct WebsocketData
+{
+    {field} - string IP
+    {field} - int Port
+
+    {method} + WebsocketData(string IP, int Port)
+    {method} + string GetIP()
+    {method} + int GetPort()
+}
+
+Struct WiFiData
+{
+    {field} - string SSID
+    {field} - string Password
+
+    {method} + WiFiHandlerData(string SSID, string Password)
+    {method} + string GetSSID()
+    {method} + string GetPassword()
+}
+
+Interface IDipSwitch
+{
+    {abstract} + bool Read(int Bit)
+}
+
+class DipSwitch
+{
+    {field} - int Pins[]
+    {field} - int size
+    {method} + DipSwitch(int Pins[], int size)
+    {method} + bool Read()
+    {method} + bool GetNotificationSetting(NotifcationBits* my_Bit)
+}
+
+
+Interface IClusterCommunication
+{
+    {abstract} + void Send(int Address, Node_Registers Register, int Data)
+    {abstract} + bool Scan(int* Addresses, int size)
+    {abstract} + int GetRegister(Node_Registers my_register, void* data)
+    {abstract} + Node_Registers GetLastChange()
+
+}
+
+enum Node_Registers
+{
+    None = -0x1,
+    RequestForm = 0x0,
+    Notifications = 0x1,
+    RGB = 0x2,
+    Item = 0x3,
+    Active = 0x4,
+    Error = 0x5
+}
+
+enum NotifcationBits 
+{
+    Sound = 0x0,
+    Vibration = 0x1,
+    RGB = 0x2
+}
+
+
+Class JsonBuilder
+{
+    {method} + char[] Serialize(string action, int data)
+    {method} + char[] Serialize(string[] actions, int[] data, int size)
+    {method} + bool Deserialize(char[] json)
+}
+
+note right of JsonBuilder : Implementatie wordt geleverd door de\nArduinoJson Library
+
+' EMPTY CLASSES
+Class CANBus
+Class I2C
+' END OF EMPYY CLASSES 
+
+IClusterCommunication <|.. I2C
+IClusterCommunication <|.. CANBus
+IDipSwitch <|.. DipSwitch
+IServerHandler <|.. WebSocketHandler
+
+Controller "1" o-- "1" WiFiHandler
+Controller "1" o-- "1" IClusterCommunication
+Controller "1" o-- "1" JsonBuilder
+Controller "1" o-left- "1" IDipSwitch
+Controller "1" o-- "1" IServerHandler
+
+WiFiHandler "1" o-- "1" WiFiData
+WebSocketHandler "1" o-- "1" WebsocketData
+
+
+@enduml

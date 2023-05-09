@@ -154,10 +154,11 @@ def CheckForOperator(line:str, index:int, currentFilePath:str):
     failed = False
 
     # Regex to check for correct operators.
-    # singleRegex = '(\+|-|=|\/|\*|%|==|!=|>|<|>=|<=|&&|\|\||&|\||\^|~|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
-    singleRegex = '(\+|-|=|\/|%|==|!=|>|<|>=|<=|&&|\|\||\||\^|~|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
+    singleRegex = '(\+|-|=|\/|%|==|!=|>|<|>=|<=|&&|\|\||\||\^|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
+    exceptionRegex = '(->|\+\+|--)'
     completeRegex = '(\\b' + singleRegex + '\\b)|(' + singleRegex + '\\b)|(\\b' + singleRegex + ')'
-    if re.search(completeRegex, line) is not None:
+    completeExceptionRegex = '(\\b' + exceptionRegex + '\\b)|(' + exceptionRegex + '\\b)|(\\b' + exceptionRegex + ')'
+    if re.search(completeRegex, line) is not None and re.search(completeExceptionRegex, line) is None:
         PrintStyleError(index, line, currentFilePath, 'Incorrect operator.', 'Operators must be preceded and followed by a whitespace.')
         failed = True
 
@@ -306,14 +307,7 @@ def CheckIncludeGuardAtEndOfFileCheck(currentFilePath:str, results):
     fileName = os.path.basename(currentFilePath)
     fileName = os.path.splitext(fileName)[0]
 
-    words = re.sub('([A-Z])', r' \1', fileName).split()
-
-    guardName = ''
-
-    for word in words:
-        guardName += word.upper() + '_'
-
-    guardName = guardName.upper() + 'H'
+    guardName = fileName.upper() + '_H'
 
     if results[0] is False and results[1] is False and results [2] is False:
         PrintFileError(currentFilePath, '(Correct) Include guard not found.', 'Include guard must be \'#ifndef/#define/#endif ' + guardName + '\'.')
@@ -327,7 +321,7 @@ def CheckIncludeGuardAtEndOfFileCheck(currentFilePath:str, results):
         PrintFileError(currentFilePath, '(Correct) #define Include guard not found.', 'Include guard must be \'#define ' + guardName + '\'.')
         failed = True
     if results[2] is False:
-        PrintFileError(currentFilePath, '(Correct) #endif Include guard not found.', 'Include guard must be \'#endif ' + guardName + '\'.')
+        PrintFileError(currentFilePath, '(Correct) #endif Include guard not found.', 'Include guard must be \'#endif // ' + guardName + '\'.')
         failed = True
 
     return failed
@@ -341,14 +335,7 @@ def CheckIncludeGuard(line:str, currentFilePath:str):
     fileName = os.path.basename(currentFilePath)
     fileName = os.path.splitext(fileName)[0]
 
-    words = re.sub('([A-Z])', r' \1', fileName).split()
-
-    guardName = ''
-
-    for word in words:
-        guardName += word.upper() + '_'
-
-    guardName = guardName.upper() + 'H'
+    guardName = fileName.upper() + '_H'
 
     ifndefIndex = line.find('#ifndef')
     defineIndex = line.find('#define')
@@ -357,7 +344,11 @@ def CheckIncludeGuard(line:str, currentFilePath:str):
     if ifndefIndex != -1:
         tempFailed = False
         for _index, character in enumerate(guardName, (ifndefIndex + 8)):
-            if character != line[_index]:
+            try:
+                if character != line[_index]:
+                    tempFailed = True
+                    break
+            except IndexError:
                 tempFailed = True
                 break
         failed[0] = tempFailed
@@ -365,7 +356,11 @@ def CheckIncludeGuard(line:str, currentFilePath:str):
     elif defineIndex != -1:
         tempFailed = False
         for _index, character in enumerate(guardName, (defineIndex + 8)):
-            if character != line[_index]:
+            try:
+                if character != line[_index]:
+                    tempFailed = True
+                    break
+            except IndexError:
                 tempFailed = True
                 break
         failed[1] = tempFailed
@@ -374,7 +369,11 @@ def CheckIncludeGuard(line:str, currentFilePath:str):
         tempFailed = False
         guardName = '// ' + guardName
         for _index, character in enumerate(guardName, (endifIndex + 7)):
-            if character != line[_index]:
+            try:
+                if character != line[_index]:
+                    tempFailed = True
+                    break
+            except IndexError:
                 tempFailed = True
                 break
         failed[2] = tempFailed
