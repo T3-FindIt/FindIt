@@ -12,9 +12,9 @@ using Get_objects_t = std::vector<std::string>();
 class Userinterface
 {
 private:
-    
+
 public:
-    Userinterface(); //needed?
+    Userinterface();
     ~Userinterface();
 
     void Run();
@@ -23,4 +23,4 @@ public:
 
 };
 
-#endif // COMMUNICATION_HPP
+#endif // USERINTERFACE_HPP

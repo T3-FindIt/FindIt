@@ -13,7 +13,7 @@ int main()
 
     // Set protocol parser to JSON
     FindIt::JSONProtocolParser* protocolParser = new FindIt::JSONProtocolParser();
-    
+
     // Set up communication and start a new thread for it
     FindIt::Communication* communication = new FindIt::Communication(*clusterConnection, *protocolParser);
     std::jthread communicationThread(&FindIt::Communication::Run, communication);

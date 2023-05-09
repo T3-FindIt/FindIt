@@ -17,7 +17,7 @@ add_library(${ProjectName} STATIC main.cpp ${Sources} ${Headers})
 add_executable(${ProjectRunName} main.cpp ${Sources} ${Headers})
 
 if(WIN32)
-    target_link_libraries(${ProjectRunName} PUBLIC wsock32 ws2_32)
+    target_link_libraries(${ProjectRunName} PRIVATE wsock32 ws2_32)
 endif()
 
 target_link_libraries(${ProjectRunName} PRIVATE nlohmann_json::nlohmann_json)

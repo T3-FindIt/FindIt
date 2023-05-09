@@ -38,7 +38,7 @@ void onMessage(const uint64_t client, const std::string& message)
         subject->lastCommunication = std::chrono::system_clock::now();
         subject->last_out_message = MessageType::INVALID;
     }
-    
+
     std::cout << "Client " << subject->id << " says: " << message << std::endl;
 }
 
@@ -99,7 +99,7 @@ void Communication::Run()
             }
 
         }
-        
+
         if (isMessageSent)
         {
             for (auto client = clients.begin(); client != clients.end(); ++client)
@@ -109,11 +109,11 @@ void Communication::Run()
                     client->last_out_message_time = std::chrono::system_clock::now();
                 }
         }
-        
+
         for (auto client = clients.begin(); client != clients.end(); ++client)
         {
             if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - client->lastCommunication)
-                    > std::chrono::milliseconds((MAX_CLIENT_INACTIVITY_TIME * 10)))
+                    > std::chrono::milliseconds((MAX_CLIENT_INACTIVITY_TIME * 2)))
             {
                 std::cout << "Disconnecting Client " << client->id << std::endl;
                 this->clusterConnection.closeClient(client->id);
@@ -121,7 +121,7 @@ void Communication::Run()
                 break;
             }
         }
-        
+
         std::this_thread::sleep_for(std::chrono::milliseconds(1)); // Save CPU
     }
     this->clusterConnection.stop();

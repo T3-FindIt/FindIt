@@ -25,8 +25,8 @@ public:
     virtual void stop() = 0;
 
     virtual void setCallbacks(on_client_message_callback_t on_client_message,
-                              on_client_connect_callback_t on_client_connect,
-                              on_client_disconnect_callback_t on_client_disconnect) = 0;
+                            on_client_connect_callback_t on_client_connect,
+                            on_client_disconnect_callback_t on_client_disconnect) = 0;
 
     virtual void broadcastMessage(const std::string& message) = 0;
 
