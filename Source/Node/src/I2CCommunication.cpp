@@ -12,7 +12,7 @@ void OnRecieve(int HowMany)
     Serial.println("HI");
     while (Wire.available() > 0)
     {
-    Wire.read();
+        Wire.read();
     } //TEST RECIEVED MSG
     switch (activeRegisterAdress)
     {
@@ -87,13 +87,13 @@ int I2CCommunication::SendNewItemToHub(char* itemString)
     Wire.beginTransmission(HUB_ADDRESS);
     Wire.write(ITEM_REG);
     bool endofstring = false;
-    for(int i = 0; i < 49; i++)
+    for (int i = 0; i < 49; i++)
     {
         if (!endofstring)
         {
             Wire.write(itemString[i]);
         }
-        if(itemString[i+1] == '\0')
+        if (itemString[i+1] == '\0')
         {
             endofstring = true;
         }
@@ -105,7 +105,7 @@ int I2CCommunication::SendNewItemToHub(char* itemString)
 
 void I2CCommunication::GetRGBValues(uint8_t* OutputArray)
 {
-    for(int i = 0 ; i < 3; i++)
+    for (int i = 0 ; i < 3; i++)
     {
         OutputArray[i] = RGBValues[i];
     }
