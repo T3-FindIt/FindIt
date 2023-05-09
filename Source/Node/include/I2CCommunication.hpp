@@ -31,4 +31,4 @@ public:
     uint8_t GetNotificationState();
     uint8_t GetRecievedErrorState();
 };
-#endif
+#endif // I2CCOMMUNICATION_HPP
