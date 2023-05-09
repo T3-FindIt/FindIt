@@ -344,7 +344,11 @@ def CheckIncludeGuard(line:str, currentFilePath:str):
     if ifndefIndex != -1:
         tempFailed = False
         for _index, character in enumerate(guardName, (ifndefIndex + 8)):
-            if character != line[_index]:
+            try:
+                if character != line[_index]:
+                    tempFailed = True
+                    break
+            except IndexError:
                 tempFailed = True
                 break
         failed[0] = tempFailed
@@ -352,7 +356,11 @@ def CheckIncludeGuard(line:str, currentFilePath:str):
     elif defineIndex != -1:
         tempFailed = False
         for _index, character in enumerate(guardName, (defineIndex + 8)):
-            if character != line[_index]:
+            try:
+                if character != line[_index]:
+                    tempFailed = True
+                    break
+            except IndexError:
                 tempFailed = True
                 break
         failed[1] = tempFailed
@@ -361,7 +369,11 @@ def CheckIncludeGuard(line:str, currentFilePath:str):
         tempFailed = False
         guardName = '// ' + guardName
         for _index, character in enumerate(guardName, (endifIndex + 7)):
-            if character != line[_index]:
+            try:
+                if character != line[_index]:
+                    tempFailed = True
+                    break
+            except IndexError:
                 tempFailed = True
                 break
         failed[2] = tempFailed
