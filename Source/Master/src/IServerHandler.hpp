@@ -14,4 +14,4 @@ class IServerHandler
     virtual bool isConnected() = 0;
 };
 
-#endif
+#endif // ISERVERHANDLER_HPP

@@ -72,23 +72,4 @@ void loop()
     Serial.print("Data: ");
     Serial.println(data);
   }
-  // switch (lastRegister)
-  // {
-  //  case NR_Item:
-  //  {
-  //   i2c.GetRegister(NR_Item, data);
-  //   Serial.print("Item: ");
-  //   Serial.println(data);
-  //   break;
-  //  }
-  //  case NR_Error:
-  //  {
-  //   i2c.GetRegister(NR_Error, data);
-  //   Serial.print("Error: ");
-  //   Serial.println(data);
-  //   break;
-  //  }
-  // default:
-  //   break;
-  // }
 }

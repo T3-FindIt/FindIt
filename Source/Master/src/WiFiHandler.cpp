@@ -6,7 +6,7 @@ WiFiHandler::WiFiHandler()
 
 WiFiHandler::WiFiHandler(WiFiData &data)
 {
-    if(data.GetSSID() == "" || data.GetPassword() == "")
+    if (data.GetSSID() == "" || data.GetPassword() == "")
     {
         throw "Invalid WiFiData";
     }
