@@ -1,4 +1,8 @@
+#ifndef I2CCOMMUNICATION_HPP
+#define I2CCOMMUNICATON_HPP
+
 #include <Wire.h>
+
 #define NOTIF_SOUND_POS 0b0000
 #define NOTIF_VIBRATE_POS 0b0001
 #define NOTIF_LIGHT_POS 0b0010
@@ -27,3 +31,4 @@ public:
     uint8_t GetNotificationState();
     uint8_t GetRecievedErrorState();
 };
+#endif

@@ -1,7 +1,6 @@
 #include "I2CCommunication.hpp"
 #include <Arduino.h>
 volatile uint8_t activeRegisterAdress;
-volatile uint8_t Item[49];
 volatile uint8_t RGBValues[3];
 volatile uint8_t notificationModeRegistry;
 volatile bool notificationState;
@@ -116,6 +115,12 @@ uint8_t I2CCommunication::GetNotificationModeRegistry()
 {
     return notificationModeRegistry;
 }
+
+uint8_t I2CCommunication::GetNotificationState()
+{
+    return notificationState;
+}
+
 
 uint8_t I2CCommunication::GetRecievedErrorState()
 {
