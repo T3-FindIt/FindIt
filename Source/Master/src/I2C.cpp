@@ -16,8 +16,7 @@ std::string Error;
 // ===== REGISTER ===== //
 // ===================== //
 
-Node_Registers incomingRegister = Node_Registers::NR_None;
-Node_Registers lastRecieved;
+Node_Registers lastRecieved = Node_Registers::NR_None;
 
 void receiveEvent(int howMany) // A node sends data, not making a request.
 {
@@ -49,8 +48,8 @@ void receiveEvent(int howMany) // A node sends data, not making a request.
         }
     }
 
-    lastRecieved = incomingRegister;
-    incomingRegister = Node_Registers::NR_None;
+    lastRecieved = (Node_Registers)reg;
+
 }
 
 I2C::I2C()
@@ -137,5 +136,5 @@ Node_Registers I2C::GetLastChange()
 {
     Node_Registers returnVal = lastRecieved;
     lastRecieved = Node_Registers::NR_None;
-    return lastRecieved;
+    return returnVal;
 }

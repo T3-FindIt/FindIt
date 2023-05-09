@@ -37,6 +37,8 @@ void setup() {
   // }
 
   Serial.begin(9600);
+  delay(1000);
+  Serial.println();
   Serial.println("Starting up!");
   i2c = I2C(LOCAL_ADDRESS);
 }
@@ -64,27 +66,32 @@ void loop()
   Node_Registers lastRegister = i2c.GetLastChange();
   char data[MAX_STRING_SIZE];
 
-  switch (lastRegister)
+  if (lastRegister != Node_Registers::NR_None)
   {
-   case NR_Item:
-   {
-    i2c.GetRegister(NR_Item, data);
-    Serial.print("Item: ");
+    i2c.GetRegister(lastRegister, data);
+    Serial.print("Register: ");
+    Serial.println((int)lastRegister);
+    Serial.print("Data: ");
     Serial.println(data);
-    break;
-   }
-   case NR_Error:
-   {
-    i2c.GetRegister(NR_Error, data);
-    Serial.print("Error: ");
-    Serial.println(data);
-    break;    
-   }
-  default:
-    break;
   }
+  // switch (lastRegister)
+  // {
+  //  case NR_Item:
+  //  {
+  //   i2c.GetRegister(NR_Item, data);
+  //   Serial.print("Item: ");
+  //   Serial.println(data);
+  //   break;
+  //  }
+  //  case NR_Error:
+  //  {
+  //   i2c.GetRegister(NR_Error, data);
+  //   Serial.print("Error: ");
+  //   Serial.println(data);
+  //   break;    
+  //  }
+  // default:
+  //   break;
+  // }
 
-
-
-  delay(1000);
 }
