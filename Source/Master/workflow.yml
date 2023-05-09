@@ -1,0 +1,31 @@
+name: PlatformIO CI
+
+on: push
+
+jobs:
+  NAME_HERE:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+
+      # CD to Platform IO directory 
+      - name: Navigate
+        run: cd ./ #The directory that needs to be tested
+
+      - name: Run Unit Tests
+        run: platformio test --environment native -f unit -v
