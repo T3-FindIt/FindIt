@@ -48,4 +48,4 @@ class WebSocketHandler : public IServerHandler
     bool isConnected();
 };
 
-#endif
+#endif // WEBSOCKETHANDLER_HPP

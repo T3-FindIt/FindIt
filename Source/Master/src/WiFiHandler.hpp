@@ -46,4 +46,4 @@ class WiFiHandler
     void Disconnect();
 };
 
-#endif
+#endif // WIFIHANDLER_HPP

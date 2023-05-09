@@ -23,4 +23,4 @@ class IMasterSlave
     Node_Registers virtual GetLastChange() = 0;
 };
 
-#endif
+#endif // IMASTERSLAVE_HPP

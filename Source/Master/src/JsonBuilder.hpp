@@ -1,3 +1,7 @@
+#ifndef JSONBUILDER_HPP
+#define JSONBUILDER_HPP
+
+
 #include <string.h>
 
 class JsonBuilder
@@ -21,3 +25,5 @@ public:
     /// @return True if the serialization was successful, false otherwise
     // bool Serialize(std::string keys[], int data[], int size, std::string &output);
 };
+
+#endif // JSONBUILDER_HPP
