@@ -10,10 +10,11 @@ volatile uint8_t errorState;
 void OnRecieve(int HowMany)
 {
     Serial.println("HI");
-    while (Wire.available() > 0)
+    while (Wire.available())
     {
         Wire.read();
-    } //TEST RECIEVED MSG
+    }
+    //TEST RECIEVED MSG
     switch (activeRegisterAdress)
     {
     case REQUESTFROM_REG:
@@ -93,7 +94,7 @@ int I2CCommunication::SendNewItemToHub(char* itemString)
         {
             Wire.write(itemString[i]);
         }
-        if (itemString[i+1] == '\0')
+        if (itemString[i + 1] == '\0')
         {
             endofstring = true;
         }
