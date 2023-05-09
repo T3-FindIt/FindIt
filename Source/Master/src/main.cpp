@@ -17,7 +17,8 @@ WiFiHandler wifiHandler = WiFiHandler();
 WebSocketHandler webSocketHandler = WebSocketHandler();
 I2C i2c;
 
-void setup() {
+void setup()
+{
   // WiFiData wifiData(SSID, PASSWORD);
   // wifiHandler = WiFiHandler(wifiData);
 
@@ -35,9 +36,7 @@ void setup() {
   // {
   //   return;
   // }
-
   Serial.begin(9600);
-  delay(1000);
   Serial.println();
   Serial.println("Starting up!");
   i2c = I2C(LOCAL_ADDRESS);
@@ -58,7 +57,6 @@ void loop()
   //     Serial.print("Websocket data: ");
   //     Serial.println(websocketData.c_str());
   //   }
-
 
   //   webSocketHandler.Send("Hello from ESP32!");
   // }
@@ -88,10 +86,9 @@ void loop()
   //   i2c.GetRegister(NR_Error, data);
   //   Serial.print("Error: ");
   //   Serial.println(data);
-  //   break;    
+  //   break;
   //  }
   // default:
   //   break;
   // }
-
 }

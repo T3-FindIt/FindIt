@@ -3,7 +3,7 @@
 
 enum Node_Registers
 {
-    NR_None = -0x1,
+    NR_None = - 0x1,
     NR_RequestForm = 0x0,
     NR_Notification = 0x1, // | SOUND | VIBRATION | LED | RGB | 0 | 0 | 0 | 0 |
     NR_RGB = 0x2, // | R | G | B | 0 | 0 | 0 | 0 | 0 |
@@ -14,8 +14,6 @@ enum Node_Registers
 
 class IMasterSlave
 {
-    private:
-    
     public:
     void virtual Send(int address,Node_Registers register, int data) = 0;
     void virtual Scan(int* addresses, int size) = 0;
