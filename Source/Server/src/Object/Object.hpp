@@ -21,4 +21,4 @@ public:
 
 };
 
-#endif // COMMUNICATION_HPP
+#endif // OBJECT_HPP
