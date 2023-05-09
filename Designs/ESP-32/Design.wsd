@@ -67,7 +67,7 @@ class DipSwitch
 }
 
 
-Interface IMasterSlave
+Interface IClusterCommunication
 {
     {abstract} + void Send(int Address, Node_Registers Register, int Data)
     {abstract} + bool Scan(int* Addresses, int size)
@@ -109,13 +109,13 @@ Class CANBus
 Class I2C
 ' END OF EMPYY CLASSES 
 
-IMasterSlave <|.. I2C
-IMasterSlave <|.. CANBus
+IClusterCommunication <|.. I2C
+IClusterCommunication <|.. CANBus
 IDipSwitch <|.. DipSwitch
 IServerHandler <|.. WebSocketHandler
 
 Controller "1" o-- "1" WiFiHandler
-Controller "1" o-- "1" IMasterSlave
+Controller "1" o-- "1" IClusterCommunication
 Controller "1" o-- "1" JsonBuilder
 Controller "1" o-left- "1" IDipSwitch
 Controller "1" o-- "1" IServerHandler
