@@ -3,11 +3,10 @@
 #include <Arduino.h>
 #include <string>
 
-
 // ===================== //
 // ===== REGISTER ===== //
 // ===================== //
-int Notification = 0x32; // Enable LED 
+int Notification = 0x32;
 int RGB;
 std::string Item;
 int Active;
@@ -59,7 +58,6 @@ I2C::I2C()
 I2C::I2C(int address)
 {
     this->address = address;
-    
     Wire.begin(address);
     Wire.onReceive(receiveEvent);
 

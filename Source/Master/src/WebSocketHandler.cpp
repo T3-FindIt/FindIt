@@ -9,7 +9,7 @@ WebSocketHandler::WebSocketHandler()
 
 WebSocketHandler::WebSocketHandler(WebSocketData &data)
 {
-    if(data.GetIP() == "" || data.GetPort() == 0)
+    if (data.GetIP() == "" || data.GetPort() == 0)
     {
         throw "Invalid WebSocketData";
     }

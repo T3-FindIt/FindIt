@@ -54,7 +54,6 @@ void loop()
     //     // Decompile with JSON parser
     //     // Do some stuff with the data
 
-    //     Serial.print("Websocket data: ");
     //     Serial.println(websocketData.c_str());
     //   }
 
