@@ -113,7 +113,7 @@ void Communication::Run()
         for (auto client = clients.begin(); client != clients.end(); ++client)
         {
             if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - client->lastCommunication)
-                    > std::chrono::milliseconds((MAX_CLIENT_INACTIVITY_TIME * 10)))
+                    > std::chrono::milliseconds((MAX_CLIENT_INACTIVITY_TIME * 2)))
             {
                 std::cout << "Disconnecting Client " << client->id << std::endl;
                 this->clusterConnection.closeClient(client->id);
