@@ -19,57 +19,57 @@ I2C i2c;
 
 void setup()
 {
-  // WiFiData wifiData(SSID, PASSWORD);
-  // wifiHandler = WiFiHandler(wifiData);
+    // WiFiData wifiData(SSID, PASSWORD);
+    // wifiHandler = WiFiHandler(wifiData);
 
-  // WebSocketData webSocketData(SERVER_ADDRESS, SERVER_PORT);
-  // webSocketHandler = WebSocketHandler(webSocketData);
+    // WebSocketData webSocketData(SERVER_ADDRESS, SERVER_PORT);
+    // webSocketHandler = WebSocketHandler(webSocketData);
 
-  // wifiHandler.Connect();
-  // if(!wifiHandler.isConnected())
-  // {
-  //   return;
-  // }
+    // wifiHandler.Connect();
+    // if(!wifiHandler.isConnected())
+    // {
+    //   return;
+    // }
 
-  // webSocketHandler.Connect();
-  // if(!webSocketHandler.isConnected())
-  // {
-  //   return;
-  // }
-  Serial.begin(9600);
-  Serial.println();
-  Serial.println("Starting up!");
-  i2c = I2C(LOCAL_ADDRESS);
+    // webSocketHandler.Connect();
+    // if(!webSocketHandler.isConnected())
+    // {
+    //   return;
+    // }
+    Serial.begin(9600);
+    Serial.println();
+    Serial.println("Starting up!");
+    i2c = I2C(LOCAL_ADDRESS);
 }
 
 Node_Registers lastRequest = NR_None;
 
 void loop()
 {
-  // if(webSocketHandler.isConnected())
-  // {
-  //   std::string websocketData = webSocketHandler.Recieve();
-  //   if(websocketData != "")
-  //   {
-  //     // Decompile with JSON parser
-  //     // Do some stuff with the data
+    // if(webSocketHandler.isConnected())
+    // {
+    //   std::string websocketData = webSocketHandler.Recieve();
+    //   if(websocketData != "")
+    //   {
+    //     // Decompile with JSON parser
+    //     // Do some stuff with the data
 
-  //     Serial.print("Websocket data: ");
-  //     Serial.println(websocketData.c_str());
-  //   }
+    //     Serial.print("Websocket data: ");
+    //     Serial.println(websocketData.c_str());
+    //   }
 
-  //   webSocketHandler.Send("Hello from ESP32!");
-  // }
+    //   webSocketHandler.Send("Hello from ESP32!");
+    // }
 
-  Node_Registers lastRegister = i2c.GetLastChange();
-  char data[MAX_STRING_SIZE];
+    Node_Registers lastRegister = i2c.GetLastChange();
+    char data[MAX_STRING_SIZE];
 
-  if (lastRegister != Node_Registers::NR_None)
-  {
-    i2c.GetRegister(lastRegister, data);
-    Serial.print("Register: ");
-    Serial.println((int)lastRegister);
-    Serial.print("Data: ");
-    Serial.println(data);
-  }
+    if (lastRegister != Node_Registers::NR_None)
+    {
+        i2c.GetRegister(lastRegister, data);
+        Serial.print("Register: ");
+        Serial.println((int)lastRegister);
+        Serial.print("Data: ");
+        Serial.println(data);
+    }
 }
