@@ -14,8 +14,11 @@ set(CMAKE_C_STANDARD 99) # C standard is C99
 set(CMAKE_CXX_STANDARD 20) # C++ standard is C++17
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+set(BUILD_SHARED_LIBS OFF)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -static-libgcc -static-libstdc++")
+
 if(CMAKE_COMPILER_IS_GNUCXX)
-  # add_compile_options(-Wall -Wextra -Wpedantic)
+  add_compile_options(-Wall -Wextra -Wpedantic)
   # add_compile_options(-Werror)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
@@ -49,3 +52,6 @@ FetchContent_MakeAvailable(json)
 
 add_subdirectory(src)
 # add_subdirectory(test)
+
+# Copy all used dlls into the release folder
+
