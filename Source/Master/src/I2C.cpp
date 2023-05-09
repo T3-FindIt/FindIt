@@ -9,9 +9,9 @@
 // ===================== //
 int Notification = 0x32; // Enable LED 
 int RGB;
-char Item[MAX_STRING_SIZE];
+std::string Item;
 int Active;
-char Error[MAX_STRING_SIZE];
+std::string Error;
 // ===================== //
 // ===== REGISTER ===== //
 // ===================== //
@@ -22,40 +22,35 @@ Node_Registers lastRecieved;
 void receiveEvent(int howMany) // A node sends data, not making a request.
 {
     std::string data = "";
+    char inbound = ' ';
+    int reg = Wire.read();
+
     while (Wire.available())
     {
-        data += (int)Wire.read();
+        inbound = Wire.read();
+        data += inbound;
     }
 
-    if (data.length() > 1)
+    switch ((Node_Registers)reg)
     {
-        switch (incomingRegister)
+        case Node_Registers::NR_Item:
         {
-            case Node_Registers::NR_Item:
-            {
-                strcpy(Item, data.c_str());
-                break;
-            }
-            case Node_Registers::NR_Error:
-            {
-                strcpy(Error, data.c_str());
-                break;
-            }
-            default:
-            {
-                throw "Invalid Register!"; // This should never happen
-            }
+            Item = data;
+            break;
         }
-        lastRecieved = incomingRegister;
-        incomingRegister = Node_Registers::NR_None;
+        case Node_Registers::NR_Error:
+        {
+            Error = data;
+            break;
+        }
+        default:
+        {
+            throw "Invalid Register!"; // This should never happen
+        }
+    }
 
-        return;
-    }
-    else if(data.length() == 1)
-    {
-        incomingRegister = (Node_Registers)data[0];
-        return;
-    }
+    lastRecieved = incomingRegister;
+    incomingRegister = Node_Registers::NR_None;
 }
 
 I2C::I2C()
@@ -64,17 +59,18 @@ I2C::I2C()
 
 I2C::I2C(int address)
 {
-    pinMode(BUILTIN_LED, OUTPUT);
     this->address = address;
     
     Wire.begin(address);
     Wire.onReceive(receiveEvent);
+
+    // Serial.begin(9600); !Debug!
 }
 
 void I2C::Send(int address,Node_Registers nodeRegister, int data)
 {
     Wire.end();
-    Wire.begin();
+    Wire.begin(); // Start as master
 
     Wire.beginTransmission(address);
     Wire.write((int)nodeRegister);
@@ -82,7 +78,7 @@ void I2C::Send(int address,Node_Registers nodeRegister, int data)
     Wire.endTransmission();
 
     Wire.end();
-    Wire.begin(address);
+    Wire.begin(this->address);
 }
 
 void I2C::Scan(int* addresses, int size)
@@ -118,7 +114,7 @@ int I2C::GetRegister(Node_Registers my_register, void* data)
         }
         case Node_Registers::NR_Item:
         {
-            strcpy((char*)data, (char*)Item);
+            strcpy((char*)data, (char*)Item.c_str());
             return 0;
         }
         case Node_Registers::NR_Active:
@@ -127,7 +123,7 @@ int I2C::GetRegister(Node_Registers my_register, void* data)
         }
         case Node_Registers::NR_Error:
         {
-            strcpy((char*)data, (char*)Error);
+            strcpy((char*)data, (char*)Error.c_str());
             return 0;
         }
         default:

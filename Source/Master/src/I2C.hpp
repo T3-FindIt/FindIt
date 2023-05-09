@@ -19,4 +19,4 @@ class I2C : public IMasterSlave
     Node_Registers GetLastChange();
 };
 
-#endif
+#endif 
