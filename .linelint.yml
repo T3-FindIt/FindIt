@@ -4,5 +4,6 @@ rules:
 
     disable-autofix: false
     ignore:
+      - .gitkeep
       - Logo.svg
       - Naam.svg

@@ -115,7 +115,14 @@ def main():
     supported_extensions.extend(CPPChecker.supported_extensions)
     supported_extensions.extend(PlantUmlChecker.supported_extensions)
 
-    ignored_folders = [".git", ".github", "build", "lib"]
+    ignored_folders = [".git",
+                       ".github",
+                       "build",
+                       "lib",
+                       ".pio",
+                       "TCPConnection.cpp", # This file is effectively a library, so it is ignored
+                       "TCPConnection.hpp", # This file is effectively a library, so it is ignored
+                       ]
 
     projectDir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
