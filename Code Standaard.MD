@@ -78,6 +78,7 @@ Gebruik Class alleen als je CPP gebruikt
 
 | Symbol | Naming Convention | Example |
 |---|---|---|
+| Include Guard | ALLCAPS_H(PP) | #ifndef MYFILENAME_HPP |
 | Class | PascalCase | class MotorExample |
 | Functie | PascalCase | MotorExample::TurnOn(); |
 | Variable | camelCase | int newInteger; |
@@ -183,7 +184,7 @@ Aan het einde van een bestand moet een newline staan. We maken gebruik van Githu
 
 💻 - *Geautomatiseerd getest*
 
-## Initializer lists (C++ specefiek)
+## Initializer lists (C++ specifiek)
 
 Gebruik initializer lists wanner je geen checks hoeft te doen op de paramter en je deze niet veranderd in de methode.
 
