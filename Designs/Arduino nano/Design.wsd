@@ -9,22 +9,25 @@ Class NodeController
 
 Interface ITransmission
 {
-    {abstract} + Send(Data : int)  : int
+    {abstract} + Send(data : int)  : int
     {abstract} + Receive() : string
-}
-
-Interface INotificationOutput
-{
-    {abstract} + SetNotificationStyle(notificationBits : Notification) : int
-    {abstract} + SetNotifictionState(state : bool) : int
 }
 
 class NotificationOutput
 {
+    {method} + SetNotificationStyle(notificationBits : Notification) : int
+    {method} + On() : int
+    {method} + Off() : int
+}
+
+interface IOutput
+{
+    {abstract} + On() : int
+    {abstract} + Off() : int
 }
 
 interface IReader {
-    {abstract} + CheckForCard(uid: byte[]) : bool
+    {abstract} + CheckForCard() : bool
     {abstract} + ReadCard() : string
 }
 
@@ -34,8 +37,8 @@ class MFRC522Reader {
 }
 
 interface IMessageHandler {
-    {abstract} + HandleReceiveMessage( Message : char[]) : Node_Registers
-    {abstract} + HandleSendMessage( Data : Node_Registers) : int
+    {abstract} + HandleReceiveMessage( message : char[], messageSize : size_t) : Node_Registers
+    {abstract} + HandleSendMessage( data : Node_Registers) : int
 }
 
 class MessageHandler {
@@ -58,7 +61,8 @@ enum Notification
     Vibration
 }
 
-NodeController "1" o-left- "1" INotificationOutput
+
+NodeController "1" o-left- "1" NotificationOutput
 NodeController "1" o-- "1" IReader
 NodeController "1" o-- "1" IMessageHandler
 
@@ -66,11 +70,15 @@ IMessageHandler <|.. MessageHandler
 
 MessageHandler "1" o-- "1" ITransmission
 
-INotificationOutput <|.. NotificationOutput
+NotificationOutput o-- IOutput
 
 ITransmission <|.. I2C
 
 IReader <|.. MFRC522Reader
+
+IOutput <|.. Light
+IOutput <|.. Sound
+IOutput <|.. Vibration
 
 @enduml
 
@@ -85,7 +93,7 @@ Class NodeController
 }
 
 interface IWriter {
-    {abstract} + write(dataSize : size_t, data : char[]) : int
+    {abstract} + Write(dataSize : size_t, data : char[]) : int
 }
 
 class MFRC522Writer {
@@ -107,9 +115,9 @@ Entity NodeController
 Entity SPI
 
 
-MFRC522Writer -> MFRC522Writer : CheckForCard()
+NodeController -> MFRC522Writer : CheckForCard()
 MFRC522Writer --> NodeController : CardAvailable
-NodeController -> MFRC522Writer :  write()
+NodeController -> MFRC522Writer :  Write()
 MFRC522Writer -> SPI :Transfer()
 SPI --> MFRC522Writer :1
 MFRC522Writer --> NodeController :1
@@ -123,7 +131,7 @@ Entity NodeController
 Entity MessageHandler
 Entity I2C
 
-MFRC522Reader -> MFRC522Reader : CheckForCard()
+NodeController -> MFRC522Reader : CheckForCard()
 MFRC522Reader --> NodeController : CardAvailable
 NodeController -> MFRC522Reader : ReadCard()
 MFRC522Reader --> NodeController :String
