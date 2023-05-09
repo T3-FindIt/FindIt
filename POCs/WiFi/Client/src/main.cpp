@@ -1,33 +1,29 @@
 #include <Arduino.h>
 #include <WiFi.h>
+#include <string>
 
 const char *ssid = "SSID";
 const char *password = "PASSWORD";
 
-const uint16_t hostPort = 8090;
+const uint16_t hostPort = 54000;
 const char *hostIp = "IP";
 
-void readResponse(WiFiClient *client)
+std::string readResponse(WiFiClient *client)
 {
-    unsigned long timeout = millis();
-    while (client->available() == 0)
+    if (client->available() == 0)
     {
-        if (millis() - timeout > 5000)
-        {
-            Serial.println(">>> Client Timeout !");
-            client->stop();
-            return;
-        }
+        Serial.println("No data available");
+            return "";
     }
 
-    // Read all the lines of the reply from server and print them to Serial
+    std::string line = "";
     while (client->available())
     {
-        String line = client->readStringUntil('\0'); //\0 because C++ server side is always null terminated.
-        Serial.println(line);
+        line = std::string(client->readStringUntil('\0').c_str());
+        // line = client->readStringUntil('\0'); //\0 because C++ server side is always null terminated.
+        Serial.println(line.c_str());
     }
-
-    Serial.println("Closing connection");
+    return line;
 }
 
 void setup()
@@ -42,6 +38,7 @@ void setup()
 
     Serial.print("WiFi connected with IP: ");
     Serial.println(WiFi.localIP());
+    delay(1000);
 }
 
 void loop()
@@ -61,11 +58,18 @@ void loop()
         return;
     }
 
-    client.print("Hello from ESP32!");
-    long rssi = WiFi.RSSI();
-    Serial.print("RSSI:");
-    Serial.println(rssi);
-    readResponse(&client);
+    int i = 0;
+
+    while (i < 50)
+    {
+        // client.print("Hello from ESP32!");
+        std::string msg = readResponse(&client);
+        if (msg == "{\"action\": \"HeartBeat\"}")
+            client.print("{\"action\": \"HeartBeat\",\"Node\": \"Test\",\"Places\": \"5\"}\0");
+        delay(500);
+        i++;
+    }
+
     client.stop();
-    delay(10000);
+    delay(1000);
 }

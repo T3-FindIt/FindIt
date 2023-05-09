@@ -5,10 +5,10 @@ TEST(DummyTest, ShouldPass)
     EXPECT_EQ(1, 1);
 }
 
-TEST(DummyTest, ShouldFail)
-{
-    EXPECT_EQ(1, 2);
-}
+// TEST(DummyTest, ShouldFail)
+// {
+//     EXPECT_EQ(1, 2);
+// }
 
 #if defined(ARDUINO)
 #include <Arduino.h>

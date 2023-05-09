@@ -36,6 +36,9 @@ def CheckFolder(folderPath:str, supported_extensions:list, ignored_folders:list)
         if supported_extensions.count(extension) == 0:
             continue
 
+        if ignored_folders.count(name + extension) != 0:
+            continue
+
         if extension == CChecker.supported_extensions[0]:
             fileCount += 1
             if files.count(name + CChecker.supported_extensions[1]) == 0:
@@ -122,6 +125,8 @@ def main():
                        ".pio",
                        "TCPConnection.cpp", # This file is effectively a library, so it is ignored
                        "TCPConnection.hpp", # This file is effectively a library, so it is ignored
+                       "FailedSocketInit.hpp", # This file is effectively a library, so it is ignored
+                       "FailedWSAStartup.hpp", # This file is effectively a library, so it is ignored
                        ]
 
     projectDir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))

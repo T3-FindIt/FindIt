@@ -59,8 +59,11 @@ Interface IDipSwitch
 
 class DipSwitch
 {
-    {method} + DipSwitch(int[] pins)
-    {method} + bool Read(int Bit)
+    {field} - int Pins[]
+    {field} - int size
+    {method} + DipSwitch(int Pins[], int size)
+    {method} + bool Read()
+    {method} + bool GetNotificationSetting(NotifcationBits* my_Bit)
 }
 
 
@@ -68,10 +71,14 @@ Interface IClusterCommunication
 {
     {abstract} + void Send(int Address, Node_Registers Register, int Data)
     {abstract} + bool Scan(int* Addresses, int size)
+    {abstract} + int GetRegister(Node_Registers my_register, void* data)
+    {abstract} + Node_Registers GetLastChange()
+
 }
 
 enum Node_Registers
 {
+    None = -0x1,
     RequestForm = 0x0,
     Notifications = 0x1,
     RGB = 0x2,
@@ -96,7 +103,6 @@ Class JsonBuilder
 }
 
 note right of JsonBuilder : Implementatie wordt geleverd door de\nArduinoJson Library
-note top of JsonBuilder : Kijk naar gebruik van pointers
 
 ' EMPTY CLASSES
 Class CANBus
