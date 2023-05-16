@@ -30,15 +30,11 @@ set(Sources
     ClientToServerMessages/NodeSignIn.cpp
 )
 
-set(GlobalIncludeDirs
-    ${GlobalIncludeDirs}
-    ${CMAKE_CURRENT_LIST_DIR}
-    ${CMAKE_CURRENT_LIST_DIR}/ServerToClientMessages
-    ${CMAKE_CURRENT_LIST_DIR}/ClientToServerMessages
-    PARENT_SCOPE
+add_library(Message STATIC ${Sources} ${Headers})
+target_include_directories(Message PUBLIC
+${CMAKE_CURRENT_SOURCE_DIR}
+${CMAKE_CURRENT_SOURCE_DIR}/ClientToServerMessages
+${CMAKE_CURRENT_SOURCE_DIR}/ServerToClientMessages
 )
 
-add_library(Message STATIC ${Sources} ${Headers})
-
 add_subdirectory(MessageQueue)
-target_link_libraries(Message PRIVATE MessageQueue)

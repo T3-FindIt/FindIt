@@ -9,10 +9,8 @@ set(Sources
     PlainFileDatabase.cpp
 )
 
-set(GlobalIncludeDirs
-    ${GlobalIncludeDirs}
-    ${CMAKE_CURRENT_LIST_DIR}
-    PARENT_SCOPE
-)
-
 add_library(Database STATIC ${Sources} ${Headers})
+target_link_libraries(Database PRIVATE
+Object
+)
+target_include_directories(Database PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
