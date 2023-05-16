@@ -8,7 +8,7 @@ TEST(JsonBuilderTest, Test_Deserialize_Correct_Message)
     std::string keys[] = {""};
     std::string values[] = {""};
     int length = 1;
-    
+
     EXPECT_TRUE(jsonBuilder.Deserialize(json, keys, values, length));
     EXPECT_EQ("Action", keys[0]);
     EXPECT_EQ("HeartBeat", values[0]);
@@ -21,7 +21,7 @@ TEST(JsonBuilderTest, Test_Deserialize_Correct_Message_Long)
     int length = 3;
     std::string keys[3];
     std::string values[3];
-    
+
     EXPECT_TRUE(jsonBuilder.Deserialize(json, keys, values, length));
     EXPECT_EQ("Action", keys[0]);
     EXPECT_EQ("HeartBeat", values[0]);
@@ -40,7 +40,7 @@ TEST(JsonBuilderTest, Test_Deserialize_Empty_Message)
     std::string keys[] = {""};
     std::string values[] = {""};
     int length = 1;
-    
+
     EXPECT_FALSE(jsonBuilder.Deserialize(json, keys, values, length));
 }
 
@@ -61,7 +61,7 @@ TEST(JsonBuilderTest, Test_Deserialize_NULL_Keys)
     std::string json = "{\"Action\":\"HeartBeat\"}";
     std::string values[] = {""};
     int length = 1;
-    
+
     EXPECT_FALSE(jsonBuilder.Deserialize(json, nullptr, values, length));
 }
 
@@ -71,7 +71,7 @@ TEST(JsonBuilderTest, Test_Deserialize_NULL_Values)
     std::string json = "{\"Action\":\"HeartBeat\"}";
     std::string keys[] = {""};
     int length = 1;
-    
+
     EXPECT_FALSE(jsonBuilder.Deserialize(json, keys, nullptr, length));
 }
 
@@ -81,7 +81,7 @@ TEST(JsonBuilderTest, Test_Serialize_NULL_Action)
     std::string json = "";
     std::string values[] = {""};
     int length = 1;
-    
+
     EXPECT_FALSE(jsonBuilder.Deserialize(json, nullptr, values, length));
 }
 
@@ -101,7 +101,7 @@ TEST(JsonBuilderTest, Test_Serialize_Zero_Size)
     std::string data[] = {"0"};
     std::string output = "";
     EXPECT_FALSE(jsonBuilder.Serialize(actions, data, 0, output));
-    EXPECT_FALSE(jsonBuilder.Serialize(actions, data, -1, output));
+    EXPECT_FALSE(jsonBuilder.Serialize(actions, data, - 1, output));
 }
 
 TEST(JsonBuilderTest, Test_Serialize_Correct_Message)
