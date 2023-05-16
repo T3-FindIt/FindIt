@@ -23,8 +23,21 @@ bool JsonBuilder::Deserialize(std::string Json, std::string keys[], std::string 
     }
 
     json deserializedJson = json::parse(Json);
+    // This gets all the keys
+    int keyPos = 0;
+    for (json::iterator it = deserializedJson.begin(); it != deserializedJson.end(); ++it) 
+    {
+        keys[keyPos] = it.key();
+        keyPos++;
+    }
 
-
+    int valuePos = 0;
+    // This can get values from the json object
+    for (json::iterator it = deserializedJson.begin(); it != deserializedJson.end(); ++it) 
+    {
+        values[valuePos] = it.value();
+        valuePos++;
+    }
 
     return true;
 }

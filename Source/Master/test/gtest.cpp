@@ -14,6 +14,25 @@ TEST(JsonBuilderTest, Test_Deserialize_Correct_Message)
     EXPECT_EQ("HeartBeat", values[0]);
 }
 
+TEST(JsonBuilderTest, Test_Deserialize_Correct_Message_Long)
+{
+    JsonBuilder jsonBuilder;
+    std::string json = "{\"Action\": \"HeartBeat\",\"Product\": \"ProductName\",\"Result\": \"True\"}";
+    int length = 3;
+    std::string keys[3];
+    std::string values[3];
+    
+    EXPECT_TRUE(jsonBuilder.Deserialize(json, keys, values, length));
+    EXPECT_EQ("Action", keys[0]);
+    EXPECT_EQ("HeartBeat", values[0]);
+
+    EXPECT_EQ("Product", keys[1]);
+    EXPECT_EQ("ProductName", values[1]);
+
+    EXPECT_EQ("Result", keys[2]);
+    EXPECT_EQ("True", values[2]);
+}
+
 TEST(JsonBuilderTest, Test_Deserialize_Empty_Message)
 {
     JsonBuilder jsonBuilder;
