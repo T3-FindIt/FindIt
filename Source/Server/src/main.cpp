@@ -1,31 +1,53 @@
-#include <nlohmann/json.hpp>
+// #include <nlohmann/json.hpp>
 #include <iostream>
 #include <thread>
+#include <vector>
+#include <string>
 
-#include <Communication.hpp>
-#include "./Communication/ClusterConnection/TCPConnection.hpp"
-#include "./Communication/ProtocolParser/JSONProtocolParser.hpp"
+#include "./UserInterface/UserInterface.hpp"
+
+std::vector<std::string> testfunc()
+{
+    std::vector<std::string> test;
+    test.push_back("string 1 ");
+    test.push_back("string 2 ");
+    test.push_back("string 3 ");
+    test.push_back("string 4 ");
+    test.push_back("string 5 ");
+    test.push_back("string 6 ");
+    test.push_back("string 7 ");
+
+    return test;
+}
+
+void lol(std::string xd)
+{
+    std::cout << "lol function called\n";
+}
 
 int main()
 {
-    // Set cluster coms to a TCP connection on port 54000
-    FindIt::Server* clusterConnection = new FindIt::Server(54000);
+    // std::function<>
+    FindIt::UserInterface *UI = new FindIt::UserInterface(testfunc, lol);
 
-    // Set protocol parser to JSON
-    FindIt::JSONProtocolParser* protocolParser = new FindIt::JSONProtocolParser();
+    UI->Run();
 
-    // Set up communication and start a new thread for it
-    FindIt::Communication* communication = new FindIt::Communication(*clusterConnection, *protocolParser);
-    std::jthread communicationThread(&FindIt::Communication::Run, communication);
+    // // Set cluster coms to a TCP connection on port 54000
+    // FindIt::Server* clusterConnection = new FindIt::Server(54000);
 
-    std::cin.get();
+    // // Set protocol parser to JSON
+    // FindIt::JSONProtocolParser* protocolParser = new FindIt::JSONProtocolParser();
 
-    communication->Stop();
-    communicationThread.join();
+    // // Set up communication and start a new thread for it
+    // FindIt::Communication* communication = new FindIt::Communication(*clusterConnection, *protocolParser);
+    // std::jthread communicationThread(&FindIt::Communication::Run, communication);
 
-    delete communication;
-    delete protocolParser;
-    delete clusterConnection;
+    //std::cin.get(); //check this out
+
+    // communication->Stop();
+    // communicationThread.join();
+
+    delete UI;
 
     return 0;
 }

@@ -5,9 +5,8 @@
 #include <vector>
 #include <iostream>
 #include <functional>
-// #include <thread>
-// #include <mutex>
-//were we doing multithreading for the server?
+#include <thread>
+#include <mutex> //needed?
 
 namespace FindIt
 {
@@ -22,6 +21,9 @@ private:
     Get_objects_t ReturnUniqueObjectsTypes;
     Request_object_t RequestObject;
     bool running;
+    // std::thread UIthread(Run);
+    //moet de thread niet in main.cpp aangemaakt worden?
+    //zo niet waar dan wel?
 
 public:
     UserInterface(Get_objects_t functionPointer, Request_object_t functionpointer2);
