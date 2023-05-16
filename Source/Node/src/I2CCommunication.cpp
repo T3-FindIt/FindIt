@@ -1,5 +1,4 @@
 #include "I2CCommunication.hpp"
-#include <Arduino.h>
 volatile uint8_t activeRegisterAdress;
 volatile uint8_t RGBValues[3];
 volatile uint8_t notificationModeRegistry;
@@ -9,7 +8,6 @@ volatile uint8_t errorState;
 
 void OnRecieve(int HowMany)
 {
-    Serial.println("HI");
     while (Wire.available())
     {
         Wire.read();
@@ -17,40 +15,40 @@ void OnRecieve(int HowMany)
     //TEST RECIEVED MSG
     switch (activeRegisterAdress)
     {
-    case REQUESTFROM_REG:
-    {
-        //requestfrom shizzle :)
-        Wire.flush();
-        break;
-    }
-    case NOTIFICATION_REG:
-    {
-        notificationModeRegistry = Wire.read();
-        break;
-    }
-    case RGB_REG:
-    {
-        for (int i = 0; i < 3; i++)
+        case REQUESTFROM_REG:
         {
-            RGBValues[i] = Wire.read();
+            //requestfrom shizzle :)
+            Wire.flush();
+            break;
         }
-        break;
-    }
-    case ACTIVE_REG:
-    {
-        notificationState = Wire.read();
-        break;
-    }
-    case ERROR_REG:
-    {
-        recievedErrorState = Wire.read();
-        break;
-    }
-    default:
-    {
-        activeRegisterAdress = Wire.read();
-        break;
-    }
+        case NOTIFICATION_REG:
+        {
+            notificationModeRegistry = Wire.read();
+            break;
+        }
+        case RGB_REG:
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                RGBValues[i] = Wire.read();
+            }
+            break;
+        }
+        case ACTIVE_REG:
+        {
+            notificationState = Wire.read();
+            break;
+        }
+        case ERROR_REG:
+        {
+            recievedErrorState = Wire.read();
+            break;
+        }
+        default:
+        {
+            activeRegisterAdress = Wire.read();
+            break;
+        }
     }
     Wire.flush();
 }
@@ -64,7 +62,6 @@ void OnRequest()
 
 I2CCommunication::I2CCommunication()
 {
-    Serial.begin(9600);
     activeRegisterAdress = 0xFF;
     RGBValues[0] = 0;
     RGBValues[1] = 0;
@@ -100,7 +97,6 @@ int I2CCommunication::SendNewItemToHub(char* itemString)
         }
     }
     Wire.endTransmission();
-
     return 0;
 }
 

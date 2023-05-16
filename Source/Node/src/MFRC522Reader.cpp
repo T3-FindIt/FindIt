@@ -1,13 +1,10 @@
 #include "MFRC522Reader.hpp"
+#include <SPI.h>
 
-#define DEFAULT_SS_PIN 10
-#define DEFAULT_RST_PIN 9
-#define DEFAULT_KEY 0xFF
-#define DEFAULT_TRAILER_BLOCK 7
-
-void initReader(int SS_PIN, int RST_PIN)
+MFRC522Reader::MFRC522Reader()
 {
-    reader = MFRC522(SS_PIN, RST_PIN);
+    reader = MFRC522(DEFAULT_SS_PIN, DEFAULT_RST_PIN);
+    SPI.begin();
     reader.PCD_Init();
     for (byte i = 0; i < 6; i++)
     {
@@ -15,9 +12,25 @@ void initReader(int SS_PIN, int RST_PIN)
     }
 }
 
-bool AuthenticateCard(MFRC522::StatusCode status)
+MFRC522Reader::MFRC522Reader(int SS_PIN, int RST_PIN)
 {
-    status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, DEFAULT_TRAILER_BLOCK, &key, &(mfrc522.uid));
+    reader = MFRC522(SS_PIN, RST_PIN);
+    SPI.begin();
+    reader.PCD_Init();
+    for (byte i = 0; i < 6; i++)
+    {
+        key.keyByte[i] = 0xFF;
+    }
+}
+
+MFRC522Reader::~MFRC522Reader()
+{
+    SPI.end();
+}
+
+bool MFRC522Reader::AuthenticateCard()
+{
+    status = (MFRC522::StatusCode)reader.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, DEFAULT_TRAILER_BLOCK, &key, &(reader.uid));
     if (status != MFRC522::STATUS_OK)
     {
         return false;
@@ -25,76 +38,65 @@ bool AuthenticateCard(MFRC522::StatusCode status)
     return true;
 }
 
-MFRC522Reader::MFRC522Reader()
-{
-    initReader(DEFAULT_SS_PIN, DEFAULT_RST_PIN);
-}
-
-MFRC522Reader::MFRC522Reader(int SS_PIN, int RST_PIN)
-{
-    initReader(SS_PIN, RST_PIN);
-}
-
-MFRC522Reader::~MFRC522Reader()
-{
-    delete reader;
-    delete key;
-}
-
 bool MFRC522Reader::CheckForCard()
 {
-    if (!reader.PICC_IsNewCardPresent())
+    if (status == MFRC522::STATUS_TIMEOUT)
     {
-        return false;
+        reader.PCD_Reset();
+        delay(50);
+        reader.PCD_Init();
     }
-    if (!reader.PICC_ReadCardSerial())
+    reader.PICC_IsNewCardPresent();
+    if(reader.PICC_ReadCardSerial())
     {
-        return false;
+        return true;
     }
-    return true;
+    else
+    {
+        reader.PICC_IsNewCardPresent();
+        return reader.PICC_ReadCardSerial();
+    }
 }
 
-std::string MFRC522Reader::ReadCard()
+// outputstring should be [49]
+int MFRC522Reader::ReadCard(char* outputString)
 {
-    std::string OutputString[49];
-    MFRC522::StatusCode status;
-
-    MFRC522::PICC_Type piccType = mfrc522.PICC_GetType(mfrc522.uid.sak);
+    MFRC522::PICC_Type piccType = reader.PICC_GetType(reader.uid.sak);
     if (piccType != MFRC522::PICC_TYPE_MIFARE_MINI && piccType != MFRC522::PICC_TYPE_MIFARE_1K && piccType != MFRC522::PICC_TYPE_MIFARE_4K)
     {
-        return "";
+        return -1;
     }
 
-    if (!AuthenticateCard(status))
+    if (!AuthenticateCard())
     {
-        return "";
+        return -1;
     }
 
     for (int i = 2; i >= 0; i--)
     {
-        {
-            byte readBuffer[18];
-            byte size = sizeof(readBuffer);
+        byte readBuffer[18];
+        byte size = sizeof(readBuffer);
 
-            byte address = 4 + i;
-            status = (MFRC522::StatusCode)mfrc522.MIFARE_Read(address, readBuffer, &size);
-            if (status != MFRC522::STATUS_OK)
+        byte address = 4 + i;
+        status = (MFRC522::StatusCode)reader.MIFARE_Read(address, readBuffer, &size);
+        if (status != MFRC522::STATUS_OK)
+        {
+            return -1;
+        }
+        for (int j = 0; j < 16; j++)
+        {
+            if (readBuffer[j] == '\n')
             {
-                Serial.print(F("MIFARE_Read() failed: "));
-                Serial.println(mfrc522.GetStatusCodeName(status));
+                outputString[i * 16 + j] = '\0';
             }
-            for (int j = 0; j < 16; j++)
+            else
             {
-                if (readBuffer[j] == '\n')
-                {
-                    OutputString[i * 16 + j] = '\0';
-                }
-                else
-                {
-                    OutputString[i * 16 + j] = readBuffer[j];
-                }
+                outputString[i * 16 + j] = readBuffer[j];
             }
         }
+        outputString[48] = '\0';
     }
-    return OutputString;
+
+    reader.PCD_StopCrypto1();
+    return 0;
 }

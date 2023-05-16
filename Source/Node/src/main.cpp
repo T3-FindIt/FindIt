@@ -1,26 +1,38 @@
 #include <Arduino.h>
+#include <string.h>
+
 #include "I2CCommunication.hpp"
 #include "MFRC522Reader.hpp"
 
-I2CCommunication comToHub;
-MFRC522Reader reader;
+I2CCommunication* comToHub;
+MFRC522Reader* nfcReader;
 void setup()
 {   
-    pinMode(LED_BUILTIN, OUTPUT);
-    comToHub = I2CCommunication();
-    reader = MFRC522Reader();    
+    Serial.begin(9600);
+    comToHub = new I2CCommunication();
+    nfcReader = new MFRC522Reader();
 }
 
 void loop()
 {
-    static std::string currentCard = "";
-    if (reader.CheckForCard())
+    static char currentCard[49];
+    bool status = nfcReader->CheckForCard();
+    if (status)
     {
-        std::string card = reader.ReadCard();
-        if (card != currentCard)
+        char card[49];
+        nfcReader->ReadCard(card);
+
+        if (strcmp(card, currentCard) != 0)
         {
-            currentCard = card;
+            strcpy(currentCard, card);
+            Serial.println(currentCard);
             comToHub->SendNewItemToHub(card);
         }
+    }
+    else if (currentCard[0] != '\0')
+    {
+        Serial.println("Card removed");
+        currentCard[0] = '\0';
+        comToHub->SendNewItemToHub(currentCard);
     }
 }
