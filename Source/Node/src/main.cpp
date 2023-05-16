@@ -1,19 +1,26 @@
 #include <Arduino.h>
 #include "I2CCommunication.hpp"
+#include "MFRC522Reader.hpp"
 
-I2CCommunication* comToHub;
+I2CCommunication comToHub;
+MFRC522Reader reader;
 void setup()
-{
+{   
     pinMode(LED_BUILTIN, OUTPUT);
-    comToHub = new I2CCommunication();
+    comToHub = I2CCommunication();
+    reader = MFRC522Reader();    
 }
 
 void loop()
 {
-    static char sendstring[49] = "HELL435834758937458374895789O";
-    comToHub->SendNewItemToHub(sendstring);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(1000);
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(1000);
+    static std::string currentCard = "";
+    if (reader.CheckForCard())
+    {
+        std::string card = reader.ReadCard();
+        if (card != currentCard)
+        {
+            currentCard = card;
+            comToHub->SendNewItemToHub(card);
+        }
+    }
 }
