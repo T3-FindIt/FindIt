@@ -3,19 +3,29 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
+#include <functional>
+// #include <thread>
+// #include <mutex>
+//were we doing multithreading for the server?
 
 namespace FindIt
 {
 
-using Get_objects_t = std::vector<std::string>();
+using Get_objects_t = std::function<std::vector<std::string>()>;
+using Request_object_t = std::function<void(std::string)>;
 
-class Userinterface
+class UserInterface
 {
 private:
+    void PrintStartUp(int *choice);
+    Get_objects_t ReturnUniqueObjectsTypes;
+    Request_object_t RequestObject;
+    bool running;
 
 public:
-    Userinterface();
-    ~Userinterface();
+    UserInterface(Get_objects_t functionPointer, Request_object_t functionpointer2);
+    ~UserInterface();
 
     void Run();
     void Stop();
