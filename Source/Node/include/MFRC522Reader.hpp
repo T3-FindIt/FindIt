@@ -26,4 +26,4 @@ class MFRC522Reader : public IReader
     int ReadCard(char* outputString);
 };
 
-#endif // MFC522READER_HPP
+#endif // MFRC522READER_HPP

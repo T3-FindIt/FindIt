@@ -47,7 +47,7 @@ bool MFRC522Reader::CheckForCard()
         reader.PCD_Init();
     }
     reader.PICC_IsNewCardPresent();
-    if(reader.PICC_ReadCardSerial())
+    if (reader.PICC_ReadCardSerial())
     {
         return true;
     }

@@ -7,7 +7,7 @@
 I2CCommunication* comToHub;
 MFRC522Reader* nfcReader;
 void setup()
-{   
+{
     Serial.begin(9600);
     comToHub = new I2CCommunication();
     nfcReader = new MFRC522Reader();
