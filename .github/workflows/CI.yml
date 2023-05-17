@@ -30,29 +30,26 @@ jobs:
     - name: Build
       working-directory: ./POCs/WiFi/Server/
       run: cmake --build ./build --config ${{env.BUILD_TYPE}}
-    
-    # - name: Test
-      # working-directory: ./POCs/WiFi/Server/
-      # run: ctest -C ${{env.BUILD_TYPE}}
-  # Node: // no test present yet
-  #   runs on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
 
-  #     - uses: actions/cache@v3
-  #       with:
-  #         path: |
-  #           ~/.cache/pip
-  #           ~/.platformio/.cache
-  #         key: ${{ runner.os }}-pio
+  Master:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-  #     - uses: actions/setup-python@v4
-  #       with:
-  #         python-version: '3.9'
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio
 
-  #     - name: Install PlatformIO Core
-  #       run: pip install --upgrade platformio
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
 
-  #     - name: Test
-  #       working-directory: ./Source/Node/
-  #       run: platformio test --environment native -f unit -v
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+
+      - name: Test
+        working-directory: ./Source/Master/
+        run: platformio test --environment native -f unit -v
