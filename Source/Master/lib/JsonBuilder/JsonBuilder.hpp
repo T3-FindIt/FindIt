@@ -14,7 +14,7 @@ public:
     /// @param values The values to use
     /// @param size The size of the keys and values arrays
     /// @return True if the deserialization was successful, false otherwise
-    bool Deserialize(const std::string Json, std::string keys[], std::string values[], const int size);
+    bool Deserialize(const std::string &Json, std::string keys[], std::string values[], const int size);
 
     /// @brief Serializes a JSON string from the given keys and values
     /// @param keys The keys to use
