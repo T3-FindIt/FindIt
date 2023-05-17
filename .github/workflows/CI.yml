@@ -35,8 +35,8 @@ jobs:
  - name: Master
       working-directory: ./Source/Master
       run: ctest -C ${{env.BUILD_TYPE}}
-  Node: // no test present yet
-    runs on: ubuntu-latest
+  Master: // no test present yet
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
