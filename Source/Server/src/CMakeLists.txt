@@ -11,7 +11,8 @@ set(GlobalIncludeDirs
 )
 
 # Builds a static library for gtest
-add_library(${ProjectName} STATIC main.cpp ${Sources} ${Headers}) 
+# add_library(${ProjectName} STATIC main.cpp ${Sources} ${Headers}) 
+add_library(${ProjectName} INTERFACE)
 
 # Builds an executable to run
 add_executable(${ProjectRunName} main.cpp ${Sources} ${Headers})

@@ -2,13 +2,6 @@
 #include <fstream>
 #include <filesystem>
 
-// DEBUG
-// TODO: Remove
-#include <iostream>
-using std::cout;
-using std::endl;
-// DEBUG
-
 namespace FindIt
 {
 
