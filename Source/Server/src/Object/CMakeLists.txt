@@ -9,4 +9,7 @@ set(Sources
 )
 
 add_library(Object STATIC ${Sources} ${Headers})
-target_include_directories(Object PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_include_directories(Object PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)

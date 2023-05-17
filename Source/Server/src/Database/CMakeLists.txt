@@ -10,7 +10,11 @@ set(Sources
 )
 
 add_library(Database STATIC ${Sources} ${Headers})
+
 target_link_libraries(Database PRIVATE
-Object
+    Object
 )
-target_include_directories(Database PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_include_directories(Database PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)

@@ -1,8 +1,8 @@
 #ifndef COMMUNICATION_HPP
 #define COMMUNICATION_HPP
 
-#include "./ClusterConnection/IClusterConnection.hpp"
-#include "./ProtocolParser/IProtocolParser.hpp"
+#include <IClusterConnection.hpp>
+#include <IProtocolParser.hpp>
 
 #include <IMessage.hpp>
 #include <HeartBeat.hpp>
