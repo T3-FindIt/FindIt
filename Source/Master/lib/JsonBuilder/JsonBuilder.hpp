@@ -6,7 +6,7 @@
 class JsonBuilder
 {
 public:
-    JsonBuilder();
+    JsonBuilder() = default;
 
     /// @brief Deserializes a JSON string into the given keys and values
     /// @param Json The input JSON string
