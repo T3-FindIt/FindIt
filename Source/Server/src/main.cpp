@@ -1,13 +1,13 @@
-#include <nlohmann/json.hpp>
 #include <iostream>
 #include <thread>
 #include <vector>
 
 #include <Communication.hpp>
+#include <TCPConnection.hpp>
+#include <JSONProtocolParser.hpp>
 #include <Object.hpp>
 #include <PlainFileDatabase.hpp>
-#include "./Communication/ClusterConnection/TCPConnection.hpp"
-#include "./Communication/ProtocolParser/JSONProtocolParser.hpp"
+
 
 int main()
 {

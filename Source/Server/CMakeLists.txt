@@ -7,18 +7,18 @@ set(ProjectTestName ${ProjectName}_Test)
 
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/release )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 
 project(${ProjectName} C CXX) # project uses C and C++ languages
 
 set(CMAKE_C_STANDARD 99) # C standard is C99
-set(CMAKE_CXX_STANDARD 20) # C++ standard is C++17
+set(CMAKE_CXX_STANDARD 20) # C++ standard is C++20
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(BUILD_SHARED_LIBS OFF)
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -static-libgcc -static-libstdc++")
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-  add_compile_options(-Wall -Wextra -Wpedantic)
+  add_compile_options(-Wall -Wextra -Wpedantic -static -static-libgcc -static-libstdc++)
   # add_compile_options(-Werror)
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
@@ -52,6 +52,3 @@ FetchContent_MakeAvailable(json)
 
 add_subdirectory(src)
 add_subdirectory(test)
-
-# Copy all used dlls into the release folder
-
