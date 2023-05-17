@@ -78,7 +78,7 @@ Communication::~Communication()
 void Communication::Run()
 {
     this->isRunning = true;
-    IClusterConnection* _clusterConnection = &this->clusterConnection;
+    IClusterConnection* _clusterConnection = &clusterConnection;
     std::jthread server_thread(&IClusterConnection::run, _clusterConnection);
     while (this->isRunning)
     {
