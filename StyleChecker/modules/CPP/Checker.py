@@ -159,8 +159,7 @@ def CheckForOperator(line:str, index:int, currentFilePath:str):
     completeRegex = '(\\b' + singleRegex + '\\b)|(' + singleRegex + '\\b)|(\\b' + singleRegex + ')'
     completeExceptionRegex = '(\\b' + exceptionRegex + '\\b)|(' + exceptionRegex + '\\b)|(\\b' + exceptionRegex + ')'
     if (re.search(completeRegex, line) is not None
-        and re.search(completeExceptionRegex, line) is None
-        and re.search):
+        and re.search(completeExceptionRegex, line) is None):
         PrintStyleError(index, line, currentFilePath, 'Incorrect operator.', 'Operators must be preceded and followed by a whitespace.')
         failed = True
 
