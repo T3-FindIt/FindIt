@@ -2,10 +2,6 @@
 #include "json.hpp"
 using json = nlohmann::json;
 
-JsonBuilder::JsonBuilder()
-{
-}
-
 bool JsonBuilder::Deserialize(const std::string Json, std::string keys[], std::string values[], const int size)
 {
     if (keys == nullptr || values == nullptr)
