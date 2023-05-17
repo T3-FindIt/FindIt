@@ -53,3 +53,24 @@ jobs:
       - name: Test
         working-directory: ./Source/Master/
         run: platformio test --environment native -f unit -v
+
+  Server:
+    runs-on: windows-latest
+
+    env:
+      BUILD_TYPE: Debug
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: configure
+      working-directory: ./Source/Server/
+      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    
+    - name: Build
+      working-directory: ./Source/Server/
+      run: cmake --build ./build --config ${{env.BUILD_TYPE}}
+
+    - name: Run all tests
+      working-directory: ./Source/Server/
+      run: ctest -j18 -C ${{env.BUILD_TYPE}} -T test --output-on-failure
