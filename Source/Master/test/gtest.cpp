@@ -78,7 +78,7 @@ TEST(JsonBuilderTest, Test_Deserialize_NULL_Values)
 TEST(JsonBuilderTest, Test_Serialize_NULL_Action)
 {
     JsonBuilder jsonBuilder;
-    
+
     const std::string json = "";
     std::string values[] = {""};
     const int length = 1;
