@@ -25,7 +25,7 @@ jobs:
 
       # CD to Platform IO directory 
       - name: Navigate
-        run: cd ./Source/Master #The directory that needs to be tested
+        run: cd ./ #The directory that needs to be tested
 
       - name: Run Unit Tests
         run: platformio test --environment native -f unit -v
