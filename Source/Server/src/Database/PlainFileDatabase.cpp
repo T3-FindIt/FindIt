@@ -88,7 +88,7 @@ std::vector<Object> PlainFileDatabase::GetAllObjects()
     {
         throw std::runtime_error("Database Source Missing - GetAllObjects");
     }
-    
+
     std::vector<Object> objects;
     std::vector<std::string> lines;
     lines = ReadObjectAndIncrement(file);
