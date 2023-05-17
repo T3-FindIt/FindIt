@@ -14,7 +14,7 @@ public:
     /// @param values The values to use
     /// @param size The size of the keys and values arrays
     /// @return True if the deserialization was successful, false otherwise
-    bool Deserialize(std::string Json, std::string keys[], std::string values[], int size);
+    bool Deserialize(const std::string Json, std::string keys[], std::string values[], const int size);
 
     /// @brief Serializes a JSON string from the given keys and values
     /// @param keys The keys to use
@@ -22,7 +22,7 @@ public:
     /// @param size The size of the keys and values arrays
     /// @param output The output string
     /// @return True if the serialization was successful, false otherwise
-    bool Serialize(std::string keys[], std::string values[], int size, std::string &output);
+    bool Serialize(const std::string keys[], const std::string values[], const int size, std::string &output);
 };
 
 #endif // JSONBUILDER_HPP

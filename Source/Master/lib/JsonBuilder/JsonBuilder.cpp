@@ -6,7 +6,7 @@ JsonBuilder::JsonBuilder()
 {
 }
 
-bool JsonBuilder::Deserialize(std::string Json, std::string keys[], std::string values[], int size)
+bool JsonBuilder::Deserialize(const std::string Json, std::string keys[], std::string values[], const int size)
 {
     if (keys == nullptr || values == nullptr)
     {
@@ -42,7 +42,7 @@ bool JsonBuilder::Deserialize(std::string Json, std::string keys[], std::string 
     return true;
 }
 
-bool JsonBuilder::Serialize(std::string keys[], std::string values[], int size, std::string &output)
+bool JsonBuilder::Serialize(const std::string keys[], const std::string values[], const int size, std::string &output)
 {
     if (keys == nullptr || values == nullptr)
     {

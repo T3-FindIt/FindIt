@@ -4,10 +4,10 @@
 TEST(JsonBuilderTest, Test_Deserialize_Correct_Message)
 {
     JsonBuilder jsonBuilder;
-    std::string json = "{\"Action\":\"HeartBeat\"}";
+    const std::string json = "{\"Action\":\"HeartBeat\"}";
     std::string keys[] = {""};
     std::string values[] = {""};
-    int length = 1;
+    const int length = 1;
 
     EXPECT_TRUE(jsonBuilder.Deserialize(json, keys, values, length));
     EXPECT_EQ("Action", keys[0]);
@@ -17,8 +17,8 @@ TEST(JsonBuilderTest, Test_Deserialize_Correct_Message)
 TEST(JsonBuilderTest, Test_Deserialize_Correct_Message_Long)
 {
     JsonBuilder jsonBuilder;
-    std::string json = "{\"Action\": \"HeartBeat\",\"Product\": \"ProductName\",\"Result\": \"True\"}";
-    int length = 3;
+    const std::string json = "{\"Action\": \"HeartBeat\",\"Product\": \"ProductName\",\"Result\": \"True\"}";
+    const int length = 3;
     std::string keys[3];
     std::string values[3];
 
@@ -36,10 +36,10 @@ TEST(JsonBuilderTest, Test_Deserialize_Correct_Message_Long)
 TEST(JsonBuilderTest, Test_Deserialize_Empty_Message)
 {
     JsonBuilder jsonBuilder;
-    std::string json = "";
+    const std::string json = "";
     std::string keys[] = {""};
     std::string values[] = {""};
-    int length = 1;
+    const int length = 1;
 
     EXPECT_FALSE(jsonBuilder.Deserialize(json, keys, values, length));
 }
@@ -47,10 +47,10 @@ TEST(JsonBuilderTest, Test_Deserialize_Empty_Message)
 TEST(JsonBuilderTest, Test_Deserialize_Zero_Size)
 {
     JsonBuilder jsonBuilder;
-    std::string json = "{\"Action\":\"HeartBeat\"}";
+    const std::string json = "{\"Action\":\"HeartBeat\"}";
     std::string keys[] = { "" };
     std::string values[] = { "" };
-    int length = 0;
+    const int length = 0;
 
     EXPECT_FALSE(jsonBuilder.Deserialize(json, keys, values, length));
 }
@@ -58,9 +58,9 @@ TEST(JsonBuilderTest, Test_Deserialize_Zero_Size)
 TEST(JsonBuilderTest, Test_Deserialize_NULL_Keys)
 {
     JsonBuilder jsonBuilder;
-    std::string json = "{\"Action\":\"HeartBeat\"}";
+    const std::string json = "{\"Action\":\"HeartBeat\"}";
     std::string values[] = {""};
-    int length = 1;
+    const int length = 1;
 
     EXPECT_FALSE(jsonBuilder.Deserialize(json, nullptr, values, length));
 }
@@ -68,9 +68,9 @@ TEST(JsonBuilderTest, Test_Deserialize_NULL_Keys)
 TEST(JsonBuilderTest, Test_Deserialize_NULL_Values)
 {
     JsonBuilder jsonBuilder;
-    std::string json = "{\"Action\":\"HeartBeat\"}";
+    const std::string json = "{\"Action\":\"HeartBeat\"}";
     std::string keys[] = {""};
-    int length = 1;
+    const int length = 1;
 
     EXPECT_FALSE(jsonBuilder.Deserialize(json, keys, nullptr, length));
 }
@@ -78,9 +78,10 @@ TEST(JsonBuilderTest, Test_Deserialize_NULL_Values)
 TEST(JsonBuilderTest, Test_Serialize_NULL_Action)
 {
     JsonBuilder jsonBuilder;
-    std::string json = "";
+    
+    const std::string json = "";
     std::string values[] = {""};
-    int length = 1;
+    const int length = 1;
 
     EXPECT_FALSE(jsonBuilder.Deserialize(json, nullptr, values, length));
 }
@@ -89,7 +90,7 @@ TEST(JsonBuilderTest, Test_Serialize_NULL_Data)
 {
     JsonBuilder jsonBuilder;
     std::string json = "";
-    std::string actions[1] = {"HeartBeat"};
+    const std::string actions[1] = {"HeartBeat"};
     std::string output = "";
     EXPECT_FALSE(jsonBuilder.Serialize(actions, NULL, 1, output));
 }
@@ -97,8 +98,8 @@ TEST(JsonBuilderTest, Test_Serialize_NULL_Data)
 TEST(JsonBuilderTest, Test_Serialize_Zero_Size)
 {
     JsonBuilder jsonBuilder;
-    std::string actions[1] = {"HeartBeat"};
-    std::string data[] = {"0"};
+    const std::string actions[1] = {"HeartBeat"};
+    const std::string data[] = {"0"};
     std::string output = "";
     EXPECT_FALSE(jsonBuilder.Serialize(actions, data, 0, output));
     EXPECT_FALSE(jsonBuilder.Serialize(actions, data, - 1, output));
@@ -108,8 +109,8 @@ TEST(JsonBuilderTest, Test_Serialize_Correct_Message)
 {
     JsonBuilder jsonBuilder;
     std::string json = "";
-    std::string keys[] = {"Action", "Data"};
-    std::string data[] = {"HeartBeat", "0"};
+    const std::string keys[] = {"Action", "Data"};
+    const std::string data[] = {"HeartBeat", "0"};
     int size = 2;
     EXPECT_TRUE(jsonBuilder.Serialize(keys, data, size, json));
     EXPECT_EQ(json, "{\"Action\":\"HeartBeat\",\"Data\":\"0\"}");
