@@ -24,7 +24,7 @@ Het FindIt-systeem is modulair opgebouwd, wat betekent dat het gemakkelijk kan w
 <image src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/PlatformIO_logo.svg/2500px-PlatformIO_logo.svg.png" height="28px">
 
 ### Hardware
-![Espressif](https://img.shields.io/badge/espressif-%23E7352C.svg?style=for-the-badge&logo=espressif&logoColor=white)
+![Espressif](https://img.shields.io/badge/espressif-E7352C.svg?style=for-the-badge&logo=espressif&logoColor=white)
 ![Arduino](https://img.shields.io/badge/arduino-00979D.svg?style=for-the-badge&logo=arduino&logoColor=white)
 
 ### Versiebeheer / CI
