@@ -12,8 +12,22 @@ on:
 
 run-name: ${{ inputs.reason || github.event.pull_request.title || github.event.head_commit.message || 'unexpected workflow trigger' }}
 
-jobs: 
+jobs:
+  check:
+    outputs:
+      status: ${{ steps.early.conclusion }}
+    steps:
+      - id: name-check
+        name: Check PR name
+        run: |
+          if [[ ${{ github.event.pull_request.title }} =~ ^doc\/.*$|^docs\/.*$ ]]; then
+            echo "Skipping CI for documentation-only PR"
+            exit skip
+          fi
+
   WiFI-POC:
+    needs: check
+    if: needs.check.outputs.status != 'skipped'
     runs-on: windows-latest
 
     env:
@@ -31,6 +45,8 @@ jobs:
       run: cmake --build ./build --config ${{env.BUILD_TYPE}}
 
   Master:
+    needs: check
+    if: needs.check.outputs.status != 'skipped'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -54,6 +70,8 @@ jobs:
         run: platformio test --environment native -f unit -v
 
   Server:
+    needs: check
+    if: needs.check.outputs.status != 'skipped'
     runs-on: windows-latest
 
     env:
