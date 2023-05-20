@@ -2,7 +2,7 @@ set(Sources
     ObjectTest.cpp
 )
 
-set(TestName ${ProjectTestName}_ObjectTest)
+set(TestName ${ProjectTestName}_Object)
 
 add_executable(${TestName} ${Sources})
 

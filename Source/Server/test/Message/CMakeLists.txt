@@ -2,7 +2,7 @@ set(Sources
     MessageTest.cpp
 )
 
-set(TestName ${ProjectTestName}_MessageTest)
+set(TestName ${ProjectTestName}_Message)
 
 add_executable(${TestName} ${Sources})
 
