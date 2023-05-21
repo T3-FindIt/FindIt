@@ -1,0 +1,74 @@
+name: bug
+description: Report a bug
+labels: [bug]
+title: 'bug/'
+
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thanks for reporting a bug! Please fill out the sections below.
+        Bedankt voor het melden van een bug! Vul de onderstaande secties in.
+
+  - type: dropdown
+    attributes:
+      label: Bug location / Bug locatie
+      description: >-
+        Please select the location of the bug. / Selecteer de locatie van de bug.
+      options:
+        - 'Server'
+        - 'Master'
+        - 'Node'
+        - 'StyleChecker'
+        - 'Other/Anders' 
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Bug description / Bug beschrijving
+      description: >-
+        Please describe the bug. / Beschrijf de bug.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce / Stappen om te reproduceren
+      description: >-
+        Please describe the steps to reproduce the bug. / Beschrijf de stappen om de bug te reproduceren.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected behavior / Verwacht gedrag
+      description: >-
+        Please describe what you expected to happen. / Beschrijf wat je verwachtte dat er zou gebeuren.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Actual behavior / Werkelijk gedrag
+      description: >-
+        Please describe what actually happened. / Beschrijf wat er werkelijk gebeurde.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional information / Aanvullende informatie
+      description: >-
+        Please provide any additional information. / Geef eventuele aanvullende informatie.
+
+  - type: dropdown
+    attributes:
+      label: Contributing / Bijdragen
+      description: >-
+        Would you like to contribute to the implementation of bugfix? / Wil je bijdragen aan de implementatie van deze bugfix?
+      options:
+        - 'Yes / Ja'
+        - 'No / Nee'
+    validations:
+      required: true
