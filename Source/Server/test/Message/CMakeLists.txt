@@ -1,14 +1,14 @@
 set(Sources
-    ObjectTest.cpp
+    MessageTest.cpp
 )
 
-set(TestName ${ProjectTestName}_Object)
+set(TestName ${ProjectTestName}_Message)
 
 add_executable(${TestName} ${Sources})
 
 target_link_libraries(${TestName} PUBLIC
     gtest_main
-    Object
+    MessageInterface
 )
 
 add_test(
