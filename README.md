@@ -21,6 +21,7 @@ Het FindIt-systeem is modulair opgebouwd, wat betekent dat het gemakkelijk kan w
 
 ### Frameworks
 ![CMake](https://img.shields.io/badge/CMake-%23008FBA.svg?style=for-the-badge&logo=cmake&logoColor=white)
+![Google Test](https://img.shields.io/badge/google%20test-4285F4?style=for-the-badge&logo=google&logoColor=white)
 <image src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/PlatformIO_logo.svg/2500px-PlatformIO_logo.svg.png" height="28px">
 
 ### Hardware
