@@ -45,6 +45,20 @@ IMessage* JSONProtocolParser::Parse(std::string data)
             return new HeartBeat();
         }
     }
+    else if (action == "SignIn"
+            && json_obj.find("Node") != json_obj.end()
+            && json_obj.find("Places") != json_obj.end())
+    {
+        if (json_obj.find("Result") != json_obj.end())
+        {
+            return new NodeSignInResponse(json_obj["Node"], json_obj["Places"], json_obj["Result"]);
+        }
+        else
+        {
+            return new NodeSignIn(json_obj["Node"], json_obj["Places"]);
+        }
+    }
+
     return nullptr;
 }
 
