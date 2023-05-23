@@ -33,6 +33,18 @@ IMessage* JSONProtocolParser::Parse(std::string data)
 
     std::string action = json_obj["action"];
 
+    if (action == "HeartBeat")
+    {
+        if (json_obj.find("Node") != json_obj.end()
+            && json_obj.find("Places") != json_obj.end())
+        {
+            return new HeartBeatResponse(json_obj["Node"], json_obj["Places"]);
+        }
+        else
+        {
+            return new HeartBeat();
+        }
+    }
     return nullptr;
 }
 
