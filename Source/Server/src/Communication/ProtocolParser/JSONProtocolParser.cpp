@@ -1,7 +1,7 @@
 #include "JSONProtocolParser.hpp"
 
 #include <nlohmann/json.hpp>
-#include <HeartBeat.hpp>
+#include <iostream>
 
 using json = nlohmann::json;
 
