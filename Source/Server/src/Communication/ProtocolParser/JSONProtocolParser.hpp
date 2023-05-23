@@ -3,6 +3,19 @@
 
 #include "IProtocolParser.hpp"
 
+#include <IMessage.hpp>
+
+#include <HeartbeatResponse.hpp>
+#include <NodeEventProductFound.hpp>
+#include <NodeNotifyNewProduct.hpp>
+#include <NodeRespondToProductRequest.hpp>
+#include <NodeSignIn.hpp>
+
+#include <HeartBeat.hpp>
+#include <NodeNotifyNewProductResponse.hpp>
+#include <NodeSignInResponse.hpp>
+#include <ServerRequestProduct.hpp>
+
 namespace FindIt
 {
 
