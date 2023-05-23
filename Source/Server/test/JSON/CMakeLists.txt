@@ -8,6 +8,8 @@ add_executable(${TestName} ${Sources})
 
 target_link_libraries(${TestName} PUBLIC
     gtest_main
+    ProtocolParser
+    MessageInterface
 )
 
 add_test(
