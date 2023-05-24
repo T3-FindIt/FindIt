@@ -12,7 +12,8 @@ class I2C : public IMasterSlave
     int address;
     public:
     I2C(int address);
-    void Send(int address,Node_Registers register, int data);
+    void Send(int address,Node_Registers node_Register, int data);
+    void Request(int address, Node_Registers node_Register, int sizeOfData);
     void Scan();
     int GetRegister(Node_Registers my_register, void* data);
     Node_Registers GetLastChange();
