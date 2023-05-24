@@ -1,22 +1,9 @@
 #include "MFRC522Reader.hpp"
 #include <SPI.h>
 
-
-#define DEFAULT_SS_PIN 10
-#define DEFAULT_RST_PIN 9
 #define DEFAULT_KEY 0xFF
 #define DEFAULT_TRAILER_BLOCK 7
 
-MFRC522Reader::MFRC522Reader()
-{
-    reader = MFRC522(DEFAULT_SS_PIN, DEFAULT_RST_PIN);
-    SPI.begin();
-    reader.PCD_Init();
-    for (byte i = 0; i < 6; i++)
-    {
-        key.keyByte[i] = 0xFF;
-    }
-}
 
 MFRC522Reader::MFRC522Reader(int SS_PIN, int RST_PIN)
 {
