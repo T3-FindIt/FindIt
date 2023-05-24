@@ -1,9 +1,8 @@
 #include "I2C.hpp"
 #include <string>
+#include <Arduino.h>
 
 #define MAX_I2C_ADDRESSES 127
-#define I2C_TIMEOUT 1000
-#define MILLIS_TO_SECONDS * 1000
 
 /// PROTOTYPES
 void InitializeAddresses();
@@ -25,31 +24,35 @@ std::string Error;
 
 Node_Registers lastRecieved = Node_Registers::NR_None;
 
+int messageCounter = 0;
+int debug_Address = 0;
+
 void receiveEvent(int howMany) // A node sends data, not making a request.
 {
-    if (howMany == 1)
+    lastRecieved = (Node_Registers)Wire.read();
+
+    debug_Address = Wire.read();
+
+    char data[MAX_STRING_SIZE];
+
+    size_t i = 0;
+
+    while(Wire.available())
     {
-        lastRecieved = (Node_Registers)Wire.read();
+        data[i] = Wire.read();
+        i++;
     }
-    else
+
+    switch (lastRecieved)
     {
-        char data[MAX_STRING_SIZE];
-        for (size_t i = 0; i < howMany; i++)
-        {
-            data[i] = (char)Wire.read();
-        }
-        
-        switch (lastRecieved)
-        {
-        case Node_Registers::NR_Item:
-            Item = std::string(data);
-            break;
-        case Node_Registers::NR_Error:
-            Error = std::string(data);
-            break;        
-        default:
-            break;
-        }
+    case Node_Registers::NR_Item:
+        Item = std::string(data);
+        break;
+    case Node_Registers::NR_Error:
+        Error = std::string(data);
+        break;        
+    default:
+        break;
     }
 }
 
@@ -65,9 +68,8 @@ I2C::I2C(int address)
     Wire.begin(address);
     Wire.onReceive(receiveEvent);
     Wire.onRequest(RequestEvent);
-    Wire.setTimeOut(I2C_TIMEOUT MILLIS_TO_SECONDS);
 
-    // Serial.begin(9600); !Debug!
+    Serial.begin(9600); //!Debug!
 }
 
 void I2C::Send(int address,Node_Registers node_Register, int data)
@@ -91,21 +93,6 @@ void I2C::Request(int address, Node_Registers node_Register, int sizeOfData)
     Wire.write((int)node_Register);
     Wire.endTransmission();
     Wire.requestFrom(address, sizeOfData);
-}
-
-void I2C::Scan()
-{
-    for (int i = 0; i < 127; i++)
-    {
-        Wire.beginTransmission(i);
-        Wire.write((int)Node_Registers::NR_RequestForm);
-        Wire.endTransmission();
-        int heartbeat = Wire.requestFrom(i, 1);
-        if(heartbeat == 0)
-        {
-            ReleaseAddress(i);
-        }
-    }
 }
 
 int I2C::GetRegister(Node_Registers my_register, void* data)
@@ -148,6 +135,11 @@ Node_Registers I2C::GetLastChange()
     return returnVal;
 }
 
+int I2C::debug_GetLastAddress()
+{
+    return debug_Address;
+}
+
 typedef struct Address
 {
     int address;
@@ -158,7 +150,7 @@ Address addresses[MAX_I2C_ADDRESSES];
 
 void InitializeAddresses()
 {
-    for (int i = 0; i < MAX_I2C_ADDRESSES; i++)
+    for (int i = 9; i < MAX_I2C_ADDRESSES; i++)
     {
         addresses[i].address = i;
         addresses[i].available = true;
@@ -167,7 +159,7 @@ void InitializeAddresses()
 
 int GetAvailableAddress()
 {
-    for (int i = 0; i < MAX_I2C_ADDRESSES; i++)
+    for (int i = 9; i < MAX_I2C_ADDRESSES; i++)
     {
         if (addresses[i].available)
         {
@@ -179,7 +171,7 @@ int GetAvailableAddress()
 
 bool ReleaseAddress(int address)
 {
-    for (int i = 0; i < MAX_I2C_ADDRESSES; i++)
+    for (int i = 9; i < MAX_I2C_ADDRESSES; i++)
     {
         if (addresses[i].address == address)
         {
@@ -188,4 +180,32 @@ bool ReleaseAddress(int address)
         }
     }
     return false;
+}
+
+void I2C::Scan()
+{
+    Wire.end();
+    Wire.begin();
+    for (int i = 9; i < MAX_I2C_ADDRESSES; i++)
+    {
+        Wire.beginTransmission(i);
+        Wire.write((int)Node_Registers::NR_RequestForm); Wire.write(0x02);
+        Wire.endTransmission();
+        Wire.requestFrom(i, 1);
+        int heartbeat = Wire.read();
+        if(heartbeat == 0)
+        {
+            ReleaseAddress(i);
+        }
+    }
+    Wire.end();
+    Wire.begin(this->address);
+    for (int i = 9; i < MAX_I2C_ADDRESSES; i++)
+    {
+        if(addresses[i].available == false)
+        {
+            Serial.print("Taken Address: ");
+            Serial.println(i);
+        }
+    }
 }
