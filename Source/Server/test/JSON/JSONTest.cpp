@@ -340,4 +340,132 @@ TEST_F(JSONTests, ParseNodeEventProductFoundToJSON)
     ASSERT_EQ(data, "{\"Action\":\"ProductFound\",\"Product\":\"Product\",\"Result\":true}");
 }
 
+//========================================================//
+//                                                        //
+//                Object -> JSON -> Object                //
+//                                                        //
+//========================================================//
+
+TEST_F(JSONTests, ParseHeartBeatToJSONToObject)
+{
+    FindIt::HeartBeat heartBeat;
+    std::string data = parser.Parse(heartBeat);
+    FindIt::IMessage* message = parser.Parse(data);
+    ASSERT_NE(message, nullptr);
+    ASSERT_EQ(message->GetType(), FindIt::MessageType::HEARTBEAT);
+    delete message;
+}
+
+TEST_F(JSONTests, ParseHeartBeatResponseToJSONToObject)
+{
+    FindIt::HeartBeatResponse heartBeatResponse("NodeName", 3);
+    std::string data = parser.Parse(heartBeatResponse);
+    FindIt::IMessage* message = parser.Parse(data);
+    ASSERT_NE(message, nullptr);
+    ASSERT_EQ(message->GetType(), FindIt::MessageType::HEARTBEAT_RESPONSE);
+    FindIt::HeartBeatResponse* heartBeatResponse2 = dynamic_cast<FindIt::HeartBeatResponse*>(message);
+    ASSERT_EQ(heartBeatResponse2->GetAction(), "HeartBeat");
+    ASSERT_EQ(heartBeatResponse2->GetNode(), "NodeName");
+    ASSERT_EQ(heartBeatResponse2->GetPlaces(), 3);
+    delete message;
+}
+
+TEST_F(JSONTests, ParseSignInToJSONToObject)
+{
+    FindIt::NodeSignIn signIn("NodeName", 3);
+    std::string data = parser.Parse(signIn);
+    FindIt::IMessage* message = parser.Parse(data);
+    ASSERT_NE(message, nullptr);
+    ASSERT_EQ(message->GetType(), FindIt::MessageType::NODE_SIGN_IN);
+    FindIt::NodeSignIn* signIn2 = dynamic_cast<FindIt::NodeSignIn*>(message);
+    ASSERT_EQ(signIn2->GetAction(), "SignIn");
+    ASSERT_EQ(signIn2->GetNode(), "NodeName");
+    ASSERT_EQ(signIn2->GetPlaces(), 3);
+    delete message;
+}
+
+TEST_F(JSONTests, ParseSignInResponseToJSONToObject)
+{
+    FindIt::NodeSignInResponse signInResponse("NodeName", 3, true);
+    std::string data = parser.Parse(signInResponse);
+    FindIt::IMessage* message = parser.Parse(data);
+    ASSERT_NE(message, nullptr);
+    ASSERT_EQ(message->GetType(), FindIt::MessageType::NODE_SIGN_IN_RESPONSE);
+    FindIt::NodeSignInResponse* signInResponse2 = dynamic_cast<FindIt::NodeSignInResponse*>(message);
+    ASSERT_EQ(signInResponse2->GetAction(), "SignIn");
+    ASSERT_EQ(signInResponse2->GetNode(), "NodeName");
+    ASSERT_EQ(signInResponse2->GetPlaces(), 3);
+    ASSERT_EQ(signInResponse2->GetResult(), true);
+    delete message;
+}
+
+TEST_F(JSONTests, ParseNodeNotifyNewProductResponseToJSONToObject)
+{
+    FindIt::NodeNotifyNewProductResponse nodeNotifyNewProductResponse("Product", true);
+    std::string data = parser.Parse(nodeNotifyNewProductResponse);
+    FindIt::IMessage* message = parser.Parse(data);
+    ASSERT_NE(message, nullptr);
+    ASSERT_EQ(message->GetType(), FindIt::MessageType::NODE_NOTIFY_NEW_PRODUCT_RESPONSE);
+    FindIt::NodeNotifyNewProductResponse* nodeNotifyNewProductResponse2 = dynamic_cast<FindIt::NodeNotifyNewProductResponse*>(message);
+    ASSERT_EQ(nodeNotifyNewProductResponse2->GetAction(), "NotifyNewProduct");
+    ASSERT_EQ(nodeNotifyNewProductResponse2->GetProduct(), "Product");
+    ASSERT_EQ(nodeNotifyNewProductResponse2->GetResult(), true);
+    delete message;
+}
+
+TEST_F(JSONTests, ParseNodeNotifyNewProductToJSONToObject)
+{
+    FindIt::NodeNotifyNewProduct nodeNotifyNewProduct("Product");
+    std::string data = parser.Parse(nodeNotifyNewProduct);
+    FindIt::IMessage* message = parser.Parse(data);
+    ASSERT_NE(message, nullptr);
+    ASSERT_EQ(message->GetType(), FindIt::MessageType::NODE_NOTIFY_NEW_PRODUCT);
+    FindIt::NodeNotifyNewProduct* nodeNotifyNewProduct2 = dynamic_cast<FindIt::NodeNotifyNewProduct*>(message);
+    ASSERT_EQ(nodeNotifyNewProduct2->GetAction(), "NotifyNewProduct");
+    ASSERT_EQ(nodeNotifyNewProduct2->GetProduct(), "Product");
+    delete message;
+}
+
+TEST_F(JSONTests, ParseServerRequestProductToJSONToObject)
+{
+    FindIt::ServerRequestProduct serverRequestProduct("Product", false);
+    std::string data = parser.Parse(serverRequestProduct);
+    FindIt::IMessage* message = parser.Parse(data);
+    ASSERT_NE(message, nullptr);
+    ASSERT_EQ(message->GetType(), FindIt::MessageType::SERVER_REQUEST_PRODUCT);
+    FindIt::ServerRequestProduct* serverRequestProduct2 = dynamic_cast<FindIt::ServerRequestProduct*>(message);
+    ASSERT_EQ(serverRequestProduct2->GetAction(), "RequestProduct");
+    ASSERT_EQ(serverRequestProduct2->GetProduct(), "Product");
+    ASSERT_EQ(serverRequestProduct2->GetActivate(), false);
+    delete message;
+}
+
+TEST_F(JSONTests, ParseNodeRespondToProductRequestToJSONToObject)
+{
+    FindIt::NodeRespondToProductRequest nodeRespondToProductRequest("Product", true);
+    std::string data = parser.Parse(nodeRespondToProductRequest);
+    FindIt::IMessage* message = parser.Parse(data);
+    ASSERT_NE(message, nullptr);
+    ASSERT_EQ(message->GetType(), FindIt::MessageType::NODE_RESPOND_TO_PRODUCT_REQUEST);
+    FindIt::NodeRespondToProductRequest* nodeRespondToProductRequest2 = dynamic_cast<FindIt::NodeRespondToProductRequest*>(message);
+    ASSERT_EQ(nodeRespondToProductRequest2->GetAction(), "ResponseProduct");
+    ASSERT_EQ(nodeRespondToProductRequest2->GetProduct(), "Product");
+    ASSERT_EQ(nodeRespondToProductRequest2->GetResult(), true);
+    delete message;
+}
+
+TEST_F(JSONTests, ParseNodeEventProductFoundToJSONToObject)
+{
+    FindIt::NodeEventProductFound nodeEventProductFound("Product", true);
+    std::string data = parser.Parse(nodeEventProductFound);
+    FindIt::IMessage* message = parser.Parse(data);
+    ASSERT_NE(message, nullptr);
+    ASSERT_EQ(message->GetType(), FindIt::MessageType::NODE_EVENT_PRODUCT_FOUND);
+    FindIt::NodeEventProductFound* nodeEventProductFound2 = dynamic_cast<FindIt::NodeEventProductFound*>(message);
+    ASSERT_EQ(nodeEventProductFound2->GetAction(), "ProductFound");
+    ASSERT_EQ(nodeEventProductFound2->GetProduct(), "Product");
+    ASSERT_EQ(nodeEventProductFound2->GetResult(), true);
+    delete message;
+}
+
 } // namespace
