@@ -17,6 +17,7 @@ public:
 
     std::string GetName();
     int GetID();
+    bool operator==(const Object& other) const;
 };
 
 };

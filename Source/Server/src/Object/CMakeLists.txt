@@ -8,10 +8,8 @@ set(Sources
     Object.cpp
 )
 
-set(GlobalIncludeDirs
-    ${GlobalIncludeDirs}
-    ${CMAKE_CURRENT_LIST_DIR}
-    PARENT_SCOPE
-)
-
 add_library(Object STATIC ${Sources} ${Headers})
+
+target_include_directories(Object PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)

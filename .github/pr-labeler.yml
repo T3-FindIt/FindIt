@@ -1,0 +1,4 @@
+enhancement: ['feature/*', 'feat/*', 'enhancement/*']
+bug: ['bug/*', 'fix/*']
+documentation: ['docs/*', 'doc/*']
+StyleChecker: ['*/StyleChecker/*']

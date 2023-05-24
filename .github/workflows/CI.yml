@@ -2,9 +2,7 @@ name: CI
 
 on:
   pull_request:
-    branches:
-      - main
-      - development
+    types: [review_requested]
   workflow_dispatch:
     inputs:
       reason:
@@ -14,8 +12,27 @@ on:
 
 run-name: ${{ inputs.reason || github.event.pull_request.title || github.event.head_commit.message || 'unexpected workflow trigger' }}
 
-jobs: 
+env:
+  SKIP_CI: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      skip-ci: ${{ env.SKIP_CI }}
+    steps:
+      - id: name-check
+        name: Check PR name
+        run: |
+          if [[ "${{ github.event.pull_request.title }}" =~ ^doc\/.*$|^docs\/.*$|^no-ci\/.*$ ]]; then
+            echo "Skipping CI for documentation-only PR"
+            echo "SKIP_CI=true" >> $GITHUB_ENV
+            exit 0
+          fi
+
   WiFI-POC:
+    needs: check
+    if: ${{ needs.check.outputs.skip-ci == 'false' }}
     runs-on: windows-latest
 
     env:
@@ -31,29 +48,51 @@ jobs:
     - name: Build
       working-directory: ./POCs/WiFi/Server/
       run: cmake --build ./build --config ${{env.BUILD_TYPE}}
+
+  Master:
+    needs: check
+    if: ${{ needs.check.outputs.skip-ci == 'false' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+
+      - name: Test
+        working-directory: ./Source/Master/
+        run: platformio test --environment native -f unit -v
+
+  Server:
+    needs: check
+    if: ${{ needs.check.outputs.skip-ci == 'false' }}
+    runs-on: windows-latest
+
+    env:
+      BUILD_TYPE: Debug
+
+    steps:
+    - uses: actions/checkout@v3
     
-    # - name: Test
-      # working-directory: ./POCs/WiFi/Server/
-      # run: ctest -C ${{env.BUILD_TYPE}}
-  # Node: // no test present yet
-  #   runs on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
+    - name: configure
+      working-directory: ./Source/Server/
+      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    
+    - name: Build
+      working-directory: ./Source/Server/
+      run: cmake --build ./build --config ${{env.BUILD_TYPE}}
 
-  #     - uses: actions/cache@v3
-  #       with:
-  #         path: |
-  #           ~/.cache/pip
-  #           ~/.platformio/.cache
-  #         key: ${{ runner.os }}-pio
-
-  #     - uses: actions/setup-python@v4
-  #       with:
-  #         python-version: '3.9'
-
-  #     - name: Install PlatformIO Core
-  #       run: pip install --upgrade platformio
-
-  #     - name: Test
-  #       working-directory: ./Source/Node/
-  #       run: platformio test --environment native -f unit -v
+    - name: Run all tests
+      working-directory: ./Source/Server/Build
+      run: ctest -j18 -C ${{env.BUILD_TYPE}} -T test --output-on-failure
