@@ -8,6 +8,10 @@ Object::Object(std::string Name, int ID)
     this->id = ID;
 }
 
+Object::~Object()
+{
+}
+
 std::string Object::GetName()
 {
     return this->name;
@@ -16,6 +20,11 @@ std::string Object::GetName()
 int Object::GetID()
 {
     return this->id;
+}
+
+bool Object::operator==(const Object &other) const
+{
+    return this->name == other.name && this->id == other.id;
 }
 
 };

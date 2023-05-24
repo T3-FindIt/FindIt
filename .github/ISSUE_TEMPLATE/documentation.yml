@@ -1,0 +1,49 @@
+name: documentation
+description: Report a documentation issue
+labels: [documentation]
+title: 'documentation/'
+
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thanks for reporting a documentation issue! Please fill out the sections below.
+        Bedankt voor het melden van een documentatieprobleem! Vul de onderstaande secties in.
+
+  - type: dropdown
+    attributes:
+      label: Documentation location / Documentatielocatie
+      description: >-
+        Please select the location of the documentation issue. / Selecteer de locatie van het documentatieprobleem.
+      options:
+        - 'Server'
+        - 'Master'
+        - 'Node'
+        - 'StyleChecker'
+        - 'Coding Standard'
+        - 'Manifesto'
+        - 'Other/Anders' 
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Documentation issue description / Beschrijving documentatieprobleem
+      description: >-
+        Please describe the documentation issue. / Beschrijf het documentatieprobleem.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Suggested documentation change / Voorgestelde documentatiewijziging
+      description: >-
+        Please describe the suggested documentation change. / Beschrijf de voorgestelde documentatiewijziging.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional information / Aanvullende informatie
+      description: >-
+        Please provide any additional information. / Geef eventuele aanvullende informatie.

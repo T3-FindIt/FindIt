@@ -44,10 +44,11 @@ void onMessage(const uint64_t client, const std::string& message)
 
 void onConnect(const uint64_t client)
 {
-    clients.push_back((client_t){.id = client,
-                                    .lastCommunication = std::chrono::system_clock::now(),
-                                    .last_out_message_time = std::chrono::system_clock::now(),
-                                    .last_out_message = MessageType::INVALID});
+    client_t newClient = {.id = client,
+                            .lastCommunication = std::chrono::system_clock::now(),
+                            .last_out_message_time = std::chrono::system_clock::now(),
+                            .last_out_message = MessageType::INVALID};
+    clients.push_back(newClient);
     std::cout << "Client " << client << " connected" << std::endl;
 }
 
@@ -78,7 +79,7 @@ Communication::~Communication()
 void Communication::Run()
 {
     this->isRunning = true;
-    IClusterConnection* _clusterConnection = &this->clusterConnection;
+    IClusterConnection* _clusterConnection = &clusterConnection;
     std::jthread server_thread(&IClusterConnection::run, _clusterConnection);
     while (this->isRunning)
     {

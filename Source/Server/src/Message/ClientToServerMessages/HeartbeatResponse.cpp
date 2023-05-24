@@ -6,7 +6,7 @@ namespace FindIt
 HeartBeatResponse::HeartBeatResponse(std::string node, uint32_t places)
     : node(node), places(places)
 {
-    this->action = "HeartbeatResponse";
+    this->action = "HeartBeat";
     this->type = MessageType::HEARTBEAT_RESPONSE;
 }
 

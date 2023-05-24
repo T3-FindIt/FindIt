@@ -1,9 +1,9 @@
 #ifndef ICLUSTERCONNECTION_HPP
 #define ICLUSTERCONNECTION_HPP
 
-#include <IMessage.hpp>
-
 #include <functional>
+#include <cstdint>
+#include <string>
 
 namespace FindIt
 {
