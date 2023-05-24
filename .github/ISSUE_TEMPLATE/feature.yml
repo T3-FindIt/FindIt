@@ -1,0 +1,50 @@
+name: feature request
+description: Request a feature
+labels: [enhancement]
+title: 'feature/'
+
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thanks for requesting a feature! Please fill out the sections below.
+        Bedankt voor het aanvragen van een functie! Vul de onderstaande secties in.
+
+  - type: dropdown
+    attributes:
+      label: Feature location / Functielocatie
+      description: >-
+        Please select where the feature should be implemented. / Selecteer waar de functie moet worden geïmplementeerd.
+      options:
+        - 'Server'
+        - 'Master'
+        - 'Node'
+        - 'StyleChecker'
+        - 'Other/Anders' 
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Feature description / Functiebeschrijving
+      description: >-
+        Please describe the feature. / Beschrijf de functie.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional information / Aanvullende informatie
+      description: >-
+        Please provide any additional information. / Geef eventuele aanvullende informatie.
+
+  - type: dropdown
+    attributes:
+      label: Contributing / Bijdragen
+      description: >-
+        Would you like to contribute to the implementation of this feature? / Wil je bijdragen aan de implementatie van deze functie?
+      options:
+        - 'Yes / Ja'
+        - 'No / Nee'
+    validations:
+      required: true

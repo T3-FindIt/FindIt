@@ -78,8 +78,11 @@ def CheckFolder(folderPath:str, supported_extensions:list, ignored_folders:list)
 
         elif extension == CPPChecker.supported_extensions[1]:
             fileCount += 1
-            if files.count(name + CPPChecker.supported_extensions[0]) == 0:
-                logger.PrintFileWarning(absPath, 'C++ header file found without a corresponding source file.')
+            if (files.count(name + CPPChecker.supported_extensions[0]) == 0):
+                if not (name.__sizeof__() > 2
+                    and name[0] == 'I'
+                    and name[1].isupper()):
+                    logger.PrintFileWarning(absPath, 'C++ header file found without a corresponding source file.')
 
             if CPPChecker.CheckHeader(absPath) is True:
                 failed = True

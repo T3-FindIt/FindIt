@@ -6,7 +6,7 @@ namespace FindIt
 NodeEventProductFound::NodeEventProductFound(std::string product, bool result)
     : product(product), result(result)
 {
-    this->action = "NodeEventProductFound";
+    this->action = "ProductFound";
     this->type = MessageType::NODE_EVENT_PRODUCT_FOUND;
 }
 

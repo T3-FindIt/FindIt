@@ -1,5 +1,4 @@
 #include "I2CCommunication.hpp"
-#include <Arduino.h>
 volatile uint8_t activeRegisterAdress;
 volatile uint8_t RGBValues[3];
 volatile uint8_t notificationModeRegistry;
@@ -29,9 +28,38 @@ void OnRecieve(int HowMany)
     {
         for (int i = 0; i < 3; i++)
         {
-            RGBValues[i] = Wire.read();
+            //requestfrom shizzle :)
+            Wire.flush();
+            break;
         }
-        break;
+        case NOTIFICATION_REG:
+        {
+            notificationModeRegistry = Wire.read();
+            break;
+        }
+        case RGB_REG:
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                RGBValues[i] = Wire.read();
+            }
+            break;
+        }
+        case ACTIVE_REG:
+        {
+            notificationState = Wire.read();
+            break;
+        }
+        case ERROR_REG:
+        {
+            recievedErrorState = Wire.read();
+            break;
+        }
+        default:
+        {
+            activeRegisterAdress = Wire.read();
+            break;
+        }
     }
     case ACTIVE_REG:
     {
@@ -99,7 +127,6 @@ int I2CCommunication::SendNewItemToHub(char* itemString)
         }
     }
     Wire.endTransmission();
-
     return 0;
 }
 
