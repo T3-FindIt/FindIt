@@ -21,26 +21,25 @@ IMessage* JSONProtocolParser::Parse(std::string data)
         return nullptr;
     }
 
-    if (json_obj.find("action") == json_obj.end())
+    if (json_obj.find("Action") == json_obj.end())
     {
         return nullptr;
     }
 
-    if (!json_obj["action"].is_string())
+    if (!json_obj["Action"].is_string())
     {
         return nullptr;
     }
 
-    std::string action = json_obj["action"];
-
-    if (action == "HeartBeat")
+    if (std::string action = json_obj["Action"]; action == "HeartBeat")
     {
         if (json_obj.find("Node") != json_obj.end()
             && json_obj.find("Places") != json_obj.end())
         {
             return new HeartBeatResponse(json_obj["Node"], json_obj["Places"]);
         }
-        else
+        else if (json_obj.find("Node") == json_obj.end()
+                && json_obj.find("Places") == json_obj.end())
         {
             return new HeartBeat();
         }
@@ -53,10 +52,39 @@ IMessage* JSONProtocolParser::Parse(std::string data)
         {
             return new NodeSignInResponse(json_obj["Node"], json_obj["Places"], json_obj["Result"]);
         }
-        else
         {
             return new NodeSignIn(json_obj["Node"], json_obj["Places"]);
         }
+    }
+    else if (action == "NotifyNewProduct"
+            && json_obj.find("Product") != json_obj.end())
+    {
+        if (json_obj.find("Result") != json_obj.end())
+        {
+            return new NodeNotifyNewProductResponse(json_obj["Product"], json_obj["Result"]);
+        }
+        else
+        {
+            return new NodeNotifyNewProduct(json_obj["Product"]);
+        }
+    }
+    else if (action == "RequestProduct"
+            && json_obj.find("Product") != json_obj.end()
+            && json_obj.find("_Activate") != json_obj.end())
+    {
+        return new ServerRequestProduct(json_obj["Product"], json_obj["_Activate"]);
+    }
+    else if (action == "ResponseProduct"
+            && json_obj.find("Product") != json_obj.end()
+            && json_obj.find("Result") != json_obj.end())
+    {
+        return new NodeRespondToProductRequest(json_obj["Product"], json_obj["Result"]);
+    }
+    else if (action == "ProductFound"
+            && json_obj.find("Product") != json_obj.end()
+            && json_obj.find("Result") != json_obj.end())
+    {
+        return new NodeEventProductFound(json_obj["Product"], json_obj["Result"]);
     }
 
     return nullptr;
