@@ -12,7 +12,7 @@ MFRC522Reader::MFRC522Reader(int SS_PIN, int RST_PIN)
     reader.PCD_Init();
     for (byte i = 0; i < 6; i++)
     {
-        key.keyByte[i] = 0xFF;
+        key.keyByte[i] = DEFAULT_KEY;
     }
 }
 
