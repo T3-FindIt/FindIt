@@ -271,4 +271,73 @@ TEST_F(JSONTests, ParseNodeEventProductFoundToObjectMissingResultFail)
     ASSERT_EQ(message, nullptr);
 }
 
+//========================================================//
+//                                                        //
+//                     Object -> JSON                     //
+//                                                        //
+//========================================================//
+
+TEST_F(JSONTests, ParseHeartBeatToJSON)
+{
+    FindIt::HeartBeat heartBeat;
+    std::string data = parser.Parse(heartBeat);
+    ASSERT_EQ(data, "{\"Action\":\"HeartBeat\"}");
+}
+
+TEST_F(JSONTests, ParseHeartBeatResponseToJSON)
+{
+    FindIt::HeartBeatResponse heartBeatResponse("NodeName", 3);
+    std::string data = parser.Parse(heartBeatResponse);
+    ASSERT_EQ(data, "{\"Action\":\"HeartBeat\",\"Node\":\"NodeName\",\"Places\":3}");
+}
+
+TEST_F(JSONTests, ParseSignInToJSON)
+{
+    FindIt::NodeSignIn signIn("NodeName", 3);
+    std::string data = parser.Parse(signIn);
+    ASSERT_EQ(data, "{\"Action\":\"SignIn\",\"Node\":\"NodeName\",\"Places\":3}");
+}
+
+TEST_F(JSONTests, ParseSignInResponseToJSON)
+{
+    FindIt::NodeSignInResponse signInResponse("NodeName", 3, true);
+    std::string data = parser.Parse(signInResponse);
+    ASSERT_EQ(data, "{\"Action\":\"SignIn\",\"Node\":\"NodeName\",\"Places\":3,\"Result\":true}");
+}
+
+TEST_F(JSONTests, ParseNodeNotifyNewProductResponseToJSON)
+{
+    FindIt::NodeNotifyNewProductResponse nodeNotifyNewProductResponse("Product", true);
+    std::string data = parser.Parse(nodeNotifyNewProductResponse);
+    ASSERT_EQ(data, "{\"Action\":\"NotifyNewProduct\",\"Product\":\"Product\",\"Result\":true}");
+}
+
+TEST_F(JSONTests, ParseNodeNotifyNewProductToJSON)
+{
+    FindIt::NodeNotifyNewProduct nodeNotifyNewProduct("Product");
+    std::string data = parser.Parse(nodeNotifyNewProduct);
+    ASSERT_EQ(data, "{\"Action\":\"NotifyNewProduct\",\"Product\":\"Product\"}");
+}
+
+TEST_F(JSONTests, ParseServerRequestProductToJSON)
+{
+    FindIt::ServerRequestProduct serverRequestProduct("Product", false);
+    std::string data = parser.Parse(serverRequestProduct);
+    ASSERT_EQ(data, "{\"Action\":\"RequestProduct\",\"Product\":\"Product\",\"_Activate\":false}");
+}
+
+TEST_F(JSONTests, ParseNodeRespondToProductRequestToJSON)
+{
+    FindIt::NodeRespondToProductRequest nodeRespondToProductRequest("Product", true);
+    std::string data = parser.Parse(nodeRespondToProductRequest);
+    ASSERT_EQ(data, "{\"Action\":\"ResponseProduct\",\"Product\":\"Product\",\"Result\":true}");
+}
+
+TEST_F(JSONTests, ParseNodeEventProductFoundToJSON)
+{
+    FindIt::NodeEventProductFound nodeEventProductFound("Product", true);
+    std::string data = parser.Parse(nodeEventProductFound);
+    ASSERT_EQ(data, "{\"Action\":\"ProductFound\",\"Product\":\"Product\",\"Result\":true}");
+}
+
 } // namespace
