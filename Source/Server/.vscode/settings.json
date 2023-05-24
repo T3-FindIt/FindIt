@@ -82,6 +82,7 @@
         "xutility": "cpp",
         "xthread": "cpp",
         "xmemory0": "cpp",
-        "charconv": "cpp"
+        "charconv": "cpp",
+        "queue": "cpp"
     }
 }

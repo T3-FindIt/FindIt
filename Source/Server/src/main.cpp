@@ -7,37 +7,26 @@
 #include <JSONProtocolParser.hpp>
 #include <Object.hpp>
 #include <PlainFileDatabase.hpp>
+#include <IMessage.hpp>
+#include <MessageQueue.hpp>
 
 
 int main()
 {
-    // Set cluster coms to a TCP connection on port 54000
-    FindIt::Server clusterConnection(54000);
+    FindIt::MessageQueue *queue = new FindIt::MessageQueue();
+    FindIt::HeartBeatResponse message("node_name", 1);
+    FindIt::HeartBeatResponse *message2;
 
-    // Set protocol parser to JSON
-    FindIt::JSONProtocolParser protocolParser;
+    queue->push(&message);
+    message2 = (FindIt::HeartBeatResponse*)queue->pop();
 
-    // Set up communication and start a new thread for it
-    FindIt::Communication communication(clusterConnection, protocolParser);
-    std::jthread communicationThread(&FindIt::Communication::Run, communication);
+    std::string lol = message2->GetNode();
+    std::cout << lol << std::endl;
 
-    // std::cin.get();
-
-    // communication->Stop();
-    // communicationThread.join();
-
-
-    FindIt::PlainFileDatabase database("./Data/Database.txt");
-    database.Add(FindIt::Object("TEST_JOHN", 51));
-    database.Add(FindIt::Object("TEST_TEST", 35));
-    database.Add(FindIt::Object("TEST_TEST", 35));
-    database.Add(FindIt::Object("TEST_BARB", 50));
-    database.Add(FindIt::Object("TEST_JOHNS", 52));
-    database.SearchIfPresent(FindIt::Object("TEST_TEST", 35));
-
-    std::vector<FindIt::Object> objects = database.GetAllObjects();
-
-    database.Remove(FindIt::Object("TEST_TEST", 35));
+    while(true)
+    {
+        //so the application doesnt close
+    }
 
     return 0;
 }
