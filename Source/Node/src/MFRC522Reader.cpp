@@ -2,7 +2,14 @@
 #include <SPI.h>
 
 #define DEFAULT_KEY 0xFF
+#define MAX_STRING_ARRAY_LENGTH 49
+#define LAST_STRING_ARRAY_BYTE 48
+#define MIFARE_BUFFER_SIZE 18
+#define TAG_START_ADRESS 4
+#define RESET_BUFFER_TIME 50
+#define NFC_TAG_BLOCK_SIZE 16
 #define DEFAULT_TRAILER_BLOCK 7
+#define KEY_SIZE 6
 
 
 MFRC522Reader::MFRC522Reader(int SS_PIN, int RST_PIN)
@@ -10,7 +17,7 @@ MFRC522Reader::MFRC522Reader(int SS_PIN, int RST_PIN)
     reader = MFRC522(SS_PIN, RST_PIN);
     SPI.begin();
     reader.PCD_Init();
-    for (byte i = 0; i < 6; i++)
+    for (byte i = 0; i < KEY_SIZE; i++)
     {
         key.keyByte[i] = DEFAULT_KEY;
     }
@@ -36,7 +43,7 @@ bool MFRC522Reader::CheckForCard()
     if (status == MFRC522::STATUS_TIMEOUT)
     {
         reader.PCD_Reset();
-        delay(50);
+        delay(RESET_BUFFER_TIME);
         reader.PCD_Init();
     }
     reader.PICC_IsNewCardPresent();
@@ -54,7 +61,7 @@ bool MFRC522Reader::CheckForCard()
 // outputstring has to be [49]
 int MFRC522Reader::ReadCard(char* outputString, int arrayLength)
 {
-    if (arrayLength < 49)
+    if (arrayLength < MAX_STRING_ARRAY_LENGTH)
     {
         return -1;
     }
@@ -71,27 +78,27 @@ int MFRC522Reader::ReadCard(char* outputString, int arrayLength)
 
     for (int i = 2; i >= 0; i--)
     {
-        byte readBuffer[18];
+        byte readBuffer[MIFARE_BUFFER_SIZE];
         byte size = sizeof(readBuffer);
 
-        byte address = 4 + i;
+        byte address = TAG_START_ADRESS + i;
         status = (MFRC522::StatusCode)reader.MIFARE_Read(address, readBuffer, &size);
         if (status != MFRC522::STATUS_OK)
         {
             return -1;
         }
-        for (int j = 0; j < 16; j++)
+        for (int j = 0; j < NFC_TAG_BLOCK_SIZE; j++)
         {
             if (readBuffer[j] == '\n')
             {
-                outputString[i * 16 + j] = '\0';
+                outputString[i * NFC_TAG_BLOCK_SIZE + j] = '\0';
             }
             else
             {
-                outputString[i * 16 + j] = readBuffer[j];
+                outputString[i * NFC_TAG_BLOCK_SIZE + j] = readBuffer[j];
             }
         }
-        outputString[48] = '\0';
+        outputString[LAST_STRING_ARRAY_BYTE] = '\0';
     }
 
     reader.PCD_StopCrypto1();
