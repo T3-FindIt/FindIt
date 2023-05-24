@@ -18,36 +18,21 @@ std::vector<std::string> testfunc()
     test.push_back("string 7 ");
 
     return test;
+    //test functionality
 }
 
 void lol(std::string xd)
 {
-    std::cout << "lol function called\n";
+    std::cout << "lol function called" << std::endl;
+    //test functionality
 }
 
 int main()
 {
-    // std::function<>
     FindIt::UserInterface *UI = new FindIt::UserInterface(testfunc, lol);
 
-    // UI->Run();
     std::jthread t1(&FindIt::UserInterface::Run, UI);
     t1.join();
-
-    // // Set cluster coms to a TCP connection on port 54000
-    // FindIt::Server* clusterConnection = new FindIt::Server(54000);
-
-    // // Set protocol parser to JSON
-    // FindIt::JSONProtocolParser* protocolParser = new FindIt::JSONProtocolParser();
-
-    // // Set up communication and start a new thread for it
-    // FindIt::Communication* communication = new FindIt::Communication(*clusterConnection, *protocolParser);
-    // std::jthread communicationThread(&FindIt::Communication::Run, communication);
-
-    //std::cin.get(); //check this out
-
-    // communication->Stop();
-    // communicationThread.join();
 
     delete UI;
 

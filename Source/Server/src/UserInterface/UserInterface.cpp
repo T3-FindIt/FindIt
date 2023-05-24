@@ -15,10 +15,10 @@ namespace FindIt
     
     void UserInterface::PrintStartUp(int *choice)
     {
-        std::cout << "Welcome to the FindIt Server UI, please select your choice:\n";
-        std::cout << "1. Show all knwon object types\n";
-        std::cout << "2. Request/search up objects\n";  //think about eventual exceptions
-        std::cout << "3. Quit application";
+        std::cout << "Welcome to the FindIt Server UI, please select your choice:\n"
+        << "1. Show all knwon object types\n"
+        << "2. Request/search up objects\n"  //think about eventual exceptions
+        << "3. Quit application" << std::endl;
         std::cin >> *choice;
     }
 
@@ -33,15 +33,15 @@ namespace FindIt
             switch (choice)
             {
             case 1:
-                std::cout << "All types:\n";
+                std::cout << "All types:" << std::endl;
                 for(auto type : ReturnUniqueObjectsTypes())
                 {
-                    std::cout << type + "\n";
+                    std::cout << type << std::endl;
                 }
                 break;
 
             case 2:
-                std::cout << "Type in the object you would like to request";
+                std::cout << "Type in the object you would like to request" << std::endl;
                 std::cin >> requestedObject;
                 RequestObject(requestedObject);
                 break;
@@ -61,7 +61,7 @@ namespace FindIt
 
     void UserInterface::Stop()
     {
-        std::cout << "self destruct sequence started in 10 seconds\n";
+        std::cout << "self destruct sequence started in 10 seconds" << std::endl;
         running = false;
         //kill thread and shut everything down?
     }
