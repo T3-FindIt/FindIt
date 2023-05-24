@@ -29,7 +29,27 @@ void receiveEvent(int howMany) // A node sends data, not making a request.
 {
     if (howMany == 1)
     {
-
+        lastRecieved = (Node_Registers)Wire.read();
+    }
+    else
+    {
+        char data[MAX_STRING_SIZE];
+        for (size_t i = 0; i < howMany; i++)
+        {
+            data[i] = (char)Wire.read();
+        }
+        
+        switch (lastRecieved)
+        {
+        case Node_Registers::NR_Item:
+            Item = std::string(data);
+            break;
+        case Node_Registers::NR_Error:
+            Error = std::string(data);
+            break;        
+        default:
+            break;
+        }
     }
 }
 
@@ -50,18 +70,27 @@ I2C::I2C(int address)
     // Serial.begin(9600); !Debug!
 }
 
-void I2C::Send(int address,Node_Registers nodeRegister, int data)
+void I2C::Send(int address,Node_Registers node_Register, int data)
 {
     Wire.end();
     Wire.begin(); // Start as master
 
     Wire.beginTransmission(address);
-    Wire.write((int)nodeRegister);
+    Wire.write((int)node_Register);
     Wire.write(data);
     Wire.endTransmission();
 
     Wire.end();
     Wire.begin(this->address);
+}
+
+void I2C::Request(int address, Node_Registers node_Register, int sizeOfData)
+{
+    lastRecieved = node_Register;
+    Wire.beginTransmission(address);
+    Wire.write((int)node_Register);
+    Wire.endTransmission();
+    Wire.requestFrom(address, sizeOfData);
 }
 
 void I2C::Scan()
