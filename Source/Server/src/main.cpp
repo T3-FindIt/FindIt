@@ -30,7 +30,9 @@ int main()
     // std::function<>
     FindIt::UserInterface *UI = new FindIt::UserInterface(testfunc, lol);
 
-    UI->Run();
+    // UI->Run();
+    std::jthread t1(&FindIt::UserInterface::Run, UI);
+    t1.join();
 
     // // Set cluster coms to a TCP connection on port 54000
     // FindIt::Server* clusterConnection = new FindIt::Server(54000);
