@@ -5,6 +5,12 @@
 #define I2C_TIMEOUT 1000
 #define MILLIS_TO_SECONDS * 1000
 
+/// PROTOTYPES
+void InitializeAddresses();
+int GetAvailableAddress();
+bool ReleaseAddress(int address);
+///
+
 // ===================== //
 // ===== REGISTER ===== //
 // ===================== //

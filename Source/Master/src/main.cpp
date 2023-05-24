@@ -4,7 +4,7 @@
 #include "WiFiHandler.hpp"
 #include "WebSocketHandler.hpp"
 
-#define LOCAL_ADDRESS 0x08 // slave address
+#define LOCAL_ADDRESS 0x8 // slave address
 
 // Might be better to put this in a secret.h file. To be discussed with the Git Master
 #define SSID "SSID"
@@ -15,7 +15,7 @@
 
 WiFiHandler wifiHandler = WiFiHandler();
 WebSocketHandler webSocketHandler = WebSocketHandler();
-I2C i2c;
+I2C i2c (LOCAL_ADDRESS);
 
 void setup()
 {
@@ -39,7 +39,6 @@ void setup()
     Serial.begin(9600);
     Serial.println();
     Serial.println("Starting up!");
-    i2c = I2C(LOCAL_ADDRESS);
 }
 
 Node_Registers lastRequest = NR_None;

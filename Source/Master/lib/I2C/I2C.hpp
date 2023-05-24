@@ -11,7 +11,6 @@ class I2C : public IMasterSlave
     private:
     int address;
     public:
-    I2C() = default;
     I2C(int address);
     void Send(int address,Node_Registers register, int data);
     void Scan();
