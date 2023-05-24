@@ -1,3 +1,6 @@
+#ifndef MFRC522READER_HPP
+#define MFRC522READER_HPP
+
 #include <MFRC522.h>
 
 #include "IReader.hpp"
@@ -18,3 +21,5 @@ public:
     MFRC522::StatusCode status;
     int ReadCard(char* outputString, int arrayLength);
 };
+
+#endif // MFRC522READER_HPP
