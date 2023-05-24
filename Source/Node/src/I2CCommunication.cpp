@@ -13,10 +13,7 @@ void OnRecieve(int HowMany)
     {
     case REQUESTFROM_REG:
     {
-        while (Wire.available() > 0)
-        {
-            Wire.read();
-        }
+        //DO NOTHING
         break;
     }
     case NOTIFICATION_REG:
@@ -28,38 +25,9 @@ void OnRecieve(int HowMany)
     {
         for (int i = 0; i < 3; i++)
         {
-            //requestfrom shizzle :)
-            Wire.flush();
-            break;
+            RGBValues[i] = Wire.read();
         }
-        case NOTIFICATION_REG:
-        {
-            notificationModeRegistry = Wire.read();
-            break;
-        }
-        case RGB_REG:
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                RGBValues[i] = Wire.read();
-            }
-            break;
-        }
-        case ACTIVE_REG:
-        {
-            notificationState = Wire.read();
-            break;
-        }
-        case ERROR_REG:
-        {
-            recievedErrorState = Wire.read();
-            break;
-        }
-        default:
-        {
-            activeRegisterAdress = Wire.read();
-            break;
-        }
+        break;
     }
     case ACTIVE_REG:
     {
@@ -73,7 +41,7 @@ void OnRecieve(int HowMany)
     }
     default:
     {
-        activeRegisterAdress = Wire.read();
+        //DO NOTHING
         break;
     }
     }
