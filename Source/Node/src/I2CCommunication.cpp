@@ -1,28 +1,43 @@
 #include "I2CCommunication.hpp"
+#include <Arduino.h>
+
+#define HUB_ADDRESS 0x08
+#define DEFAULT_NODE_ADRESS 0x7F
+
+#define REQUESTFROM_SETUP_REG 0x01
+#define REQUESTFROM_HEARTBEAT_REG 0x02
+
 volatile uint8_t activeRegisterAdress;
 volatile uint8_t RGBValues[3];
 volatile uint8_t notificationModeRegistry;
 volatile bool notificationState;
 volatile uint8_t recievedErrorState;
 volatile uint8_t errorState;
+volatile uint8_t activeAdress;
+volatile uint8_t requestfromRegister;
 
-void OnRecieve(int HowMany)
+
+
+void RecieveEvent(int HowMany)
 {
     activeRegisterAdress = Wire.read();
     switch (activeRegisterAdress)
     {
     case REQUESTFROM_REG:
     {
-        //DO NOTHING
+        requestfromRegister = Wire.read();
+        Serial.println("Request from");
         break;
     }
     case NOTIFICATION_REG:
     {
+        Serial.println("Notification");
         notificationModeRegistry = Wire.read();
         break;
     }
     case RGB_REG:
     {
+        Serial.println("RGB");
         for (int i = 0; i < 3; i++)
         {
             RGBValues[i] = Wire.read();
@@ -31,16 +46,25 @@ void OnRecieve(int HowMany)
     }
     case ACTIVE_REG:
     {
+        Serial.println("Active");
         notificationState = Wire.read();
+        break;
+    }
+    case ITEM_REG:
+    {
+        Serial.println("Item");
+        //DO NOTHING
         break;
     }
     case ERROR_REG:
     {
+        Serial.println("Error");
         recievedErrorState = Wire.read();
         break;
     }
     default:
     {
+        Serial.println("Default");
         //DO NOTHING
         break;
     }
@@ -51,16 +75,22 @@ void OnRecieve(int HowMany)
     }   
 }
 
-void OnRequest()
+void RequestEvent()
 {
-    Wire.beginTransmission(HUB_ADDRESS);
-    Wire.write(errorState);
-    Wire.endTransmission();
+    if (requestfromRegister == REQUESTFROM_HEARTBEAT_REG)
+    {
+        Wire.write(activeAdress);
+    }
+    else
+    {
+        Wire.write(errorState);
+    }
 }
 
 I2CCommunication::I2CCommunication()
 {
-    activeRegisterAdress = 0xFF;
+    Serial.begin(9600);
+    activeRegisterAdress = 0;
     RGBValues[0] = 0;
     RGBValues[1] = 0;
     RGBValues[2] = 0;
@@ -68,9 +98,26 @@ I2CCommunication::I2CCommunication()
     notificationState = false;
     recievedErrorState = 0;
     errorState = 0;
-    Wire.begin(NODE_ADRESS);
-    Wire.onReceive(OnRecieve);
-    Wire.onRequest(OnRequest);
+    Wire.begin(DEFAULT_NODE_ADRESS);
+    while(activeAdress == 0|| activeAdress < 0x09 || activeAdress > 0x6F)
+    {
+        Wire.beginTransmission(HUB_ADDRESS);
+        Wire.write(REQUESTFROM_REG);
+        Wire.write(REQUESTFROM_SETUP_REG);
+        Wire.endTransmission();
+        Wire.requestFrom(HUB_ADDRESS, 1);
+        if (Wire.available() == 0)
+        {
+            Serial.println("Waiting for adress");
+            delay(500);
+            //DO NOTHING
+        }
+        activeAdress = Wire.read();
+    }
+    Wire.begin(activeAdress);
+    Wire.onReceive(RecieveEvent);
+    Wire.onRequest(RequestEvent);
+    Serial.println(activeAdress);
 }
 
 I2CCommunication::~I2CCommunication()
@@ -80,8 +127,13 @@ I2CCommunication::~I2CCommunication()
 
 int I2CCommunication::SendNewItemToHub(char* itemString)
 {
+    if (activeAdress == 0)
+    {
+        return -1;
+    }
     Wire.beginTransmission(HUB_ADDRESS);
     Wire.write(ITEM_REG);
+    Wire.write(activeAdress);
     bool endofstring = false;
     for (int i = 0; i < 49; i++)
     {

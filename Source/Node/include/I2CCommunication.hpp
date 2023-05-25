@@ -15,8 +15,7 @@
 #define ACTIVE_REG 0x04
 #define ERROR_REG 0x05
 
-#define HUB_ADDRESS 0x08
-#define NODE_ADRESS 0x7F
+
 
 class I2CCommunication
 {

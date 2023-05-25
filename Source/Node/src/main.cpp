@@ -16,8 +16,10 @@ void setup()
 
 void loop()
 {
-    static char currentCard[CARDSTRINGLENGTH];
+    static char currentCard[CARDSTRINGLENGTH] = "12345123451234512345123451234";
     bool status = nfcReader->CheckForCard();
+    delay(1000);
+    comToHub->SendNewItemToHub(currentCard);
     if (status)
     {
         char card[49];
@@ -30,10 +32,10 @@ void loop()
             comToHub->SendNewItemToHub(card);
         }
     }
-    else if (currentCard[0] != '\0')
-    {
-        Serial.println("Card removed");
-        currentCard[0] = '\0';
-        comToHub->SendNewItemToHub(currentCard);
-    }
+    // else if (currentCard[0] != '\0')
+    // {
+    //     Serial.println("Card removed");
+    //     currentCard[0] = '\0';
+    //     comToHub->SendNewItemToHub(currentCard);
+    // }
 }
