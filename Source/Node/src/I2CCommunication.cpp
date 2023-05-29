@@ -7,6 +7,12 @@
 #define REQUESTFROM_SETUP_REG 0x01
 #define REQUESTFROM_HEARTBEAT_REG 0x02
 
+#define MIN_ADRESS 0x09
+#define MAX_ADRESS 0x6F
+#define ADRESS_NOT_SET 0x00
+#define WAIT_FOR_SETUP_DELAY 500
+#define MAX_STRING_LENGTH 30
+
 volatile uint8_t activeRegisterAdress;
 volatile uint8_t RGBValues[3];
 volatile uint8_t notificationModeRegistry;
@@ -99,7 +105,7 @@ I2CCommunication::I2CCommunication()
     recievedErrorState = 0;
     errorState = 0;
     Wire.begin(DEFAULT_NODE_ADRESS);
-    while(activeAdress == 0|| activeAdress < 0x09 || activeAdress > 0x6F)
+    while(activeAdress == ADRESS_NOT_SET|| activeAdress < MIN_ADRESS || activeAdress > MAX_ADRESS)
     {
         Wire.beginTransmission(HUB_ADDRESS);
         Wire.write(REQUESTFROM_REG);
@@ -109,7 +115,7 @@ I2CCommunication::I2CCommunication()
         if (Wire.available() == 0)
         {
             Serial.println("Waiting for adress");
-            delay(500);
+            delay(WAIT_FOR_SETUP_DELAY);
             //DO NOTHING
         }
         activeAdress = Wire.read();
@@ -125,25 +131,26 @@ I2CCommunication::~I2CCommunication()
     Wire.end();
 }
 
-int I2CCommunication::SendNewItemToHub(char* itemString)
+int I2CCommunication::SendNewItemToHub(char* itemString, size_t stringLength)
 {
     if (activeAdress == 0)
     {
         return -1;
     }
+    if (stringLength > MAX_STRING_LENGTH)
+    {
+        return -2;
+    }
     Wire.beginTransmission(HUB_ADDRESS);
     Wire.write(ITEM_REG);
     Wire.write(activeAdress);
     bool endofstring = false;
-    for (int i = 0; i < 49; i++)
+    for (int i = 0; i < MAX_STRING_LENGTH; i++)
     {
-        if (!endofstring)
-        {
-            Wire.write(itemString[i]);
-        }
+        Wire.write(itemString[i]);
         if (itemString[i + 1] == '\0')
         {
-            endofstring = true;
+            i = MAX_STRING_LENGTH;
         }
     }
     Wire.endTransmission();

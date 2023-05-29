@@ -4,7 +4,7 @@
 #include "I2CCommunication.hpp"
 #include "MFRC522Reader.hpp"
 
-#define CARDSTRINGLENGTH 49
+#define CARDSTRINGLENGTH 30
 I2CCommunication* comToHub;
 MFRC522Reader* nfcReader;
 void setup()
@@ -19,17 +19,17 @@ void loop()
     static char currentCard[CARDSTRINGLENGTH] = "12345123451234512345123451234";
     bool status = nfcReader->CheckForCard();
     delay(1000);
-    comToHub->SendNewItemToHub(currentCard);
+    comToHub->SendNewItemToHub(currentCard, CARDSTRINGLENGTH);
     if (status)
     {
-        char card[49];
+        char card[CARDSTRINGLENGTH];
         nfcReader->ReadCard(card, CARDSTRINGLENGTH);
 
         if (strcmp(card, currentCard) != 0)
         {
             strcpy(currentCard, card);
             Serial.println(currentCard);
-            comToHub->SendNewItemToHub(card);
+            comToHub->SendNewItemToHub(card, CARDSTRINGLENGTH);
         }
     }
     // else if (currentCard[0] != '\0')

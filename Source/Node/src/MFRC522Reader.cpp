@@ -2,8 +2,8 @@
 #include <SPI.h>
 
 #define DEFAULT_KEY 0xFF
-#define MAX_STRING_ARRAY_LENGTH 49
-#define LAST_STRING_ARRAY_BYTE 48
+#define MAX_STRING_ARRAY_LENGTH 30
+#define LAST_STRING_ARRAY_BYTE 29
 #define MIFARE_BUFFER_SIZE 18
 #define TAG_START_ADRESS 4
 #define RESET_BUFFER_TIME 50
@@ -58,7 +58,7 @@ bool MFRC522Reader::CheckForCard()
     }
 }
 
-// outputstring has to be [49]
+// outputstring has to be [30]
 int MFRC522Reader::ReadCard(char* outputString, int arrayLength)
 {
     if (arrayLength < MAX_STRING_ARRAY_LENGTH)
@@ -76,7 +76,7 @@ int MFRC522Reader::ReadCard(char* outputString, int arrayLength)
         return -1;
     }
 
-    for (int i = 2; i >= 0; i--)
+    for (int i = 1; i >= 0; i--)
     {
         byte readBuffer[MIFARE_BUFFER_SIZE];
         byte size = sizeof(readBuffer);

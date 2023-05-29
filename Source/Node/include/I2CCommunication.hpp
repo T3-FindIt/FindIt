@@ -24,7 +24,7 @@ private:
 public:
     I2CCommunication();
     ~I2CCommunication();
-    int SendNewItemToHub(char* itemstring);
+    int SendNewItemToHub(char* itemString, size_t stringLength);
     void GetRGBValues(uint8_t* OutputArray);
     uint8_t GetNotificationModeRegistry();
     uint8_t GetNotificationState();
