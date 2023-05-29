@@ -1,23 +1,14 @@
-
 #include "MFRC522Writer.h"
-
 
 MFRC522Writer::MFRC522Writer(MFRC522 &nfc)
 {
     mfrc522 = nfc;
 }
 
-int MFRC522Writer::Transfer(byte data)
-{
-    return 0;
-}
-
 void MFRC522Writer::begin()
 {
-    //Serial.begin(9600);
     while (!Serial)
     {
-
     }
     SPI.begin();
     mfrc522.PCD_Init();
@@ -60,14 +51,16 @@ int MFRC522Writer::Write()
         return -1;
     }
 
-    byte sector = 1;
-    byte blockAddr = 4;
+    byte blockAddr4 = 4;
+    byte blockAddr5 = 5;
     byte trailerBlock = 7;
     MFRC522::StatusCode status;
-    byte buffer[18];
-    byte size = sizeof(buffer);
+    byte buffer[30] = "";
+    byte buffer4[18] = "";
+    byte buffer5[14] = "";
+    byte size = sizeof(buffer4);
 
-    Serial.println(F("Authenticating using key A..."));
+    // Serial.println(F("Authenticating using key A..."));
     status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &key, &(mfrc522.uid));
     if (status != MFRC522::STATUS_OK)
     {
@@ -76,27 +69,38 @@ int MFRC522Writer::Write()
         return -1;
     }
 
-    Serial.println(F("Current data in sector:"));
-    mfrc522.PICC_DumpMifareClassicSectorToSerial(&(mfrc522.uid), &key, sector);
-    Serial.println();
-
-    Serial.print(F("Reading data from block "));
-    Serial.print(blockAddr);
-    Serial.println(F(" ..."));
-    status = (MFRC522::StatusCode)mfrc522.MIFARE_Read(blockAddr, buffer, &size);
+    // read data from buffer block Addr 4
+    status = (MFRC522::StatusCode)mfrc522.MIFARE_Read(blockAddr4, buffer4, &size);
     if (status != MFRC522::STATUS_OK)
     {
         Serial.print(F("MIFARE_Read() failed: "));
         Serial.println(mfrc522.GetStatusCodeName(status));
     }
-    Serial.print(F("Data in block "));
-    Serial.print(blockAddr);
-    Serial.println(F(":"));
-    dump_byte_array(buffer, 16);
+
+    // read data from buffer block Addr 5
+    status = (MFRC522::StatusCode)mfrc522.MIFARE_Read(blockAddr5, buffer5, &size);
+    if (status != MFRC522::STATUS_OK)
+    {
+        Serial.print(F("MIFARE_Read() failed: "));
+        Serial.println(mfrc522.GetStatusCodeName(status));
+    }
+
+    // Consolidate the data into a one buffer
+    for (int i = 0; i < BufferSize; i++)
+    {
+        buffer[i] = buffer4[i];
+    }
+    for (int i = 0; i < BufferSize2; i++)
+    {
+        buffer[i + BufferSize] = buffer5[i];
+    }
+
+    Serial.print("Current data: ");
+    printStringData(buffer, MAX_MESSAGE_LENGTH - 1);
     Serial.println();
     Serial.println();
 
-    Serial.println(F("Authenticating again using key B..."));
+    // Serial.println(F("Authenticating again using key B..."));
     status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, &key, &(mfrc522.uid));
     if (status != MFRC522::STATUS_OK)
     {
@@ -105,50 +109,70 @@ int MFRC522Writer::Write()
         return -1;
     }
 
-    // WRITING STRING TO SECTOR 1 AND ON - COEN
-    Serial.println();
-    Serial.println();
-    Serial.println("Writing string to sector 0");
-    while (strlen(message) == 0)
+    Serial.println("Writing yuor string Data: ...");
+    readTextFromSerial();
+    char inputString[MAX_MESSAGE_LENGTH] = "";
+    char inputString2[MAX_MESSAGE_LENGTH] = "";
+    int messageLength = strlen(message);
+    for (int i = 0; i < messageLength; i++)
     {
-        read();
+        if (i < BufferSize)
+        {
+            inputString[i] = message[i];
+        }
+        else if (i >= BufferSize)
+        {
+            inputString2[i - BufferSize] = message[i];
+        }
     }
-    char inputString[49] = "this is the max stringsize 12345678901234567890\n";
-    int stringLength = strlen(inputString);
-    for (int i = 0; i < stringLength; i++)
-    {
-        byte address = i / 16 + 4;
-        int blockSize;
-        if (stringLength - i >= 16)
-        {
-            blockSize = 16;
-        }
-        else
-        {
-            blockSize = stringLength % 16;
-        }
-        byte dataBuffer[16];
 
-        for (int j = 0; j < blockSize; j++)
+    int stringLength = strlen(inputString);
+    int stringLength2 = strlen(inputString2);
+    byte dataBuffer[BufferSize] = "";
+    byte dataBuffer2[BufferSize2] = "";
+
+    // write data from buffer block Addr 4
+    for (int j = 0; j < stringLength; j++)
+    {
+        dataBuffer[j] = inputString[j];
+    }
+    if (stringLength < BufferSize)
+    {
+        for (int j = 0; j < BufferSize - stringLength; j++)
         {
-            dataBuffer[j] = inputString[i + j];
+            dataBuffer[stringLength + j] = 0;
         }
-        if (blockSize < 16)
+    }
+
+    // write data from buffer block Addr 5
+    for (int j = 0; j < stringLength2; j++)
+    {
+        dataBuffer2[j] = inputString2[j];
+    }
+    if (stringLength2 < BufferSize2)
+    {
+        for (int j = 0; j < BufferSize2 - stringLength2; j++)
         {
-            for (int j = 0; j < 16 - blockSize; j++)
-            {
-                dataBuffer[blockSize + j] = 0;
-            }
+            dataBuffer2[stringLength2 + j] = 0;
         }
-        authforwrite();
-        writeBlockToFirstSector(dataBuffer, address);
-        i = i + blockSize - 1;
+    }
+
+    if (authforwrite() == -1)
+    {
+        return -1;
+    }
+    if (Transfer(dataBuffer, blockAddr4) == -1)
+    {
+        return -1;
+    }
+    if (Transfer(dataBuffer2, blockAddr5) == -1)
+    {
+        return -1;
     }
 
     Serial.println(F("=========== [SUCCESS] ==========="));
-    print();
-    Serial.println(F("Current data in sector:"));
-    mfrc522.PICC_DumpMifareClassicSectorToSerial(&(mfrc522.uid), &key, sector);
+    Serial.print("The New Data Is: ");
+    Serial.println(message);
     Serial.println();
 
     mfrc522.PICC_HaltA();
@@ -156,75 +180,99 @@ int MFRC522Writer::Write()
     return 0;
 }
 
-
-void  MFRC522Writer::dump_byte_array(byte *buffer, byte bufferSize)
+int MFRC522Writer::dump_byte_array(byte *buffer, byte bufferSize)
 {
+    if (buffer == nullptr || bufferSize == 0)
+    {
+        return -1;
+    }
     for (byte i = 0; i < bufferSize; i++)
     {
         Serial.print(buffer[i] < 0x10 ? " 0" : "");
         Serial.print(buffer[i], HEX);
     }
+    return 0;
 }
 
-void MFRC522Writer::authforwrite()
+int MFRC522Writer::printStringData(byte *buffer, byte bufferSize)
+{
+    if (buffer == nullptr || bufferSize == 0)
+    {
+        return -1;
+    }
+    for (int i = 0; i < bufferSize; i++)
+    {
+        char c = char(buffer[i]);
+        if (c != 0)
+        {
+            Serial.print(c);
+        }
+    }
+    return 0;
+}
+int MFRC522Writer::authforwrite()
 {
     byte trailerBlock = 7;
-    Serial.println(F("Authenticating again using key B..."));
+    // Serial.println(F("Authenticating again using key B..."));
     MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, &key, &(mfrc522.uid));
     if (status != MFRC522::STATUS_OK)
     {
         Serial.print(F("PCD_Authenticate() failed: "));
         Serial.println(mfrc522.GetStatusCodeName(status));
-        return;
+        return -1;
     }
+    return 0;
 }
 
-void MFRC522Writer::writeBlockToFirstSector(byte *inputBlock, byte blockAddr)
+int MFRC522Writer::Transfer(byte *inputBlock, byte blockAddr)
 {
-    MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.MIFARE_Write(blockAddr, inputBlock, 16);
+    MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.MIFARE_Write(blockAddr, inputBlock, BufferSize);
     if (status != MFRC522::STATUS_OK)
     {
         Serial.print(F("MIFARE_Write() failed: "));
         Serial.println(mfrc522.GetStatusCodeName(status));
+        return -1;
     }
     Serial.println();
+    return 0;
 }
 
-void MFRC522Writer::read()
-
+int MFRC522Writer::readTextFromSerial()
 {
-    while (Serial.available() > 0)
-   {
-   //Create a place to hold the incoming message
-   //message[MAX_MESSAGE_LENGTH];
-   static unsigned int message_pos = 0;
+    unsigned int message_pos = 0;
+    message[0] = '\0';
+    char messagetemp[100] = "";
+    messagetemp[0] = '\0';
+    while (true)
+    {
+        if (Serial.available())
+        {
+            char incomingChar = Serial.read();
+            if (incomingChar == '\n')
+            {
+                // Enter key pressed, exit the loop
+                unsigned int stringLength = strlen(messagetemp);
+                for (unsigned int i = 0; i < MAX_MESSAGE_LENGTH - 1; i++)
+                {
+                    /* code */
+                    if (i < stringLength)
+                    {
+                        message[i] = messagetemp[i];
+                        message_pos = i + 1;
+                    }
+                }
 
-   //Read the next available byte in the serial receive buffer
-   char inByte = Serial.read();
+                message[message_pos] = '\0';
+                messagetemp[0] = '\0';
+                break;
+            }
 
-   //Message coming in (check not terminating character) and guard for over message size
-   if ( inByte != '\n' && (message_pos < MAX_MESSAGE_LENGTH - 1) )
-   {
-     //Add the incoming byte to our message
-     message[message_pos] = inByte;
-     message_pos++;
-   }
-   //Full message received...
-   else
-   {
-     //Add null character to string
-     message[message_pos] = '\0';
-
-     //Print the message (or do other things)
+            // Append the incoming character to the text
+            messagetemp[message_pos] = incomingChar;
+            message_pos++;
+        }
+    }
+    Serial.print("Received text: ");
     Serial.println(message);
-
-     //Reset for the next message
-     message_pos = 0;
-   }
- }
-}
-
-void MFRC522Writer::print()
-{
- Serial.println(message);
+    return 0;
 }
