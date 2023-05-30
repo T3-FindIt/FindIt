@@ -40,9 +40,9 @@ void setup()
     // {
     //   return;
     // }
-    // Serial.begin(9600);
-    Serial.println();
-    Serial.println("Starting up!");
+    Serial.begin(9600);
+    // Serial.println();
+    // Serial.println("Starting up!");
     scanTime = millis() + SCAN_OFFSET;
 }
 
@@ -67,17 +67,17 @@ void loop()
 
     if(i2c.GetLastChange() == NR_Item)
     {
-        Serial.print("Last address:");
-        Serial.println(i2c.debug_GetLastAddress());
+        // Serial.print("Last address:");
+        // Serial.println(i2c.debug_GetLastAddress());
         char data[MAX_STRING_SIZE];
         i2c.GetRegister(NR_Item,&data[0]);
-        Serial.print("Item: ");
-        Serial.println(std::string(data).c_str());
+        // Serial.print("Item: ");
+        // Serial.println(std::string(data).c_str());
     }
 
-    // if(scanTime < millis())
-    // {
-    //     i2c.Scan();
-    //     scanTime = millis() + SCAN_OFFSET;
-    // }
+    if(scanTime < millis())
+    {
+        i2c.Scan();
+        scanTime = millis() + SCAN_OFFSET;
+    }
 }

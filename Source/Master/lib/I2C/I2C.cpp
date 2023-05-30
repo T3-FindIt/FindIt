@@ -2,7 +2,8 @@
 #include <string>
 #include <Arduino.h>
 
-#define MAX_I2C_ADDRESSES 127
+#define MAX_I2C_ADDRESSES 118
+#define START_I2C_ADDRRESS 0
 
 /// PROTOTYPES
 void InitializeAddresses();
@@ -20,6 +21,14 @@ int Active;
 std::string Error;
 // ===================== //
 // ===== REGISTER ===== //
+// ===================== //
+
+// ===================== //
+// ====== REQUEST ====== //
+// ===================== //
+#define REQUEST_HEARTBEAT 0x02
+// ===================== //
+// ====== REQUEST ====== //
 // ===================== //
 
 Node_Registers lastRecieved = Node_Registers::NR_None;
@@ -69,7 +78,7 @@ I2C::I2C(int address)
     Wire.onReceive(receiveEvent);
     Wire.onRequest(RequestEvent);
 
-    Serial.begin(9600); //!Debug!
+    // Serial.begin(9600); //!Debug!
 }
 
 void I2C::Send(int address,Node_Registers node_Register, int data)
@@ -142,24 +151,25 @@ int I2C::debug_GetLastAddress()
 
 typedef struct Address
 {
-    int address;
+    uint8_t address;
     bool available;
 } Address;
 
-Address addresses[MAX_I2C_ADDRESSES];
+Address volatile addresses[MAX_I2C_ADDRESSES];
 
 void InitializeAddresses()
 {
-    for (int i = 9; i < MAX_I2C_ADDRESSES; i++)
+
+    for (int i = START_I2C_ADDRRESS; i < MAX_I2C_ADDRESSES; i++)
     {
-        addresses[i].address = i;
+        addresses[i].address = i + 9; // Offset
         addresses[i].available = true;
     }
 }
 
 int GetAvailableAddress()
 {
-    for (int i = 9; i < MAX_I2C_ADDRESSES; i++)
+    for (int i = START_I2C_ADDRRESS; i < MAX_I2C_ADDRESSES; i++)
     {
         if (addresses[i].available)
         {
@@ -171,7 +181,7 @@ int GetAvailableAddress()
 
 bool ReleaseAddress(int address)
 {
-    for (int i = 9; i < MAX_I2C_ADDRESSES; i++)
+    for (int i = START_I2C_ADDRRESS; i < MAX_I2C_ADDRESSES; i++)
     {
         if (addresses[i].address == address)
         {
@@ -186,26 +196,36 @@ void I2C::Scan()
 {
     Wire.end();
     Wire.begin();
-    for (int i = 9; i < MAX_I2C_ADDRESSES; i++)
+    for (int i = START_I2C_ADDRRESS; i < MAX_I2C_ADDRESSES; i++)
     {
-        Wire.beginTransmission(i);
-        Wire.write((int)Node_Registers::NR_RequestForm); Wire.write(0x02);
-        Wire.endTransmission();
-        Wire.requestFrom(i, 1);
-        int heartbeat = Wire.read();
-        if(heartbeat == 0)
+        if(addresses[i].available == false)
         {
-            ReleaseAddress(i);
+            Wire.beginTransmission(i);
+            Wire.write((int)Node_Registers::NR_RequestForm);
+            Wire.write(REQUEST_HEARTBEAT);
+            Wire.endTransmission();
+            
+            Wire.requestFrom(i, 1);
+            int heartbeat = Wire.read();
+            if(heartbeat == -1)
+            {
+                ReleaseAddress(i);
+            }
+            else
+            {
+                // Serial.print("Heartbeat: ");
+                // Serial.println(heartbeat);
+            }
         }
     }
     Wire.end();
     Wire.begin(this->address);
-    for (int i = 9; i < MAX_I2C_ADDRESSES; i++)
+    for (int i = START_I2C_ADDRRESS; i < MAX_I2C_ADDRESSES; i++)
     {
         if(addresses[i].available == false)
         {
-            Serial.print("Taken Address: ");
-            Serial.println(i);
+            // Serial.print("Taken Address: ");
+            // Serial.println(i);
         }
     }
 }
