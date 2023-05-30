@@ -32,7 +32,8 @@ void RecieveEvent(int HowMany)
     case REQUESTFROM_REG:
     {
         requestfromRegister = Wire.read();
-        Serial.println("Request from");
+        Serial.print("Request from");
+        Serial.println(requestfromRegister);
         break;
     }
     case NOTIFICATION_REG:
@@ -144,7 +145,6 @@ int I2CCommunication::SendNewItemToHub(char* itemString, size_t stringLength)
     Wire.beginTransmission(HUB_ADDRESS);
     Wire.write(ITEM_REG);
     Wire.write(activeAdress);
-    bool endofstring = false;
     for (int i = 0; i < MAX_STRING_LENGTH; i++)
     {
         Wire.write(itemString[i]);
