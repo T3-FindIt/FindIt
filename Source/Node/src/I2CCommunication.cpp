@@ -110,6 +110,7 @@ I2CCommunication::I2CCommunication()
     {
         Wire.beginTransmission(HUB_ADDRESS);
         Wire.write(REQUESTFROM_REG);
+        Wire.write(DEFAULT_NODE_ADRESS);
         Wire.write(REQUESTFROM_SETUP_REG);
         Wire.endTransmission();
         Wire.requestFrom(HUB_ADDRESS, 1);
