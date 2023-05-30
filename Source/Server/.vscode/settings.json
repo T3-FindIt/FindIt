@@ -83,6 +83,14 @@
         "xthread": "cpp",
         "xmemory0": "cpp",
         "charconv": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "span": "cpp",
+        "cinttypes": "cpp",
+        "locale": "cpp",
+        "xlocbuf": "cpp",
+        "xlocmes": "cpp",
+        "xlocmon": "cpp",
+        "xloctime": "cpp",
+        "xtree": "cpp"
     }
 }

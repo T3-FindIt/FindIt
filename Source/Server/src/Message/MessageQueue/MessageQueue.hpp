@@ -11,11 +11,12 @@ namespace FindIt
     class MessageQueue
     {
     public:
-        MessageQueue();
-        ~MessageQueue();
+        MessageQueue() = default;
+        ~MessageQueue() = default;
 
         void push(IMessage *message);
         IMessage *pop();
+        int returnSize();
 
     private:
         std::queue<IMessage*> queue;
