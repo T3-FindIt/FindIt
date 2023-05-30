@@ -11,11 +11,11 @@ namespace FindIt
     IMessage *MessageQueue::pop()
     {
         std::scoped_lock lock(mutex);
-        if(queue.size() <= 0)
+        if (queue.size() <= 0) //bad?
         {
             return nullptr;
         }
-        
+
         IMessage *message = queue.front();
         queue.pop();
         return message;

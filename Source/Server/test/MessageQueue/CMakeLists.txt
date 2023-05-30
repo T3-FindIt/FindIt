@@ -1,5 +1,5 @@
 set(Sources
-    MessageQueue.cpp
+    MessageQueueTest.cpp
 )
 
 set(TestName ${ProjectTestName}_MessageQueue)
