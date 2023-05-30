@@ -17,7 +17,7 @@ Het FindIt-systeem is modulair opgebouwd, wat betekent dat het gemakkelijk kan w
 
 ## Het Team
 
-### <img src="https://avatars.githubusercontent.com/u/99728206?v=4" height="20px"/> Nathan
+### [<img src="https://avatars.githubusercontent.com/u/99728206?v=4" height="20px"/> Nathan](https://github.com/NathanThus)
 
 **Functie:**
 Projectleider
@@ -35,7 +35,7 @@ Projectleider
 
 ---
 
-### <img src="https://avatars.githubusercontent.com/u/66320357?v=4" height="20px"/> Tom
+### [<img src="https://avatars.githubusercontent.com/u/66320357?v=4" height="20px"/> Tom](https://github.com/TomVer99)
 
 **Functie:** Gitbeheerder
 
@@ -59,7 +59,7 @@ Projectleider
 
 ---
 
-### <img src="https://avatars.githubusercontent.com/u/95349225?v=4" height="20px"/> Coen
+### [<img src="https://avatars.githubusercontent.com/u/95349225?v=4" height="20px"/> Coen](https://github.com/coenhezemans)
 
 **Functie:** Hardware Verantwoordelijke
 
@@ -75,7 +75,7 @@ Projectleider
 
 ---
 
-### <img src="https://avatars.githubusercontent.com/u/49792918?v=4" height="20px"/> Yassine
+### [<img src="https://avatars.githubusercontent.com/u/49792918?v=4" height="20px"/> Yassine](https://github.com/Therealyassinetama)
 
 **Functie:** Scrum Master
 
@@ -93,7 +93,7 @@ Projectleider
 
 ---
 
-### <img src="https://avatars.githubusercontent.com/u/113686829?v=4" height="20px"/> Gharib
+### [<img src="https://avatars.githubusercontent.com/u/113686829?v=4" height="20px"/> Gharib](https://github.com/GharibGharib)
 
 **Software Verantwoordelijkheden:**
 
