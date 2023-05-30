@@ -12,8 +12,8 @@ set(Sources
 add_library(ProtocolParser STATIC ${Sources} ${Headers})
 
 target_link_libraries(ProtocolParser PRIVATE
-nlohmann_json::nlohmann_json
-MessageInterface
+    nlohmann_json::nlohmann_json
+    MessageInterface
 )
 
 target_include_directories(ProtocolParser PUBLIC
