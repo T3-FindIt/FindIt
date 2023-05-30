@@ -24,7 +24,7 @@ jobs:
       - id: name-check
         name: Check PR name
         run: |
-          if [[ "${{ github.event.pull_request.title }}" =~ ^doc\/.*$|^Doc\/.*$|^docs\/.*$|^Docs\/.*$|^no-ci\/.*|^No-ci\/.*$ ]]; then
+          if [[ "${{ github.event.pull_request.title }}" =~ ^[d|D][o|O][c|C]\/.*$|^[d|D][o|O][c|C][s|S]\/.*$|^[n|N][o|O]-[c|C][i|I]\/.*$ ]]; then
             echo "Skipping CI for documentation-only PR"
             echo "SKIP_CI=true" >> $GITHUB_ENV
             exit 0
