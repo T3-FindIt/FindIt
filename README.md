@@ -16,8 +16,6 @@ Het FindIt-systeem is modulair opgebouwd, wat betekent dat het gemakkelijk kan w
 
 ## Het Team
 
----
-
 ### <img src="https://avatars.githubusercontent.com/u/99728206?v=4" height="20px"/> Nathan
 
 **Functie:**
