@@ -8,13 +8,14 @@
 
 #include "IReader.hpp"
 
-
+//At first glance this looks to have a lot in common with the NFCWriter from the other branch. 
+//Please consolidate with an abstract base class
 class MFRC522Reader : public IReader
 {
 private:
     MFRC522 reader;
     MFRC522::MIFARE_Key key;
-    bool AuthenticateCard();
+    bool AuthenticateCard(); 
 public:
     MFRC522Reader() : MFRC522Reader(DEFAULT_SS_PIN, DEFAULT_RST_PIN) {}
     MFRC522Reader(int SS_PIN, int RST_PIN);
