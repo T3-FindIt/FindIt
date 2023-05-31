@@ -8,7 +8,7 @@ namespace FindIt
         queue.push(message);
     }
 
-    IMessage *MessageQueue::pop()
+    IMessage *MessageQueue::pop() //Raw pointer? Why?
     {
         std::scoped_lock lock(mutex);
         if (queue.size() <= 0) //bad?
