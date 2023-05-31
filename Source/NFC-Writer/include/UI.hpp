@@ -6,8 +6,8 @@ class UI
 {
 public:
     UI();
-    ~UI() = default;
-    int ReadTextFromSerial(char *message, int max_message_length);
+    ~UI() = default; //Good use of default.
+    int ReadTextFromSerial(char *message, int max_message_length); //Why is this C style?
 
 private:
 };

@@ -3,12 +3,12 @@
 #include "UI.hpp"
 
 #define RST_PIN 9
-#define SS_PIN 10
+#define SS_PIN 10 //Constexpr int instead of define. 
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 MFRC522Writer NFC(mfrc522);
-UI ui;
-char message[30];
+UI ui; //Could use a better name imo
+char message[30]; //C-style string?
 
 void setup()
 {

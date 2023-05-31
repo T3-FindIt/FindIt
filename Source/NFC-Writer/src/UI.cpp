@@ -1,6 +1,6 @@
 #include "UI.hpp"
 
-UI::UI()
+UI::UI() // Could use a default as well
 {
 }
 
@@ -13,7 +13,9 @@ int UI::ReadTextFromSerial(char *message, int max_message_length)
     message[0] = '\0';
     char messagetemp[1000] = "";
     messagetemp[0] = '\0';
-    while (true)
+    while (true) //Infinite loops are always dangerous and slightly confusing to look at.
+    //Combined with returning in the middle of the loop makes the code path look confusing to say the least.
+    //I recommend a while(reading) instead, and at the very least cleaning this up by using some functions
     {
         if (Serial.available())
         {
@@ -38,7 +40,9 @@ int UI::ReadTextFromSerial(char *message, int max_message_length)
                         Serial.print(" Characters. Your text length is: ");
                         Serial.print(stringLength);
                         Serial.println(" Characters.");
-                        Serial.println("Please try again ...");
+                        Serial.println("Please try again ..."); //Please try again but then you exit failure?
+                        //Does not sound like trying again, unless any higher level code calls this function again.
+                        // Higher level function should NEVER be assumed in lower level code
                         Serial.println();
                         return -1;
                     }
@@ -46,7 +50,8 @@ int UI::ReadTextFromSerial(char *message, int max_message_length)
                 if(strlen(message) == 0)
                 {
                     message[0] = '\0';
-                    Serial.println("Please try again. Empty text cannot be entered!");
+                    //Same here, higher level function assumed in lower level code
+                    Serial.println("Please try again. Empty text cannot be entered!"); 
                     Serial.println();
                     return -1;
                 }
@@ -62,7 +67,7 @@ int UI::ReadTextFromSerial(char *message, int max_message_length)
     Serial.print("Received text: ");
     Serial.println(message);
     Serial.println("Keep the NFC-TAG on the NFC-Reader, then press Enter... ");
-    while (true)
+    while (true) //infinite loops with breaks are confusing to look at. Better to have a conditional while loop that you break
     {
         if (Serial.available())
         {
