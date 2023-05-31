@@ -27,6 +27,7 @@ int main()
     // communicationThread.join();
 
 
+    //Will not review this as it seems like test code
     FindIt::PlainFileDatabase database("./Data/Database.txt");
     database.Add(FindIt::Object("TEST_JOHN", 51));
     database.Add(FindIt::Object("TEST_TEST", 35));

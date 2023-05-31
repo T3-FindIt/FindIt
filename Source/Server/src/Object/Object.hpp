@@ -6,7 +6,7 @@
 namespace FindIt
 {
 
-class Object
+class Object //Would rename, object is a concept in code and this is confusing
 {
 private:
     std::string name;
