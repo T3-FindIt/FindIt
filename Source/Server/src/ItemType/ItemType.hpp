@@ -13,7 +13,7 @@ public:
     ~ItemType() = default;
 
     const std::string& GetName() const;
-    const int GetID() const;
+    int GetID() const;
     bool operator==(const ItemType& other) const;
 private:
     std::string name;

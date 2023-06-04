@@ -10,17 +10,17 @@ ItemType::ItemType(const std::string& Name, int ID)
 
 const std::string& ItemType::GetName() const
 {
-    return this->name;
+    return name;
 }
 
-const int ItemType::GetID() const
+int ItemType::GetID() const
 {
-    return this->id;
+    return id;
 }
 
 bool ItemType::operator==(const ItemType &other) const
 {
-    return this->name == other.name && this->id == other.id;
+    return name == other.name && id == other.id;
 }
 
 };
