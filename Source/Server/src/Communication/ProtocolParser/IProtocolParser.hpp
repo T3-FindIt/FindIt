@@ -11,6 +11,7 @@ namespace FindIt
 class IProtocolParser
 {
 public:
+    virtual ~IProtocolParser() = default;
     virtual IMessage* Parse(std::string data) = 0;
     virtual std::string Parse(IMessage& data) = 0;
 };
