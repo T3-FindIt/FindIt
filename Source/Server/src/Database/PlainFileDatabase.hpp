@@ -2,7 +2,7 @@
 #define PLAINFILEDATABASE_HPP
 
 #include "IDatabase.hpp"
-#include <Object.hpp>
+#include <ItemType.hpp>
 
 #include <string>
 
@@ -14,10 +14,10 @@ class PlainFileDatabase : public IDatabase
 public:
     PlainFileDatabase(std::string relativePath);
     ~PlainFileDatabase() = default;
-    void Add(Object object) final;
-    void Remove(Object object) final;
-    bool SearchIfPresent(Object object) final;
-    std::vector<Object> GetAllObjects() final;
+    void Add(ItemType object) final;
+    void Remove(ItemType object) final;
+    bool SearchIfPresent(ItemType object) final;
+    std::vector<ItemType> GetAllObjects() final;
 private:
     std::string relativePath;
 private:

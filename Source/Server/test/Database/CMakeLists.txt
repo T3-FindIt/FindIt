@@ -6,7 +6,7 @@ add_executable(${ProjectTestName}_Database ${Sources})
 
 target_link_libraries(${ProjectTestName}_Database PUBLIC
     gtest_main
-    Object
+    ItemType
     Database
 )
 

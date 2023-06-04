@@ -1,14 +1,14 @@
 set(Sources
-    ObjectTest.cpp
+ItemTypeTest.cpp
 )
 
-set(TestName ${ProjectTestName}_Object)
+set(TestName ${ProjectTestName}_ItemType)
 
 add_executable(${TestName} ${Sources})
 
 target_link_libraries(${TestName} PUBLIC
     gtest_main
-    Object
+    ItemType
 )
 
 add_test(
