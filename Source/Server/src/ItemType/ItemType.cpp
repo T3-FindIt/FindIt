@@ -2,22 +2,18 @@
 
 namespace FindIt
 {
-ItemType::ItemType(std::string Name, int ID)
-{
-    this->name = Name;
-    this->id = ID;
-}
 
-ItemType::~ItemType()
+ItemType::ItemType(const std::string& Name, int ID)
+    : name(Name), id(ID)
 {
 }
 
-std::string ItemType::GetName()
+const std::string& ItemType::GetName() const
 {
     return this->name;
 }
 
-int ItemType::GetID()
+const int ItemType::GetID() const
 {
     return this->id;
 }

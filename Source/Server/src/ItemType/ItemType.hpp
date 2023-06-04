@@ -12,11 +12,11 @@ private:
     std::string name;
     int id;
 public:
-    ItemType(std::string name, int id);
-    ~ItemType();
+    ItemType(const std::string& Name, int ID);
+    ~ItemType() = default;
 
-    std::string GetName();
-    int GetID();
+    const std::string& GetName() const;
+    const int GetID() const;
     bool operator==(const ItemType& other) const;
 };
 
