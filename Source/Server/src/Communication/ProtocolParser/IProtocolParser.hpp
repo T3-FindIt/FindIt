@@ -4,6 +4,7 @@
 #include <IMessage.hpp>
 
 #include <string>
+#include <memory>
 
 namespace FindIt
 {
@@ -11,7 +12,7 @@ namespace FindIt
 class IProtocolParser
 {
 public:
-    virtual IMessage* Parse(std::string data) = 0;
+    virtual std::shared_ptr<IMessage> Parse(std::string data) = 0;
     virtual std::string Parse(IMessage& data) = 0;
 };
 
