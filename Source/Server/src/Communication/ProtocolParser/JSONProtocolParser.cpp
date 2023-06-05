@@ -3,17 +3,15 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 
-using json = nlohmann::json;
-
 namespace FindIt
 {
 
 IMessage* JSONProtocolParser::Parse(std::string data)
 {
-    json json_obj;
+    nlohmann::json json_obj;
     try
     {
-        json_obj = json::parse(data);
+        json_obj = nlohmann::json::parse(data);
     }
     catch(const nlohmann::json::parse_error& e)
     {
@@ -36,11 +34,13 @@ IMessage* JSONProtocolParser::Parse(std::string data)
         if (json_obj.find("Node") != json_obj.end()
             && json_obj.find("Places") != json_obj.end())
         {
+            // TODO: Use smart pointers
             return new HeartBeatResponse(json_obj["Node"], json_obj["Places"]);
         }
         else if (json_obj.find("Node") == json_obj.end()
                 && json_obj.find("Places") == json_obj.end())
         {
+            // TODO: Use smart pointers
             return new HeartBeat();
         }
     }
@@ -92,7 +92,7 @@ IMessage* JSONProtocolParser::Parse(std::string data)
 
 std::string JSONProtocolParser::Parse(IMessage &data)
 {
-    json json_obj;
+    nlohmann::json json_obj;
 
     switch (data.GetType())
     {
