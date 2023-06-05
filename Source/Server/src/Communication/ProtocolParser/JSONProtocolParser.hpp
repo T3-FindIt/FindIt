@@ -25,7 +25,7 @@ public:
     JSONProtocolParser() = default;
     ~JSONProtocolParser() = default;
 
-    std::shared_ptr<IMessage> Parse(std::string data) final;
+    std::shared_ptr<IMessage> Parse(const std::string& data) final;
     std::string Parse(IMessage& data) final;
 };
 

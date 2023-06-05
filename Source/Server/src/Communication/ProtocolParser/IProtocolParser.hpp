@@ -12,7 +12,7 @@ namespace FindIt
 class IProtocolParser
 {
 public:
-    virtual std::shared_ptr<IMessage> Parse(std::string data) = 0;
+    virtual std::shared_ptr<IMessage> Parse(const std::string& data) = 0;
     virtual std::string Parse(IMessage& data) = 0;
 };
 

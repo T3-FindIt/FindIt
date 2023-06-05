@@ -6,7 +6,7 @@
 namespace FindIt
 {
 
-std::shared_ptr<IMessage> JSONProtocolParser::Parse(std::string data)
+std::shared_ptr<IMessage> JSONProtocolParser::Parse(const std::string& data)
 {
     nlohmann::json json_obj;
     try
