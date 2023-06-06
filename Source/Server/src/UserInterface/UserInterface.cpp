@@ -2,8 +2,8 @@
 
 namespace FindIt
 {
-    UserInterface::UserInterface(Get_objects_t functionPointer, Request_object_t functionpointer2)
-            : ReturnUniqueObjectsTypes(functionPointer), RequestObject(functionpointer2)
+    UserInterface::UserInterface(Get_objects_t functionPointer, Request_object_t functionpointer2, FindIt::MessageQueue &queue)
+            : ReturnUniqueObjectsTypes(functionPointer), RequestObject(functionpointer2), Queue(queue)
     {
 
     }
@@ -16,8 +16,8 @@ namespace FindIt
     void UserInterface::PrintStartUp(int *choice)
     {
         std::cout << "Welcome to the FindIt Server UI, please select your choice:\n"
-        << "1. Show all knwon object types\n"
-        << "2. Request/search up objects\n"  //think about eventual exceptions
+        << "1. Show all known object types\n"
+        << "2. Request/search up objects\n"
         << "3. Quit application" << std::endl;
         std::cin >> *choice;
     }
@@ -27,6 +27,7 @@ namespace FindIt
         int choice = 0;
         std::string requestedObject;
         running = true;
+
         while(running)
         {
             PrintStartUp(&choice);
@@ -56,13 +57,10 @@ namespace FindIt
                 break;
             }
         }
-        std::cout << "closed";
     }
 
     void UserInterface::Stop()
     {
-        std::cout << "self destruct sequence started in 10 seconds" << std::endl;
         running = false;
-        //kill thread and shut everything down?
     }
 };

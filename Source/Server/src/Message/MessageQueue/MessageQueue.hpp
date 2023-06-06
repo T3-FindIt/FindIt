@@ -1,7 +1,7 @@
 #ifndef MESSAGEQUEUE_HPP
 #define MESSAGEQUEUE_HPP
 
-#include <IMessage.hpp>
+#include <../Message/IMessage.hpp>
 #include <mutex>
 #include <queue>
 #include <memory>

@@ -29,7 +29,8 @@ void lol(std::string xd)
 
 int main()
 {
-    FindIt::UserInterface *UI = new FindIt::UserInterface(testfunc, lol);
+    FindIt::MessageQueue queue;
+    FindIt::UserInterface *UI = new FindIt::UserInterface(testfunc, lol, queue);
 
     std::jthread t1(&FindIt::UserInterface::Run, UI);
     t1.join();
