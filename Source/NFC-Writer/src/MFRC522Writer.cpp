@@ -1,9 +1,10 @@
 #include "MFRC522Writer.hpp"
 
-MFRC522Writer::MFRC522Writer(MFRC522 &nfc)
-{
-    mfrc522 = nfc;
-}
+constexpr int maxMessageLength = 29;
+constexpr int bufferSizeBlock4 = 16;
+constexpr int bufferSizeBlock5 = 12;
+
+MFRC522Writer::MFRC522Writer(MFRC522 &nfc) : mfrc522(nfc) {}
 
 MFRC522Writer::~MFRC522Writer()
 {
@@ -12,9 +13,6 @@ MFRC522Writer::~MFRC522Writer()
 
 void MFRC522Writer::Begin()
 {
-    while (!Serial)
-    {
-    }
     SPI.begin();
     mfrc522.PCD_Init();
 
@@ -22,7 +20,6 @@ void MFRC522Writer::Begin()
     {
         key.keyByte[i] = 0xFF;
     }
-    DumpByteArray(key.keyByte, MFRC522::MF_KEY_SIZE);
 }
 
 bool MFRC522Writer::GetCardAvailable()
@@ -38,71 +35,71 @@ bool MFRC522Writer::GetCardAvailable()
 
 int MFRC522Writer::Write(char *message)
 {
-    if (!GetCardAvailable())
-    {
-        return -1;
-    }
-    if (message == nullptr)
+    if (message == nullptr || !GetCardAvailable())
     {
         return -1;
     }
 
-    byte blockAddr4 = 4;
-    byte blockAddr5 = 5;
+    constexpr byte blockAddr4 = 4;
+    constexpr byte blockAddr5 = 5;
     char inputString[maxMessageLength] = "";
     char inputString2[maxMessageLength] = "";
     int messageLength = strlen(message);
+    if(messageLength > maxMessageLength)
+    {
+        return -1;
+    }
     for (int i = 0; i < messageLength; i++)
     {
-        if (i < bufferSize)
+        if (i < bufferSizeBlock4)
         {
             inputString[i] = message[i];
         }
-        else if (i >= bufferSize)
+        else if (i >= bufferSizeBlock4)
         {
-            inputString2[i - bufferSize] = message[i];
+            inputString2[i - bufferSizeBlock4] = message[i];
         }
     }
     int stringLength = strlen(inputString);
+    if(stringLength > bufferSizeBlock4)
+    {
+        return -1;
+    }
     int stringLength2 = strlen(inputString2);
-    byte dataBuffer[bufferSize] = "";
-    byte dataBuffer2[bufferSize2] = "";
+    if(stringLength2 > bufferSizeBlock5)
+    {
+        return -1;
+    }
+    byte dataBufferBlock4[bufferSizeBlock4] = "";
+    byte dataBufferBlock5[bufferSizeBlock5] = "";
 
     // write data from buffer block Addr 4
-    for (int j = 0; j < stringLength; j++)
+    for (int index = 0; index < stringLength; index++)
     {
-        dataBuffer[j] = inputString[j];
+        dataBufferBlock4[index] = inputString[index];
     }
-    if (stringLength < bufferSize)
+    if (stringLength < bufferSizeBlock4)
     {
-        for (int j = 0; j < bufferSize - stringLength; j++)
+        for (int index = 0; index < bufferSizeBlock4 - stringLength; index++)
         {
-            dataBuffer[stringLength + j] = 0;
+            dataBufferBlock4[stringLength + index] = 0;
         }
     }
 
     // write data from buffer block Addr 5
-    for (int j = 0; j < stringLength2; j++)
+    for (int index = 0; index < stringLength2; index++)
     {
-        dataBuffer2[j] = inputString2[j];
+        dataBufferBlock5[index] = inputString2[index];
     }
-    if (stringLength2 < bufferSize2)
+    if (stringLength2 < bufferSizeBlock5)
     {
-        for (int j = 0; j < bufferSize2 - stringLength2; j++)
+        for (int index = 0; index < bufferSizeBlock5 - stringLength2; index++)
         {
-            dataBuffer2[stringLength2 + j] = 0;
+            dataBufferBlock5[stringLength2 + index] = 0;
         }
     }
 
-    if (AuthForWrite() == -1)
-    {
-        return -1;
-    }
-    if (Transfer(dataBuffer, blockAddr4) == -1)
-    {
-        return -1;
-    }
-    if (Transfer(dataBuffer2, blockAddr5) == -1)
+    if (AuthenticateWrite() == -1 || Transfer(dataBufferBlock4, blockAddr4, bufferSizeBlock4) == -1 || Transfer(dataBufferBlock5, blockAddr5, bufferSizeBlock5) == -1)
     {
         return -1;
     }
@@ -114,23 +111,9 @@ int MFRC522Writer::Write(char *message)
     return 0;
 }
 
-int MFRC522Writer::DumpByteArray(byte *buffer, byte bufferSize)
+int MFRC522Writer::AuthenticateWrite()
 {
-    if (buffer == nullptr || bufferSize == 0)
-    {
-        return -1;
-    }
-    for (byte i = 0; i < bufferSize; i++)
-    {
-        buffer[i] = 0xFF;
-    }
-    return 0;
-}
-
-int MFRC522Writer::AuthForWrite()
-{
-    byte trailerBlock = 7;
-    // Serial.println(F("Authenticating again using key B..."));
+    constexpr byte trailerBlock = 7;
     MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, &key, &(mfrc522.uid));
     if (status != MFRC522::STATUS_OK)
     {
@@ -141,9 +124,9 @@ int MFRC522Writer::AuthForWrite()
     return 0;
 }
 
-int MFRC522Writer::Transfer(byte *inputBlock, byte blockAddr)
+int MFRC522Writer::Transfer(byte *inputBlock, byte blockAddr, int bufferSize)
 {
-    MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.MIFARE_Write(blockAddr, inputBlock, bufferSize);
+    MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.MIFARE_Write(blockAddr, inputBlock, bufferSizeBlock4);
     if (status != MFRC522::STATUS_OK)
     {
         Serial.print(F("MIFARE_Write() failed: "));

@@ -5,10 +5,8 @@ class IWriter
 {
 public:
 	virtual ~IWriter() = default;
-	virtual void Begin();
-	virtual int Write(char *message);
-
-private:
+	virtual void Begin() = 0;
+	virtual int Write(char *message) = 0;
 };
 
 #endif
