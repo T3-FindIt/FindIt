@@ -4,7 +4,7 @@
 #include "WiFiHandler.hpp"
 #include "WebSocketHandler.hpp"
 
-#define LOCAL_ADDRESS 0x8 // slave address
+#define LOCAL_ADDRESS 8 // slave address
 
 // Might be better to put this in a secret.h file. To be discussed with the Git Master
 #define SSID "SSID"
@@ -17,7 +17,7 @@ WiFiHandler wifiHandler = WiFiHandler();
 WebSocketHandler webSocketHandler = WebSocketHandler();
 I2C i2c (LOCAL_ADDRESS);
 
-#define SCAN_OFFSET 10 * 1000 // 10 Seconds
+#define SCAN_OFFSET 200 * 1000 // 10 Seconds
 int scanTime = 0;
 
 void setup()
@@ -43,6 +43,7 @@ void setup()
     // Serial.println();
     // Serial.println("Starting up!");
     scanTime = millis() + SCAN_OFFSET;
+    i2c.InitializeAddresses();
 }
 
 int lastRequest;
@@ -63,22 +64,23 @@ void loop()
 
     //   webSocketHandler.Send("Hello from ESP32!");
     // }
-    if(i2c.IsAvailable())
-    {
-        if(i2c.GetLastChange() == 3) // TODO: Clean up
-        {
-            Serial.print("Last address:");
-            Serial.println(i2c.debug_GetLastAddress());
-            char data[MAX_STRING_SIZE];
-            i2c.GetRegister(3,&data[0]);
-            Serial.print("Item: ");
-            Serial.println(data);
-        }
-    }
 
-    // if(scanTime < millis())
+    // if(i2c.IsAvailable())
     // {
-    //     i2c.Scan();
-    //     scanTime = millis() + SCAN_OFFSET;
+    //     if(i2c.GetLastChange() == 3) // TODO: Clean up
+    //     {
+    //         Serial.print("Last address:");
+    //         Serial.println(i2c.debug_GetLastAddress());
+    //         char data[MAX_STRING_SIZE];
+    //         i2c.GetRegister(3,&data[0]);
+    //         Serial.print("Item: ");
+    //         Serial.println(data);
+    //     }
     // }
+
+    if(scanTime < millis())
+    {
+        i2c.Scan();
+        scanTime = millis() + SCAN_OFFSET;
+    }
 }

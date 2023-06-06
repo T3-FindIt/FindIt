@@ -22,6 +22,9 @@ class I2C : public IMasterSlave
 
     bool IsAvailable();
     int debug_GetLastAddress();
+
+    void InitializeAddresses();
+
 };
 
 #endif // I2C_HPP
