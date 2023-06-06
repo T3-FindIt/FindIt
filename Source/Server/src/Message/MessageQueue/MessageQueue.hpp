@@ -1,9 +1,7 @@
 #ifndef MESSAGEQUEUE_HPP
 #define MESSAGEQUEUE_HPP
 
-//unused includes
 #include <IMessage.hpp>
-#include <HeartBeat.hpp>
 #include <mutex>
 #include <queue>
 #include <memory>
