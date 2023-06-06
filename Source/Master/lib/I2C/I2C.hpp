@@ -14,12 +14,13 @@ class I2C : public IMasterSlave
 
 
     I2C(int address);
-    void Send(int address,Node_Registers node_Register, int data);
-    void Request(int address, Node_Registers node_Register, int sizeOfData);
+    void Send(int address,int node_Register, int data);
+    void Request(int address, int node_Register, int sizeOfData);
     void Scan();
-    int GetRegister(Node_Registers my_register, void* data);
-    Node_Registers GetLastChange();
+    int GetRegister(int my_register, void* data);
+    int GetLastChange();
 
+    bool IsAvailable();
     int debug_GetLastAddress();
 };
 

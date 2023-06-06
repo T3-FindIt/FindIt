@@ -17,7 +17,6 @@ WiFiHandler wifiHandler = WiFiHandler();
 WebSocketHandler webSocketHandler = WebSocketHandler();
 I2C i2c (LOCAL_ADDRESS);
 
-
 #define SCAN_OFFSET 10 * 1000 // 10 Seconds
 int scanTime = 0;
 
@@ -40,13 +39,13 @@ void setup()
     // {
     //   return;
     // }
-    Serial.begin(9600);
+    // Serial.begin(9600);
     // Serial.println();
     // Serial.println("Starting up!");
     scanTime = millis() + SCAN_OFFSET;
 }
 
-Node_Registers lastRequest = NR_None;
+int lastRequest;
 
 
 void loop()
@@ -64,20 +63,22 @@ void loop()
 
     //   webSocketHandler.Send("Hello from ESP32!");
     // }
-
-    if(i2c.GetLastChange() == NR_Item)
+    if(i2c.IsAvailable())
     {
-        // Serial.print("Last address:");
-        // Serial.println(i2c.debug_GetLastAddress());
-        char data[MAX_STRING_SIZE];
-        i2c.GetRegister(NR_Item,&data[0]);
-        // Serial.print("Item: ");
-        // Serial.println(std::string(data).c_str());
+        if(i2c.GetLastChange() == 3) // TODO: Clean up
+        {
+            Serial.print("Last address:");
+            Serial.println(i2c.debug_GetLastAddress());
+            char data[MAX_STRING_SIZE];
+            i2c.GetRegister(3,&data[0]);
+            Serial.print("Item: ");
+            Serial.println(data);
+        }
     }
 
-    if(scanTime < millis())
-    {
-        i2c.Scan();
-        scanTime = millis() + SCAN_OFFSET;
-    }
+    // if(scanTime < millis())
+    // {
+    //     i2c.Scan();
+    //     scanTime = millis() + SCAN_OFFSET;
+    // }
 }
