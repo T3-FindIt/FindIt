@@ -26,6 +26,7 @@ protected:
     MessageType type;
     std::string action;
 public:
+    virtual ~IMessage() = default;
     virtual MessageType GetType() = 0;
 };
 
