@@ -2,21 +2,21 @@
 
 namespace FindIt
 {
-    void MessageQueue::push(IMessage *message)
+    void MessageQueue::push(std::shared_ptr<IMessage> message)
     {
         std::scoped_lock lock(mutex);
         queue.push(message);
     }
 
-    IMessage *MessageQueue::pop()
+    std::shared_ptr<IMessage> MessageQueue::pop() //raw pointer
     {
         std::scoped_lock lock(mutex);
-        if (queue.size() <= 0) //bad?
+        if (queue.size() <= 0)
         {
             return nullptr;
         }
 
-        IMessage *message = queue.front();
+        std::shared_ptr<IMessage> message = queue.front();
         queue.pop();
         return message;
     }

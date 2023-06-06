@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <memory>
 
 #include <Communication.hpp>
 #include <TCPConnection.hpp>
@@ -17,26 +18,31 @@ int main()
     std::string lol;
 
     FindIt::HeartBeatResponse message("node_name 1", 1);
-    queue->push(&message);
+    std::shared_ptr<FindIt::IMessage> mes1(&message);
+    queue->push(mes1);
 
-    FindIt::HeartBeatResponse message2("node_name 2", 1);
-    queue->push(&message2);
+    // FindIt::HeartBeatResponse message2("node_name 2", 1);
+    // queue->push(&message2);
 
-    FindIt::HeartBeatResponse message3("node_name 3", 1);
-    queue->push(&message3);
+    // FindIt::HeartBeatResponse message3("node_name 3", 1);
+    // queue->push(&message3);
 
-    FindIt::HeartBeatResponse message4("node_name 4", 1);
-    queue->push(&message4);
+    // FindIt::HeartBeatResponse message4("node_name 4", 1);
+    // queue->push(&message4);
 
-    FindIt::HeartBeatResponse message5("node_name 5", 1);
-    queue->push(&message5);
+    // FindIt::HeartBeatResponse message5("node_name 5", 1);
+    // queue->push(&message5);
 
-    for (int i = 0; i < 5; i++)
-    {
-        message0 = (FindIt::HeartBeatResponse *)queue->pop();
-        lol = message0->GetNode();
-        std::cout << lol << std::endl;
-    }
+    std::shared_ptr<FindIt::IMessage> mes2 = queue->pop();
+    message0 = (FindIt::HeartBeatResponse *)mes2.get();
+    lol = message0->GetNode();
+    std::cout << lol << std::endl;
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     message0 = (FindIt::HeartBeatResponse *)queue->pop();
+    //     lol = message0->GetNode();
+    //     std::cout << lol << std::endl;
+    // }
 
     while (true)
     {

@@ -3,6 +3,7 @@
 
 #include "MessageQueue.hpp"
 #include <thread>
+#include <memory>
 
 #include <HeartbeatResponse.hpp>
 #include <NodeEventProductFound.hpp>
@@ -20,20 +21,25 @@ namespace
     TEST(MessageQueueTests, queue_push_Test)
     {
         FindIt::MessageQueue queue;
-        FindIt::HeartBeatResponse message1("node_name 1", 1);
-        FindIt::NodeNotifyNewProduct message2("product_name");
-        FindIt::ServerRequestProduct message3("chocola jummie", true);
 
-        queue.push(&message1);
-        queue.push(&message2);
-        queue.push(&message3);
+        std::shared_ptr<FindIt::IMessage> msg = std::make_shared<FindIt::HeartBeatResponse>("node_name 1", 1);
+        std::shared_ptr<FindIt::IMessage> msg2 = std::make_shared<FindIt::NodeNotifyNewProduct>("product_name");
+        std::shared_ptr<FindIt::IMessage> msg3 = std::make_shared<FindIt::ServerRequestProduct>("chocola jummie", true);
+        queue.push(msg);
+        queue.push(msg2);
+        queue.push(msg3);
 
-        FindIt::HeartBeatResponse *result = (FindIt::HeartBeatResponse *)queue.pop();
-        EXPECT_EQ(result->GetNode(), "node_name 1");
-        FindIt::NodeNotifyNewProduct *result2 = (FindIt::NodeNotifyNewProduct *)queue.pop();
-        EXPECT_EQ(result2->GetProduct(), "product_name");
-        FindIt::ServerRequestProduct *result3 = (FindIt::ServerRequestProduct *)queue.pop();
-        EXPECT_EQ(result3->GetProduct(), "chocola jummie");
+        std::shared_ptr<FindIt::IMessage> result1 = queue.pop();
+        FindIt::HeartBeatResponse *result11 = (FindIt::HeartBeatResponse *)result1.get();
+        EXPECT_EQ(result11->GetNode(), "node_name 1");
+
+        std::shared_ptr<FindIt::IMessage> result2 = queue.pop();
+        FindIt::NodeNotifyNewProduct *result21 = (FindIt::NodeNotifyNewProduct *)result2.get();
+        EXPECT_EQ(result21->GetProduct(), "product_name");
+
+        std::shared_ptr<FindIt::IMessage> result3 = queue.pop();
+        FindIt::ServerRequestProduct *result31 = (FindIt::ServerRequestProduct *)result3.get();
+        EXPECT_EQ(result31->GetProduct(), "chocola jummie");
     }
 
     TEST(MessageQueueTests, queue_pop_null_Test)
@@ -47,21 +53,21 @@ namespace
     {
         FindIt::MessageQueue queue;
 
-        FindIt::HeartBeatResponse message("node_name", 1);
-        queue.push(&message);
-        queue.push(&message);
-        queue.push(&message);
-        queue.push(&message);
+        std::shared_ptr<FindIt::IMessage> msg = std::make_shared<FindIt::HeartBeatResponse>("node_name 1", 1);
+        queue.push(msg);
+        queue.push(msg);
+        queue.push(msg);
+        queue.push(msg);
 
         EXPECT_EQ(queue.returnSize(), 4);
     }
 
     void spam(FindIt::MessageQueue &queue)
     {
-        FindIt::HeartBeatResponse *message = new FindIt::HeartBeatResponse("node_name", 1);
+        std::shared_ptr<FindIt::IMessage> msg = std::make_shared<FindIt::HeartBeatResponse>("node_name 1", 1);
         for (int i = 0; i < 50; i++)
         {
-            queue.push(message);
+            queue.push(msg);
         }
     }
 
@@ -69,21 +75,23 @@ namespace
     {
         FindIt::MessageQueue queue;
 
-        std::jthread t1(spam, std::ref(queue));
-        std::jthread t2(spam, std::ref(queue));
-        std::jthread t3(spam, std::ref(queue));
+        std::thread t1(spam, std::ref(queue));
+        std::thread t2(spam, std::ref(queue));
+        std::thread t3(spam, std::ref(queue));
 
         t1.join();
         t2.join();
         t3.join();
 
-        FindIt::HeartBeatResponse *result;
+        // FindIt::HeartBeatResponse *result;
+        std::shared_ptr<FindIt::IMessage> result1;
+        FindIt::HeartBeatResponse *result11;
 
         for (int i = 0; i < 149; i++)
         {
-            result = (FindIt::HeartBeatResponse *)queue.pop();
-            EXPECT_EQ(result->GetNode(), "node_name");
-            result->~HeartBeatResponse();
+            result1 = queue.pop();
+            result11 = (FindIt::HeartBeatResponse *)result1.get();
+            EXPECT_EQ(result11->GetNode(), "node_name 1");
         }
     }
 
