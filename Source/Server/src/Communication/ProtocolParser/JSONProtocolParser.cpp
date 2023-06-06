@@ -3,17 +3,15 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 
-using json = nlohmann::json;
-
 namespace FindIt
 {
 
-IMessage* JSONProtocolParser::Parse(std::string data)
+std::shared_ptr<IMessage> JSONProtocolParser::Parse(const std::string& data)
 {
-    json json_obj;
+    nlohmann::json json_obj;
     try
     {
-        json_obj = json::parse(data);
+        json_obj = nlohmann::json::parse(data);
     }
     catch(const nlohmann::json::parse_error& e)
     {
@@ -36,12 +34,12 @@ IMessage* JSONProtocolParser::Parse(std::string data)
         if (json_obj.find("Node") != json_obj.end()
             && json_obj.find("Places") != json_obj.end())
         {
-            return new HeartBeatResponse(json_obj["Node"], json_obj["Places"]);
+            return std::make_shared<HeartBeatResponse>(json_obj["Node"], json_obj["Places"]);
         }
         else if (json_obj.find("Node") == json_obj.end()
                 && json_obj.find("Places") == json_obj.end())
         {
-            return new HeartBeat();
+            return std::make_shared<HeartBeat>();
         }
     }
     else if (action == "SignIn"
@@ -50,10 +48,10 @@ IMessage* JSONProtocolParser::Parse(std::string data)
     {
         if (json_obj.find("Result") != json_obj.end())
         {
-            return new NodeSignInResponse(json_obj["Node"], json_obj["Places"], json_obj["Result"]);
+            return std::make_shared<NodeSignInResponse>(json_obj["Node"], json_obj["Places"], json_obj["Result"]);
         }
         {
-            return new NodeSignIn(json_obj["Node"], json_obj["Places"]);
+            return std::make_shared<NodeSignIn>(json_obj["Node"], json_obj["Places"]);
         }
     }
     else if (action == "NotifyNewProduct"
@@ -61,30 +59,30 @@ IMessage* JSONProtocolParser::Parse(std::string data)
     {
         if (json_obj.find("Result") != json_obj.end())
         {
-            return new NodeNotifyNewProductResponse(json_obj["Product"], json_obj["Result"]);
+            return std::make_shared<NodeNotifyNewProductResponse>(json_obj["Product"], json_obj["Result"]);
         }
         else
         {
-            return new NodeNotifyNewProduct(json_obj["Product"]);
+            return std::make_shared<NodeNotifyNewProduct>(json_obj["Product"]);
         }
     }
     else if (action == "RequestProduct"
             && json_obj.find("Product") != json_obj.end()
-            && json_obj.find("_Activate") != json_obj.end())
+            && json_obj.find("Activate") != json_obj.end())
     {
-        return new ServerRequestProduct(json_obj["Product"], json_obj["_Activate"]);
+        return std::make_shared<ServerRequestProduct>(json_obj["Product"], json_obj["Activate"]);
     }
     else if (action == "ResponseProduct"
             && json_obj.find("Product") != json_obj.end()
             && json_obj.find("Result") != json_obj.end())
     {
-        return new NodeRespondToProductRequest(json_obj["Product"], json_obj["Result"]);
+        return std::make_shared<NodeRespondToProductRequest>(json_obj["Product"], json_obj["Result"]);
     }
     else if (action == "ProductFound"
             && json_obj.find("Product") != json_obj.end()
             && json_obj.find("Result") != json_obj.end())
     {
-        return new NodeEventProductFound(json_obj["Product"], json_obj["Result"]);
+        return std::make_shared<NodeEventProductFound>(json_obj["Product"], json_obj["Result"]);
     }
 
     return nullptr;
@@ -92,7 +90,7 @@ IMessage* JSONProtocolParser::Parse(std::string data)
 
 std::string JSONProtocolParser::Parse(IMessage &data)
 {
-    json json_obj;
+    nlohmann::json json_obj;
 
     switch (data.GetType())
     {
@@ -147,7 +145,7 @@ std::string JSONProtocolParser::Parse(IMessage &data)
         ServerRequestProduct &server_request_product = dynamic_cast<ServerRequestProduct&>(data);
         json_obj["Action"] = server_request_product.GetAction();
         json_obj["Product"] = server_request_product.GetProduct();
-        json_obj["_Activate"] = server_request_product.GetActivate();
+        json_obj["Activate"] = server_request_product.GetActivate();
         break;
     }
     case MessageType::NODE_RESPOND_TO_PRODUCT_REQUEST:
@@ -169,7 +167,6 @@ std::string JSONProtocolParser::Parse(IMessage &data)
     default:
     {
         return std::string("");
-        break;
     }
     }
 
