@@ -1,17 +1,17 @@
 #include "I2CCommunication.hpp"
 #include <Arduino.h>
 
-#define HUB_ADDRESS 0x08
-#define DEFAULT_NODE_ADRESS 0x7F
+constexpr int HUB_ADDRESS = 0x08;
+constexpr int DEFAULT_NODE_ADRESS = 0x7F;
 
-#define REQUESTFROM_SETUP_REG 0x01
-#define REQUESTFROM_HEARTBEAT_REG 0x02
+constexpr int REQUESTFROM_SETUP_REG = 0x01;
+constexpr int REQUESTFROM_HEARTBEAT_REG = 0x02;
 
-#define MIN_ADRESS 0x09
-#define MAX_ADRESS 0x6F
-#define ADRESS_NOT_SET 0x00
-#define WAIT_FOR_SETUP_DELAY 500
-#define MAX_STRING_LENGTH 30
+constexpr int MIN_ADRESS = 0x09;
+constexpr int MAX_ADRESS = 0x7E;
+constexpr int ADRESS_NOT_SET = 0x00;
+constexpr int WAIT_FOR_SETUP_DELAY = 500;
+constexpr int MAX_STRING_LENGTH = 30;
 
 volatile uint8_t activeRegisterAdress;
 volatile uint8_t RGBValues[3];
@@ -55,6 +55,7 @@ void RecieveEvent(int HowMany)
     {
         Serial.println("Active");
         notificationState = Wire.read();
+        Serial.println(notificationState);
         break;
     }
     case ITEM_REG:
@@ -106,6 +107,12 @@ I2CCommunication::I2CCommunication()
     recievedErrorState = 0;
     errorState = 0;
     Wire.begin(DEFAULT_NODE_ADRESS);
+    Wire.requestFrom(HUB_ADDRESS, 1);
+    while(Wire.available() == 0)
+    {
+        //DO NOTHING
+    }
+    Wire.read();
     while(activeAdress == ADRESS_NOT_SET|| activeAdress < MIN_ADRESS || activeAdress > MAX_ADRESS)
     {
         Wire.beginTransmission(HUB_ADDRESS);
@@ -120,12 +127,17 @@ I2CCommunication::I2CCommunication()
             delay(WAIT_FOR_SETUP_DELAY);
             //DO NOTHING
         }
-        activeAdress = Wire.read();
+        else
+        {
+            activeAdress = Wire.read();
+        }
     }
     Wire.begin(activeAdress);
     Wire.onReceive(RecieveEvent);
     Wire.onRequest(RequestEvent);
     Serial.println(activeAdress);
+    SendHeartbeat();
+
 }
 
 I2CCommunication::~I2CCommunication()
@@ -180,4 +192,13 @@ uint8_t I2CCommunication::GetNotificationState()
 uint8_t I2CCommunication::GetRecievedErrorState()
 {
     return recievedErrorState;
+}
+
+void I2CCommunication::SendHeartbeat()
+{
+    Wire.beginTransmission(HUB_ADDRESS);
+    Wire.write(HEARTBEAT_REG);
+    Wire.write(activeAdress);
+    Wire.write(0);
+    Wire.endTransmission();
 }

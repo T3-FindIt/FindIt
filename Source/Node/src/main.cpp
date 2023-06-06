@@ -4,7 +4,9 @@
 #include "I2CCommunication.hpp"
 #include "MFRC522Reader.hpp"
 
-#define CARDSTRINGLENGTH 30
+constexpr int CARDSTRINGLENGTH = 30;
+
+constexpr uint32_t heartbeatTime = 99*1000;
 I2CCommunication* comToHub;
 MFRC522Reader* nfcReader;
 
@@ -19,6 +21,7 @@ void setup()
 
 void loop()
 {
+    static uint32_t lastSendTime = 0;
     bool status = nfcReader->CheckForCard();
     if (status)
     {
@@ -38,5 +41,11 @@ void loop()
         Serial.println("Card removed");
         currentCard[0] = '\0';
         comToHub->SendNewItemToHub(currentCard, CARDSTRINGLENGTH);
+    }
+
+    if (millis() - lastSendTime > heartbeatTime)
+    {
+        lastSendTime = millis();
+        comToHub->SendHeartbeat();
     }
 }
