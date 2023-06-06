@@ -29,7 +29,7 @@ PlainFileDatabase::PlainFileDatabase(std::string relativePath)
     }
 }
 
-void PlainFileDatabase::Add(Object object)
+void PlainFileDatabase::Add(ItemType object)
 {
     if (!SearchIfPresent(object))
     {
@@ -43,9 +43,9 @@ void PlainFileDatabase::Add(Object object)
     }
 }
 
-void PlainFileDatabase::Remove(Object object)
+void PlainFileDatabase::Remove(ItemType object)
 {
-    std::vector<Object> objects = GetAllObjects();
+    std::vector<ItemType> objects = GetAllObjects();
     std::erase(objects, object);
 
     std::ofstream file(relativePath, std::ios::trunc);
@@ -57,7 +57,7 @@ void PlainFileDatabase::Remove(Object object)
     }
 }
 
-bool PlainFileDatabase::SearchIfPresent(Object object)
+bool PlainFileDatabase::SearchIfPresent(ItemType object)
 {
     std::fstream file(relativePath);
     if (!file.good())
@@ -81,7 +81,7 @@ bool PlainFileDatabase::SearchIfPresent(Object object)
     return result;
 }
 
-std::vector<Object> PlainFileDatabase::GetAllObjects()
+std::vector<ItemType> PlainFileDatabase::GetAllObjects()
 {
     std::fstream file(relativePath);
     if (!file.good())
@@ -89,7 +89,7 @@ std::vector<Object> PlainFileDatabase::GetAllObjects()
         throw std::runtime_error("Database Source Missing - GetAllObjects");
     }
 
-    std::vector<Object> objects;
+    std::vector<ItemType> objects;
     std::vector<std::string> lines;
     lines = ReadObjectAndIncrement(file);
     while (!lines.empty() && lines.size() >= 2)
