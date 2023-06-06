@@ -1,13 +1,15 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <memory>
 
 #include <Communication.hpp>
 #include <TCPConnection.hpp>
 #include <JSONProtocolParser.hpp>
 #include <ItemType.hpp>
 #include <PlainFileDatabase.hpp>
-
+#include <IMessage.hpp>
+#include <MessageQueue.hpp>
 
 int main()
 {

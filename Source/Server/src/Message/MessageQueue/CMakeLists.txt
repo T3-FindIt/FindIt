@@ -10,6 +10,10 @@ set(Sources
 
 add_library(MessageQueue STATIC ${Sources} ${Headers})
 
+target_link_libraries(MessageQueue PRIVATE
+    MessageInterface
+)
+
 target_include_directories(MessageQueue PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
