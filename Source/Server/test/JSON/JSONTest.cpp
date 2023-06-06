@@ -171,7 +171,20 @@ TEST_F(JSONTests, ParseNodeNotifyNewProductToObject)
 
 TEST_F(JSONTests, ParseServerRequestProductToObject)
 {
-    std::string data = "{\"Action\":\"RequestProduct\",\"Product\":\"Product\",\"_Activate\":true}";
+    std::string data = "{\"Action\":\"RequestProduct\",\"Product\":\"Product\",\"Activate\":true}";
+    FindIt::IMessage* message = parser.Parse(data);
+    ASSERT_NE(message, nullptr);
+    ASSERT_EQ(message->GetType(), FindIt::MessageType::SERVER_REQUEST_PRODUCT);
+    FindIt::ServerRequestProduct* serverRequestProduct = dynamic_cast<FindIt::ServerRequestProduct*>(message);
+    ASSERT_EQ(serverRequestProduct->GetAction(), "RequestProduct");
+    ASSERT_EQ(serverRequestProduct->GetProduct(), "Product");
+    ASSERT_EQ(serverRequestProduct->GetActivate(), true);
+    delete message;
+}
+
+TEST_F(JSONTests, ParseServerRequestProductToObjectDifferentOrderString)
+{
+    std::string data = "{\"Product\":\"Product\",\"Action\":\"RequestProduct\",\"Activate\":true}";
     FindIt::IMessage* message = parser.Parse(data);
     ASSERT_NE(message, nullptr);
     ASSERT_EQ(message->GetType(), FindIt::MessageType::SERVER_REQUEST_PRODUCT);
@@ -184,14 +197,14 @@ TEST_F(JSONTests, ParseServerRequestProductToObject)
 
 TEST_F(JSONTests, ParseServerRequestProductToObjectLowerCaseActionFail)
 {
-    std::string data = "{\"Action\":\"requestproduct\",\"Product\":\"Product\",\"_Activate\":true}";
+    std::string data = "{\"Action\":\"requestproduct\",\"Product\":\"Product\",\"Activate\":true}";
     FindIt::IMessage* message = parser.Parse(data);
     ASSERT_EQ(message, nullptr);
 }
 
 TEST_F(JSONTests, ParseServerRequestProductToObjectMissingProductFail)
 {
-    std::string data = "{\"Action\":\"RequestProduct\",\"_Activate\":true}";
+    std::string data = "{\"Action\":\"RequestProduct\",\"Activate\":true}";
     FindIt::IMessage* message = parser.Parse(data);
     ASSERT_EQ(message, nullptr);
 }
@@ -323,7 +336,7 @@ TEST_F(JSONTests, ParseServerRequestProductToJSON)
 {
     FindIt::ServerRequestProduct serverRequestProduct("Product", false);
     std::string data = parser.Parse(serverRequestProduct);
-    ASSERT_EQ(data, "{\"Action\":\"RequestProduct\",\"Product\":\"Product\",\"_Activate\":false}");
+    ASSERT_EQ(data, "{\"Action\":\"RequestProduct\",\"Activate\":false,\"Product\":\"Product\"}");
 }
 
 TEST_F(JSONTests, ParseNodeRespondToProductRequestToJSON)

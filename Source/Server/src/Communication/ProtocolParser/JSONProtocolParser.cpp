@@ -3,17 +3,15 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 
-using json = nlohmann::json;
-
 namespace FindIt
 {
 
 IMessage* JSONProtocolParser::Parse(std::string data)
 {
-    json json_obj;
+    nlohmann::json json_obj;
     try
     {
-        json_obj = json::parse(data);
+        json_obj = nlohmann::json::parse(data);
     }
     catch(const nlohmann::json::parse_error& e)
     {
@@ -70,9 +68,9 @@ IMessage* JSONProtocolParser::Parse(std::string data)
     }
     else if (action == "RequestProduct"
             && json_obj.find("Product") != json_obj.end()
-            && json_obj.find("_Activate") != json_obj.end())
+            && json_obj.find("Activate") != json_obj.end())
     {
-        return new ServerRequestProduct(json_obj["Product"], json_obj["_Activate"]);
+        return new ServerRequestProduct(json_obj["Product"], json_obj["Activate"]);
     }
     else if (action == "ResponseProduct"
             && json_obj.find("Product") != json_obj.end()
@@ -92,7 +90,7 @@ IMessage* JSONProtocolParser::Parse(std::string data)
 
 std::string JSONProtocolParser::Parse(IMessage &data)
 {
-    json json_obj;
+    nlohmann::json json_obj;
 
     switch (data.GetType())
     {
@@ -147,7 +145,7 @@ std::string JSONProtocolParser::Parse(IMessage &data)
         ServerRequestProduct &server_request_product = dynamic_cast<ServerRequestProduct&>(data);
         json_obj["Action"] = server_request_product.GetAction();
         json_obj["Product"] = server_request_product.GetProduct();
-        json_obj["_Activate"] = server_request_product.GetActivate();
+        json_obj["Activate"] = server_request_product.GetActivate();
         break;
     }
     case MessageType::NODE_RESPOND_TO_PRODUCT_REQUEST:
