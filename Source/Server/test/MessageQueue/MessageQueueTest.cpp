@@ -83,7 +83,6 @@ namespace
         t2.join();
         t3.join();
 
-        // FindIt::HeartBeatResponse *result;
         std::shared_ptr<FindIt::IMessage> result1;
         FindIt::HeartBeatResponse *result11;
 

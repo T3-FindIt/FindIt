@@ -8,7 +8,7 @@ namespace FindIt
         queue.push(message);
     }
 
-    std::shared_ptr<IMessage> MessageQueue::pop() //raw pointer
+    std::shared_ptr<IMessage> MessageQueue::pop()
     {
         std::scoped_lock lock(mutex);
         if (queue.size() <= 0)

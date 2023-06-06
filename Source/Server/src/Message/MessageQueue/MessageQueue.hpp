@@ -21,7 +21,7 @@ namespace FindIt
         int returnSize();
 
     private:
-        std::queue<std::shared_ptr<IMessage>> queue; //No need for the use of raw pointers here. You can use references instead.
+        std::queue<std::shared_ptr<IMessage>> queue;
         std::mutex mutex;
     };
 
