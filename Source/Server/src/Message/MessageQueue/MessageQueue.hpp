@@ -21,7 +21,7 @@ namespace FindIt
         int returnSize();
 
     private:
-        std::queue<std::shared_ptr<IMessage>> queue;
+        std::queue<std::shared_ptr<IMessage> > queue;
         std::mutex mutex;
     };
 
