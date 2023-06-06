@@ -6,48 +6,40 @@
 #include <Communication.hpp>
 #include <TCPConnection.hpp>
 #include <JSONProtocolParser.hpp>
-#include <Object.hpp>
+#include <ItemType.hpp>
 #include <PlainFileDatabase.hpp>
 #include <IMessage.hpp>
 #include <MessageQueue.hpp>
 
 int main()
 {
-    FindIt::MessageQueue *queue = new FindIt::MessageQueue();
-    FindIt::HeartBeatResponse *message0;
-    std::string lol;
+    // Set cluster coms to a TCP connection on port 54000
+    FindIt::Server clusterConnection(54000);
 
-    FindIt::HeartBeatResponse message("node_name 1", 1);
-    std::shared_ptr<FindIt::IMessage> mes1(&message);
-    queue->push(mes1);
+    // Set protocol parser to JSON
+    FindIt::JSONProtocolParser protocolParser;
 
-    // FindIt::HeartBeatResponse message2("node_name 2", 1);
-    // queue->push(&message2);
+    // Set up communication and start a new thread for it
+    FindIt::Communication communication(clusterConnection, protocolParser);
+    std::jthread communicationThread(&FindIt::Communication::Run, communication);
 
-    // FindIt::HeartBeatResponse message3("node_name 3", 1);
-    // queue->push(&message3);
+    // std::cin.get();
 
-    // FindIt::HeartBeatResponse message4("node_name 4", 1);
-    // queue->push(&message4);
+    // communication->Stop();
+    // communicationThread.join();
 
-    // FindIt::HeartBeatResponse message5("node_name 5", 1);
-    // queue->push(&message5);
 
-    std::shared_ptr<FindIt::IMessage> mes2 = queue->pop();
-    message0 = (FindIt::HeartBeatResponse *)mes2.get();
-    lol = message0->GetNode();
-    std::cout << lol << std::endl;
-    // for (int i = 0; i < 5; i++)
-    // {
-    //     message0 = (FindIt::HeartBeatResponse *)queue->pop();
-    //     lol = message0->GetNode();
-    //     std::cout << lol << std::endl;
-    // }
+    FindIt::PlainFileDatabase database("./Data/Database.txt");
+    database.Add(FindIt::ItemType("TEST_JOHN", 51));
+    database.Add(FindIt::ItemType("TEST_TEST", 35));
+    database.Add(FindIt::ItemType("TEST_TEST", 35));
+    database.Add(FindIt::ItemType("TEST_BARB", 50));
+    database.Add(FindIt::ItemType("TEST_JOHNS", 52));
+    database.SearchIfPresent(FindIt::ItemType("TEST_TEST", 35));
 
-    while (true)
-    {
-        // so the application doesnt close
-    }
+    std::vector<FindIt::ItemType> objects = database.GetAllObjects();
+
+    database.Remove(FindIt::ItemType("TEST_TEST", 35));
 
     return 0;
 }

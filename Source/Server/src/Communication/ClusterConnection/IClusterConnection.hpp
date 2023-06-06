@@ -21,6 +21,7 @@ protected:
     on_client_connect_callback_t    m_on_client_connect;
     on_client_disconnect_callback_t m_on_client_disconnect;
 public:
+    virtual ~IClusterConnection() = default;
     virtual void run() = 0;
     virtual void stop() = 0;
 
