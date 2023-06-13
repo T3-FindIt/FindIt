@@ -13,6 +13,9 @@
 #define SERVER_ADDRESS "SERVER IP"
 #define SERVER_PORT 80
 
+#define I2C_
+#define WIFI
+
 WiFiHandler wifiHandler = WiFiHandler();
 WebSocketHandler webSocketHandler = WebSocketHandler();
 I2C i2c (LOCAL_ADDRESS);
@@ -22,28 +25,33 @@ int scanTime = 0;
 
 void setup()
 {
-    // WiFiData wifiData(SSID, PASSWORD);
-    // wifiHandler = WiFiHandler(wifiData);
+    #ifdef WIFI
 
-    // WebSocketData webSocketData(SERVER_ADDRESS, SERVER_PORT);
-    // webSocketHandler = WebSocketHandler(webSocketData);
+    WiFiData wifiData(SSID, PASSWORD);
+    wifiHandler = WiFiHandler(wifiData);
 
-    // wifiHandler.Connect();
-    // if(!wifiHandler.isConnected())
-    // {
-    //   return;
-    // }
+    WebSocketData webSocketData(SERVER_ADDRESS, SERVER_PORT);
+    webSocketHandler = WebSocketHandler(webSocketData);
 
-    // webSocketHandler.Connect();
-    // if(!webSocketHandler.isConnected())
-    // {
-    //   return;
-    // }
-    // Serial.begin(9600);
-    // Serial.println();
-    // Serial.println("Starting up!");
+    wifiHandler.Connect();
+    if (!wifiHandler.isConnected())
+    {
+        return;
+    }
+
+    webSocketHandler.Connect();
+    if (!webSocketHandler.isConnected())
+    {
+        return;
+    }
+    #endif
+    Serial.begin(9600);
+    Serial.println();
+    Serial.println("Starting up!");
+    #ifdef I2C_
     scanTime = millis() + SCAN_OFFSET;
     i2c.InitializeAddresses();
+    #endif
 }
 
 int lastRequest;
@@ -51,36 +59,40 @@ int lastRequest;
 
 void loop()
 {
-    // if(webSocketHandler.isConnected())
-    // {
-    //   std::string websocketData = webSocketHandler.Recieve();
-    //   if(websocketData != "")
-    //   {
-    //     // Decompile with JSON parser
-    //     // Do some stuff with the data
+    #ifdef WIFI
+    if (webSocketHandler.isConnected())
+    {
+        std::string websocketData = webSocketHandler.Recieve();
+        if(websocketData != "")
+        {
+        // Decompile with JSON parser
+        // Do some stuff with the data
 
-    //     Serial.println(websocketData.c_str());
-    //   }
+            Serial.println(websocketData.c_str());
+        }
 
-    //   webSocketHandler.Send("Hello from ESP32!");
-    // }
+        webSocketHandler.Send("Hello from ESP32!");
+    }
+    #endif
 
-    // if(i2c.IsAvailable())
-    // {
-    //     if(i2c.GetLastChange() == 3) // TODO: Clean up
-    //     {
-    //         Serial.print("Last address:");
-    //         Serial.println(i2c.debug_GetLastAddress());
-    //         char data[MAX_STRING_SIZE];
-    //         i2c.GetRegister(3,&data[0]);
-    //         Serial.print("Item: ");
-    //         Serial.println(data);
-    //     }
-    // }
+    #ifdef I2C_
+    if (i2c.IsAvailable())
+    {
+        if (i2c.GetLastChange() == LAST_ITEM_REGISTER) // TODO: Clean up
+        {
+            Serial.print("Last address:");
+            Serial.println(i2c.GetLastAddress());
+            char data[MAX_STRING_SIZE];
+            i2c.GetRegister(LAST_ITEM_REGISTER,&data[0]);
+            Serial.print("Item: ");
+            Serial.println(data);
+        }
+    }
 
-    if(scanTime < millis())
+    if (scanTime < millis())
     {
         i2c.Scan();
         scanTime = millis() + SCAN_OFFSET;
     }
+    #endif
 }
