@@ -12,6 +12,7 @@ constexpr int MAX_ADRESS = 0x7E;
 constexpr int ADRESS_NOT_SET = 0x00;
 constexpr int WAIT_FOR_SETUP_DELAY = 500;
 constexpr int MAX_STRING_LENGTH = 30;
+constexpr int RGB_SIZE = 3;
 
 volatile uint8_t activeRegisterAdress;
 volatile uint8_t RGBValues[3];
@@ -45,7 +46,7 @@ void RecieveEvent(int HowMany)
     case RGB_REG:
     {
         Serial.println("RGB");
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < RGB_SIZE; i++)
         {
             RGBValues[i] = Wire.read();
         }
@@ -97,7 +98,7 @@ void RequestEvent()
 
 I2CCommunication::I2CCommunication()
 {
-    Serial.begin(9600);
+    // Serial.begin(9600); //DEBUG
     activeRegisterAdress = 0;
     RGBValues[0] = 0;
     RGBValues[1] = 0;
@@ -170,11 +171,11 @@ int I2CCommunication::SendNewItemToHub(char* itemString, size_t stringLength)
     return 0;
 }
 
-void I2CCommunication::GetRGBValues(uint8_t* OutputArray)
+void I2CCommunication::GetRGBValues(uint8_t* outputArray)
 {
-    for (int i = 0 ; i < 3; i++)
+    for (int i = 0 ; i < RGB_SIZE; i++)
     {
-        OutputArray[i] = RGBValues[i];
+        outputArray[i] = RGBValues[i];
     }
 }
 
