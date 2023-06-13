@@ -32,11 +32,11 @@ void WiFiHandler::Connect()
 
     if (WiFi.isConnected())
     {
-        // Serial.println("Connected to WiFi");
+        Serial.println("Connected to WiFi");
     }
     else
     {
-        // Serial.println("Failed to connect to WiFi");
+        Serial.println("Failed to connect to WiFi");
     }
 }
 
