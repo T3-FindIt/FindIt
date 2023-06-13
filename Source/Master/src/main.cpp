@@ -111,10 +111,23 @@ void loop()
         std::string websocketData = webSocketHandler.Recieve();
         if (websocketData != "")
         {
-        // Decompile with JSON parser
-        // Do some stuff with the data
+            std::string keys[MAX_ARRAY_SIZE];
+            std::string values[MAX_ARRAY_SIZE];
+            if(jsonBuilder.Deserialize(websocketData, keys, values, MAX_ARRAY_SIZE))
+            {
+                #ifdef SERIAL_DEBUG
+                Serial.println(websocketData.c_str());
+                #endif
 
-            Serial.println(websocketData.c_str());
+                if(Handle_Json(keys, values) == false)
+                {
+                    #ifdef SERIAL_DEBUG
+                    Serial.println("Failed to detect message.");
+                    #endif
+                    return;
+                }
+            }
+
         }
 
         webSocketHandler.Send("Hello from ESP32!");
