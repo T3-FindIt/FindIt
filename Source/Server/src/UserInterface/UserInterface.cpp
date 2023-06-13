@@ -53,7 +53,7 @@ namespace FindIt
             case 3:
             {
                 std::cout << "Type in the object you would like to add:\n"
-                          << "The first name without spaces will be used!" << std::endl;
+                        << "The first name without spaces will be used!" << std::endl;
                 std::string ObjectToBeAdded;
                 std::cin >> ObjectToBeAdded;
                 FindIt::ItemType obj = FindIt::ItemType(ObjectToBeAdded, ID);
