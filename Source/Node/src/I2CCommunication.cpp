@@ -33,19 +33,19 @@ void RecieveEvent(int HowMany)
     case REQUESTFROM_REG:
     {
         requestfromRegister = Wire.read();
-        Serial.print("Request from");
-        Serial.println(requestfromRegister);
+        // Serial.print("Request from");
+        // Serial.println(requestfromRegister);
         break;
     }
     case NOTIFICATION_REG:
     {
-        Serial.println("Notification");
+        // Serial.println("Notification");
         notificationModeRegistry = Wire.read();
         break;
     }
     case RGB_REG:
     {
-        Serial.println("RGB");
+        // Serial.println("RGB");
         for (int i = 0; i < RGB_SIZE; i++)
         {
             RGBValues[i] = Wire.read();
@@ -54,26 +54,26 @@ void RecieveEvent(int HowMany)
     }
     case ACTIVE_REG:
     {
-        Serial.println("Active");
+        // Serial.println("Active");
         notificationState = Wire.read();
         Serial.println(notificationState);
         break;
     }
     case ITEM_REG:
     {
-        Serial.println("Item");
+        // Serial.println("Item");
         //DO NOTHING
         break;
     }
     case ERROR_REG:
     {
-        Serial.println("Error");
+        // Serial.println("Error");
         recievedErrorState = Wire.read();
         break;
     }
     default:
     {
-        Serial.println("Default");
+        // Serial.println("Default");
         //DO NOTHING
         break;
     }
@@ -124,7 +124,7 @@ I2CCommunication::I2CCommunication()
         Wire.requestFrom(HUB_ADDRESS, 1);
         if (Wire.available() == 0)
         {
-            Serial.println("Waiting for adress");
+            // Serial.println("Waiting for adress");
             delay(WAIT_FOR_SETUP_DELAY);
             //DO NOTHING
         }
@@ -136,7 +136,7 @@ I2CCommunication::I2CCommunication()
     Wire.begin(activeAdress);
     Wire.onReceive(RecieveEvent);
     Wire.onRequest(RequestEvent);
-    Serial.println(activeAdress);
+    // Serial.println(activeAdress);
     SendHeartbeat();
 
 }
