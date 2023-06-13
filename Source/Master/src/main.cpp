@@ -78,7 +78,7 @@ void loop()
     #ifdef I2C_
     if (i2c.IsAvailable())
     {
-        if (i2c.GetLastChange() == LAST_ITEM_REGISTER) // TODO: Clean up
+        if (i2c.GetLastChange() == LAST_ITEM_REGISTER)
         {
             Serial.print("Last address:");
             Serial.println(i2c.GetLastAddress());
