@@ -12,7 +12,7 @@ set(Sources
 add_library(Database STATIC ${Sources} ${Headers})
 
 target_link_libraries(Database PRIVATE
-    Object
+    ItemType
 )
 
 target_include_directories(Database PUBLIC

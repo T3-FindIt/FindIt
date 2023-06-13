@@ -1,13 +1,15 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <memory>
 
 #include <Communication.hpp>
 #include <TCPConnection.hpp>
 #include <JSONProtocolParser.hpp>
-#include <Object.hpp>
+#include <ItemType.hpp>
 #include <PlainFileDatabase.hpp>
-
+#include <IMessage.hpp>
+#include <MessageQueue.hpp>
 
 int main()
 {
@@ -28,16 +30,16 @@ int main()
 
 
     FindIt::PlainFileDatabase database("./Data/Database.txt");
-    database.Add(FindIt::Object("TEST_JOHN", 51));
-    database.Add(FindIt::Object("TEST_TEST", 35));
-    database.Add(FindIt::Object("TEST_TEST", 35));
-    database.Add(FindIt::Object("TEST_BARB", 50));
-    database.Add(FindIt::Object("TEST_JOHNS", 52));
-    database.SearchIfPresent(FindIt::Object("TEST_TEST", 35));
+    database.Add(FindIt::ItemType("TEST_JOHN", 51));
+    database.Add(FindIt::ItemType("TEST_TEST", 35));
+    database.Add(FindIt::ItemType("TEST_TEST", 35));
+    database.Add(FindIt::ItemType("TEST_BARB", 50));
+    database.Add(FindIt::ItemType("TEST_JOHNS", 52));
+    database.SearchIfPresent(FindIt::ItemType("TEST_TEST", 35));
 
-    std::vector<FindIt::Object> objects = database.GetAllObjects();
+    std::vector<FindIt::ItemType> objects = database.GetAllObjects();
 
-    database.Remove(FindIt::Object("TEST_TEST", 35));
+    database.Remove(FindIt::ItemType("TEST_TEST", 35));
 
     return 0;
 }
