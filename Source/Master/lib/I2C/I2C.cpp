@@ -202,9 +202,9 @@ void receiveEvent(int howMany) // A node sends data, not making a request.
         i++;
     }
 
+    data[i] = '\0';
     #ifdef PRINT_I2C_DATA
 
-    data[i] = '\0';
     Serial.println("=== DATA ===");
     Serial.println(lastRecieved);
     Serial.println(receiveAddress);
