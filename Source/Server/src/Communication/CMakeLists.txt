@@ -19,6 +19,8 @@ MessageInterface
 ProtocolParser
 ClusterConnection
 MessageQueue
+Database
+ItemType
 )
 
 add_subdirectory(ProtocolParser)
