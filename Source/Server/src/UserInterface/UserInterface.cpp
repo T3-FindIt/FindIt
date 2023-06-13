@@ -22,8 +22,11 @@ namespace FindIt
     {
         int choice = 0;
         std::string requestedObject;
+        std::string ObjectToBeAdded;
         std::shared_ptr<FindIt::IMessage> msg;
-        FindIt::ItemType *object;
+        std::shared_ptr<FindIt::ItemType> obj;
+
+        int ID = 0; //how to decide what the ID should be
         running = true;
 
         while (running)
@@ -49,12 +52,16 @@ namespace FindIt
 
             case 3:
                 std::cout << "Type in the object you would like to add:" << std::endl;
-                object = new FindIt::ItemType("TestObject", 20);
-                AddObject(*object);
+                std::cin >> ObjectToBeAdded;
+                obj = std::make_shared<FindIt::ItemType>(ObjectToBeAdded, ID);
+                AddObject((*obj));
+                delete(obj.get()); //decide if to leave in or remove
                 break;
 
             case 4:
                 std::cout << "quitting";
+                msg = nullptr;
+                obj = nullptr;
                 UserInterface::Stop();
                 break;
 
