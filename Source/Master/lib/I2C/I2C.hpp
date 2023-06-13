@@ -5,6 +5,7 @@
 #include "IMasterSlave.hpp"
 
 #define MAX_STRING_SIZE 30
+#define LAST_ITEM_REGISTER 3
 
 class I2C : public IMasterSlave
 {
@@ -19,12 +20,9 @@ class I2C : public IMasterSlave
     void Scan();
     int GetRegister(int my_register, void* data);
     int GetLastChange();
-
     bool IsAvailable();
-    int debug_GetLastAddress();
-
+    int GetLastAddress();
     void InitializeAddresses();
-
 };
 
 #endif // I2C_HPP
