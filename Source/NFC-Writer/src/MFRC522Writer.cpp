@@ -3,8 +3,8 @@
 constexpr int maxMessageLength = 29;
 constexpr int bufferSizeNFCBlock4 = 16;
 constexpr int bufferSizeNFCBlock5 = 12;
-constexpr byte NFCBlockAddress4 = 4;
-constexpr byte NFCBlockAddress5 = 5;
+constexpr byte NFCBlockAddress4 = 4; // NFC block 0-3 are header
+constexpr byte NFCBlockAddress5 = 5; // NFC block 0-3 are header
 constexpr byte trailerBlock = 7;
 constexpr byte keySize = 6;
 constexpr int defaultKey = 0xFF;
