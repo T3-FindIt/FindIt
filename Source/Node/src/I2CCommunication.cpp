@@ -81,7 +81,7 @@ void RecieveEvent(int HowMany)
     while (Wire.available() > 0)
     {
         Wire.read();
-    }   
+    }
 }
 
 void RequestEvent()
@@ -109,12 +109,12 @@ I2CCommunication::I2CCommunication()
     errorState = 0;
     Wire.begin(DEFAULT_NODE_ADRESS);
     Wire.requestFrom(HUB_ADDRESS, 1);
-    while(Wire.available() == 0)
+    while (Wire.available() == 0)
     {
         //DO NOTHING
     }
     Wire.read();
-    while(activeAdress == ADRESS_NOT_SET|| activeAdress < MIN_ADRESS || activeAdress > MAX_ADRESS)
+    while (activeAdress == ADRESS_NOT_SET || activeAdress < MIN_ADRESS || activeAdress > MAX_ADRESS)
     {
         Wire.beginTransmission(HUB_ADDRESS);
         Wire.write(REQUESTFROM_REG);
