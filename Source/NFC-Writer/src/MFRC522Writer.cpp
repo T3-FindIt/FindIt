@@ -1,10 +1,10 @@
 #include "MFRC522Writer.hpp"
 
 constexpr int maxMessageLength = 29;
-constexpr int bufferSizeBlock4 = 16;
-constexpr int bufferSizeBlock5 = 12;
-constexpr byte blockAddr4 = 4;
-constexpr byte blockAddr5 = 5;
+constexpr int bufferSizeNFCBlock4 = 16;
+constexpr int bufferSizeNFCBlock5 = 12;
+constexpr byte NFCBlockAddress4 = 4;
+constexpr byte NFCBlockAddress5 = 5;
 constexpr byte trailerBlock = 7;
 constexpr byte keySize = 6;
 constexpr int defaultKey = 0xFF;
@@ -55,55 +55,55 @@ int MFRC522Writer::Write(char *message)
     }
     for (int i = 0; i < messageLength; i++)
     {
-        if (i < bufferSizeBlock4)
+        if (i < bufferSizeNFCBlock4)
         {
             inputString[i] = message[i];
         }
-        else if (i >= bufferSizeBlock4)
+        else if (i >= bufferSizeNFCBlock4)
         {
-            inputString2[i - bufferSizeBlock4] = message[i];
+            inputString2[i - bufferSizeNFCBlock4] = message[i];
         }
     }
     int stringLength = strlen(inputString);
-    if (stringLength > bufferSizeBlock4)
+    if (stringLength > bufferSizeNFCBlock4)
     {
         return -1;
     }
     int stringLength2 = strlen(inputString2);
-    if (stringLength2 > bufferSizeBlock5)
+    if (stringLength2 > bufferSizeNFCBlock5)
     {
         return -1;
     }
-    byte dataBufferBlock4[bufferSizeBlock4] = "";
-    byte dataBufferBlock5[bufferSizeBlock5] = "";
+    byte dataBufferNFCBlock4[bufferSizeNFCBlock4] = "";
+    byte dataBufferNFCBlock5[bufferSizeNFCBlock5] = "";
 
     // write data from buffer block Addr 4
     for (int index = 0; index < stringLength; index++)
     {
-        dataBufferBlock4[index] = inputString[index];
+        dataBufferNFCBlock4[index] = inputString[index];
     }
-    if (stringLength < bufferSizeBlock4)
+    if (stringLength < bufferSizeNFCBlock4)
     {
-        for (int index = 0; index < bufferSizeBlock4 - stringLength; index++)
+        for (int index = 0; index < bufferSizeNFCBlock4 - stringLength; index++)
         {
-            dataBufferBlock4[stringLength + index] = 0;
+            dataBufferNFCBlock4[stringLength + index] = 0;
         }
     }
 
     // write data from buffer block Addr 5
     for (int index = 0; index < stringLength2; index++)
     {
-        dataBufferBlock5[index] = inputString2[index];
+        dataBufferNFCBlock5[index] = inputString2[index];
     }
-    if (stringLength2 < bufferSizeBlock5)
+    if (stringLength2 < bufferSizeNFCBlock5)
     {
-        for (int index = 0; index < bufferSizeBlock5 - stringLength2; index++)
+        for (int index = 0; index < bufferSizeNFCBlock5 - stringLength2; index++)
         {
-            dataBufferBlock5[stringLength2 + index] = 0;
+            dataBufferNFCBlock5[stringLength2 + index] = 0;
         }
     }
 
-    if (AuthenticateWrite() == -1 || Transfer(dataBufferBlock4, blockAddr4, bufferSizeBlock4) == -1 || Transfer(dataBufferBlock5, blockAddr5, bufferSizeBlock5) == -1)
+    if (AuthenticateWrite() == -1 || Transfer(dataBufferNFCBlock4, NFCBlockAddress4, bufferSizeNFCBlock4) == -1 || Transfer(dataBufferNFCBlock5, NFCBlockAddress5, bufferSizeNFCBlock5) == -1)
     {
         return -1;
     }
@@ -129,7 +129,7 @@ int MFRC522Writer::AuthenticateWrite()
 
 int MFRC522Writer::Transfer(byte *inputBlock, byte blockAddr, int bufferSize)
 {
-    MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.MIFARE_Write(blockAddr, inputBlock, bufferSizeBlock4);
+    MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.MIFARE_Write(blockAddr, inputBlock, bufferSizeNFCBlock4);
     if (status != MFRC522::STATUS_OK)
     {
         Serial.print(F("MIFARE_Write() failed: "));

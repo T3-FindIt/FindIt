@@ -1,5 +1,7 @@
 #include "UATRInterface.hpp"
 
+constexpr int minCharArraySize = 2;
+
 UARTI::UARTI() : inputBuffer(NULL), bufferIndex(0), storeText(false) {}
 
 UARTI::~UARTI()
@@ -8,10 +10,9 @@ UARTI::~UARTI()
     inputBuffer = nullptr;
 }
 
-int UARTI::ReadTextFromSerial(char* message, int max_message_length)
+int UARTI::ReadTextFromSerial(char* message, int maxMessageLength)
 {
     bool printMessage = false;
-    message[0] = '\0';
     if (Serial.available())
     {
         char incomingChar = Serial.read();
@@ -26,6 +27,7 @@ int UARTI::ReadTextFromSerial(char* message, int max_message_length)
             {
                 if (bufferIndex > 0)
                 {
+                    inputBuffer[bufferIndex] = '\0'; // Add null terminator
                     printMessage = true;
                 }
             }
@@ -33,7 +35,7 @@ int UARTI::ReadTextFromSerial(char* message, int max_message_length)
             {
                 // Start storing the text
                 storeText = true;
-                inputBuffer = (char *)malloc(sizeof(char)); // Allocate memory for the input buffer
+                inputBuffer = (char *)malloc(sizeof(char) * minCharArraySize); // Allocate memory for the input buffer
             }
         }
         else if (storeText)
@@ -42,12 +44,12 @@ int UARTI::ReadTextFromSerial(char* message, int max_message_length)
             inputBuffer = (char *)realloc(inputBuffer, (bufferIndex + 1) * sizeof(char));
             inputBuffer[bufferIndex] = incomingChar; // Store the received character
             bufferIndex++;
+
         }
     }
     if (printMessage)
     {
-        message[0] = '\0';
-        if (bufferIndex < max_message_length)
+        if (bufferIndex < maxMessageLength)
         {
             for (int i = 0; i < bufferIndex; i++)
             {
@@ -57,7 +59,7 @@ int UARTI::ReadTextFromSerial(char* message, int max_message_length)
         else
         {
             Serial.print("The text limit is ");
-            Serial.print(max_message_length - 1);
+            Serial.print(maxMessageLength - 1);
             Serial.print(" Characters. Your text length is: ");
             Serial.print(bufferIndex);
             Serial.println(" Characters.");
@@ -65,7 +67,7 @@ int UARTI::ReadTextFromSerial(char* message, int max_message_length)
             Serial.println();
             bufferIndex = 0;
             storeText = false;
-            message[0] = '\0';
+            strcpy(message, "");
             return -1;
         }
         if (bufferIndex == 0)
@@ -76,7 +78,6 @@ int UARTI::ReadTextFromSerial(char* message, int max_message_length)
         }
         else
         {
-            message[bufferIndex] = '\0'; // Add null terminator
             Serial.print("Received text: ");
             Serial.println(message);
         }

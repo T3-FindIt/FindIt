@@ -22,4 +22,4 @@ private:
     bool GetCardAvailable();
 };
 
-#endif
+#endif // MFRC522WRITER_HPP

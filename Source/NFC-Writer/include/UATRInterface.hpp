@@ -7,7 +7,7 @@ class UARTI
 public:
     UARTI();
     ~UARTI();
-    int ReadTextFromSerial(char* message, int max_message_length);
+    int ReadTextFromSerial(char* message, int maxMessageLength);
 
 private:
 char* inputBuffer;
@@ -16,4 +16,4 @@ bool storeText;
 
 };
 
-#endif
+#endif // UARTINTERFACE_HPP

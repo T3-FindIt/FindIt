@@ -9,4 +9,4 @@ public:
 	virtual int Write(char *message) = 0;
 };
 
-#endif
+#endif // IWRITER_HPP
