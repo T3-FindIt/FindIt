@@ -3,6 +3,15 @@
 
 #include <string>
 
+
+#define MAX_ARRAY_SIZE 10
+#define ACTION_KEY "Action"
+#define ACTION_INDEX 0
+
+#define PAYLOAD_ONE 1
+#define PAYLOAD_TWO 2
+#define PAYLOAD_THREE 3
+
 class JsonBuilder
 {
 public:

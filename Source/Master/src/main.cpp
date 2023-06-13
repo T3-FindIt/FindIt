@@ -3,6 +3,7 @@
 #include "I2C.hpp"
 #include "WiFiHandler.hpp"
 #include "WebSocketHandler.hpp"
+#include "JsonBuilder.hpp"
 
 #define LOCAL_ADDRESS 8 // slave address
 
@@ -19,6 +20,7 @@
 WiFiHandler wifiHandler = WiFiHandler();
 WebSocketHandler webSocketHandler = WebSocketHandler();
 I2C i2c (LOCAL_ADDRESS);
+JsonBuilder jsonBuilder;
 
 #define SCAN_OFFSET 200 * 1000 // 10 Seconds
 int scanTime = 0;
@@ -56,6 +58,50 @@ void setup()
 
 int lastRequest;
 
+// HANDLES ALL THE MESSAGES INCOMING FROM THE SERVER
+
+bool Handle_Json(std::string keys[MAX_ARRAY_SIZE], std::string values[MAX_ARRAY_SIZE])
+{
+    // Check if there is an actual request
+    if(keys[ACTION_INDEX] == ACTION_KEY)
+    {
+        return false;
+    }
+
+    if(keys[ACTION_INDEX] == "HeartBeat") // For the HeartBeat
+    {
+        std::string firstPayload = "Demo_Node"; // Testing name. We never actually decided on anything
+        std::string secondPayload = std::to_string(i2c.GetNodeCount()); // Get count
+
+        // Protocol Compliant
+        keys[PAYLOAD_ONE] == "Node";
+        keys[PAYLOAD_TWO] == "Places";
+
+        // Send the values
+        values[PAYLOAD_ONE] == firstPayload;
+        values[PAYLOAD_TWO] == secondPayload;
+
+        std::string json;
+        if(!jsonBuilder.Serialize(keys,values,3, json)) // Parse!
+        {
+            return false;
+        }
+
+        webSocketHandler.Send(json); // And send it.
+        return true;
+    }
+
+    if(keys[ACTION_INDEX] == "ServerRequestProduct")
+    {
+        
+        return true;
+    }
+
+    if(keys[ACTION_INDEX] == "NotifyNewProduct")
+    {
+        return true;
+    }
+}
 
 void loop()
 {
