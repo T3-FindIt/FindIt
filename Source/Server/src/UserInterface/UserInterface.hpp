@@ -14,7 +14,6 @@ namespace FindIt
 {
 
 using Get_objects_t = std::function<std::vector<FindIt::ItemType>()>;
-using Request_object_t = std::function<void(std::string)>;
 using Add_objects_Database_t = std::function<void(FindIt::ItemType)>;
 
 class UserInterface
@@ -22,14 +21,13 @@ class UserInterface
 private:
     void PrintStartUp(int *choice);
     Get_objects_t ReturnUniqueObjectsTypes;
-    Request_object_t RequestObject;
     Add_objects_Database_t AddObject;
     FindIt::MessageQueue &QueueIn;
     FindIt::MessageQueue &QueueOut;
     bool running;
 
 public:
-    UserInterface(Get_objects_t functionPointer, Request_object_t functionpointer2, Add_objects_Database_t functionpointer3 ,FindIt::MessageQueue &queueIn, FindIt::MessageQueue &queueOut);
+    UserInterface(Get_objects_t functionPointer, Add_objects_Database_t functionpointer3 ,FindIt::MessageQueue &queueIn, FindIt::MessageQueue &queueOut);
     ~UserInterface() = default;
 
     void Run();

@@ -9,13 +9,6 @@
 
 #include "./UserInterface/UserInterface.hpp"
 
-// TODO: remove this
-void lol(std::string xd)
-{
-    std::cout << "lol function called" << std::endl;
-    //test functionality
-}
-
 FindIt::PlainFileDatabase database = FindIt::PlainFileDatabase("DatabaseTestFiles/database.db");
 FindIt::MessageQueue msgq1 = FindIt::MessageQueue();
 FindIt::MessageQueue msgq2 = FindIt::MessageQueue();
@@ -23,7 +16,6 @@ FindIt::MessageQueue msgq2 = FindIt::MessageQueue();
 int main()
 {
     FindIt::UserInterface *UI = new FindIt::UserInterface(std::bind_front(&FindIt::PlainFileDatabase::GetAllObjects, &database)
-                                                            , lol // TODO: integrate with comm class
                                                             , std::bind_front(&FindIt::PlainFileDatabase::Add, &database)
                                                             , msgq1
                                                             , msgq2);

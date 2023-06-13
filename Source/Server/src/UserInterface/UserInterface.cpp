@@ -1,10 +1,9 @@
 #include "UserInterface.hpp"
-// update design (extra functionpointer) -> no time
 
 namespace FindIt
 {
-    UserInterface::UserInterface(Get_objects_t functionPointer, Request_object_t functionpointer2, Add_objects_Database_t functionpointer3, FindIt::MessageQueue &queueIn, FindIt::MessageQueue &queueOut)
-        : ReturnUniqueObjectsTypes(functionPointer), RequestObject(functionpointer2), AddObject(functionpointer3), QueueIn(queueIn), QueueOut(queueOut)
+    UserInterface::UserInterface(Get_objects_t functionPointer, Add_objects_Database_t functionpointer3, FindIt::MessageQueue &queueIn, FindIt::MessageQueue &queueOut)
+        : ReturnUniqueObjectsTypes(functionPointer), AddObject(functionpointer3), QueueIn(queueIn), QueueOut(queueOut)
     {
     }
 
@@ -17,7 +16,6 @@ namespace FindIt
                   << "3. Add object to the Database. \n"
                   << "4. Quit application." << std::endl;
         std::cin >> Choice;
-        // TODO: Goes wrong here?
         *choice = Choice;
     }
 
@@ -46,7 +44,6 @@ namespace FindIt
                 std::cout << "Type in the object you would like to request:" << std::endl;
                 std::string requestedObject;
                 std::cin >> requestedObject;
-                // RequestObject(requestedObject);
                 std::shared_ptr<FindIt::IMessage> msg = std::make_shared<FindIt::ServerRequestProduct>(requestedObject, true);
                 QueueOut.push(msg);
                 std::cout << "Unfortunatly we cannot tell you if the object was found or not." << std::endl;
