@@ -9,21 +9,7 @@
 
 #include "./UserInterface/UserInterface.hpp"
 
-std::vector<std::string> testfunc()
-{
-    std::vector<std::string> test;
-    test.push_back("string 1 ");
-    test.push_back("string 2 ");
-    test.push_back("string 3 ");
-    test.push_back("string 4 ");
-    test.push_back("string 5 ");
-    test.push_back("string 6 ");
-    test.push_back("string 7 ");
-
-    return test;
-    //test functionality
-}
-
+// TODO: remove this
 void lol(std::string xd)
 {
     std::cout << "lol function called" << std::endl;
@@ -34,14 +20,13 @@ FindIt::PlainFileDatabase database = FindIt::PlainFileDatabase("DatabaseTestFile
 FindIt::MessageQueue msgq1 = FindIt::MessageQueue();
 FindIt::MessageQueue msgq2 = FindIt::MessageQueue();
 
-void add(FindIt::ItemType obj)
-{
-    database.Add(obj);
-}
-
 int main()
 {
-    FindIt::UserInterface *UI = new FindIt::UserInterface(testfunc, lol, add, msgq1, msgq2);
+    FindIt::UserInterface *UI = new FindIt::UserInterface(std::bind_front(&FindIt::PlainFileDatabase::GetAllObjects, &database)
+                                                            , lol // TODO: integrate with comm class
+                                                            , std::bind_front(&FindIt::PlainFileDatabase::Add, &database)
+                                                            , msgq1
+                                                            , msgq2);
 
     std::jthread t1(&FindIt::UserInterface::Run, UI);
     t1.join();

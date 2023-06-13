@@ -13,7 +13,7 @@
 namespace FindIt
 {
 
-using Get_objects_t = std::function<std::vector<std::string>()>;
+using Get_objects_t = std::function<std::vector<FindIt::ItemType>()>;
 using Request_object_t = std::function<void(std::string)>;
 using Add_objects_Database_t = std::function<void(FindIt::ItemType)>;
 
@@ -24,7 +24,7 @@ private:
     Get_objects_t ReturnUniqueObjectsTypes;
     Request_object_t RequestObject;
     Add_objects_Database_t AddObject;
-    FindIt::MessageQueue &QueueIn; // idk where to use the queue for input
+    FindIt::MessageQueue &QueueIn;
     FindIt::MessageQueue &QueueOut;
     bool running;
 
