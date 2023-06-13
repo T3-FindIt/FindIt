@@ -19,27 +19,33 @@ int main()
     // Set protocol parser to JSON
     FindIt::JSONProtocolParser protocolParser;
 
+    // Set up database
+    FindIt::PlainFileDatabase database("./Data/Database.db");
+
+    // Set up message queues
+    FindIt::MessageQueue UIToCommunication;
+    FindIt::MessageQueue CommunicationToUI;
+
     // Set up communication and start a new thread for it
-    FindIt::Communication communication(clusterConnection, protocolParser);
-    std::jthread communicationThread(&FindIt::Communication::Run, communication);
+    FindIt::Communication communication(clusterConnection, protocolParser, database, UIToCommunication, CommunicationToUI);
+    std::jthread communicationThread2(&FindIt::Communication::Run, &communication);
 
     // std::cin.get();
 
     // communication->Stop();
     // communicationThread.join();
 
-
-    FindIt::PlainFileDatabase database("./Data/Database.txt");
-    database.Add(FindIt::ItemType("TEST_JOHN", 51));
-    database.Add(FindIt::ItemType("TEST_TEST", 35));
-    database.Add(FindIt::ItemType("TEST_TEST", 35));
-    database.Add(FindIt::ItemType("TEST_BARB", 50));
-    database.Add(FindIt::ItemType("TEST_JOHNS", 52));
-    database.SearchIfPresent(FindIt::ItemType("TEST_TEST", 35));
+    database.Add(FindIt::ItemType("TEST_JOHN"));
+    database.Add(FindIt::ItemType("TEST_TEST"));
+    database.Add(FindIt::ItemType("TEST_TEST"));
+    database.Add(FindIt::ItemType("TEST_BARB"));
+    database.Add(FindIt::ItemType("TEST_JOHNS"));
+    database.SearchIfPresent(FindIt::ItemType("TEST_TEST"));
 
     std::vector<FindIt::ItemType> objects = database.GetAllObjects();
 
-    database.Remove(FindIt::ItemType("TEST_TEST", 35));
+    database.Remove(FindIt::ItemType("TEST_TEST"));
+    communication.Stop();
 
     return 0;
 }
