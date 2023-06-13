@@ -40,7 +40,7 @@ void add(FindIt::ItemType obj)
 }
 
 int main()
-{ 
+{
     FindIt::UserInterface *UI = new FindIt::UserInterface(testfunc, lol, add, msgq1, msgq2);
 
     std::jthread t1(&FindIt::UserInterface::Run, UI);

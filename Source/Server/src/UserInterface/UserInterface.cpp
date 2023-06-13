@@ -11,10 +11,10 @@ namespace FindIt
     void UserInterface::PrintStartUp(int *choice)
     {
         std::cout << "Welcome to the FindIt Server UI, please select your choice:\n"
-                  << "1. Show all known object types.\n"
-                  << "2. Request/search up objects.\n"
-                  << "3. Add object to the Database. \n"
-                  << "4. Quit application." << std::endl;
+                << "1. Show all known object types.\n"
+                << "2. Request/search up objects.\n"
+                << "3. Add object to the Database. \n"
+                << "4. Quit application." << std::endl;
         std::cin >> *choice;
     }
 
