@@ -1,5 +1,5 @@
-#ifndef UARTI_HPP
-#define UARTI_HPP
+#ifndef UARTINTERFACE_HPP
+#define UARTINTERFACE_HPP
 #include <Arduino.h>
 
 class UARTI

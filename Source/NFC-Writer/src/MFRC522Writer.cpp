@@ -3,6 +3,12 @@
 constexpr int maxMessageLength = 29;
 constexpr int bufferSizeBlock4 = 16;
 constexpr int bufferSizeBlock5 = 12;
+constexpr byte blockAddr4 = 4;
+constexpr byte blockAddr5 = 5;
+constexpr byte trailerBlock = 7;
+constexpr byte keySize = 6;
+constexpr int defaultKey = 0xFF;
+
 
 MFRC522Writer::MFRC522Writer(MFRC522 &nfc) : mfrc522(nfc) {}
 
@@ -16,9 +22,9 @@ void MFRC522Writer::Begin()
     SPI.begin();
     mfrc522.PCD_Init();
 
-    for (byte i = 0; i < 6; i++)
+    for (byte i = 0; i < keySize; i++)
     {
-        key.keyByte[i] = 0xFF;
+        key.keyByte[i] = defaultKey;
     }
 }
 
@@ -40,12 +46,10 @@ int MFRC522Writer::Write(char *message)
         return -1;
     }
 
-    constexpr byte blockAddr4 = 4;
-    constexpr byte blockAddr5 = 5;
     char inputString[maxMessageLength] = "";
     char inputString2[maxMessageLength] = "";
     int messageLength = strlen(message);
-    if(messageLength > maxMessageLength)
+    if (messageLength > maxMessageLength)
     {
         return -1;
     }
@@ -61,12 +65,12 @@ int MFRC522Writer::Write(char *message)
         }
     }
     int stringLength = strlen(inputString);
-    if(stringLength > bufferSizeBlock4)
+    if (stringLength > bufferSizeBlock4)
     {
         return -1;
     }
     int stringLength2 = strlen(inputString2);
-    if(stringLength2 > bufferSizeBlock5)
+    if (stringLength2 > bufferSizeBlock5)
     {
         return -1;
     }
@@ -113,7 +117,6 @@ int MFRC522Writer::Write(char *message)
 
 int MFRC522Writer::AuthenticateWrite()
 {
-    constexpr byte trailerBlock = 7;
     MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, &key, &(mfrc522.uid));
     if (status != MFRC522::STATUS_OK)
     {

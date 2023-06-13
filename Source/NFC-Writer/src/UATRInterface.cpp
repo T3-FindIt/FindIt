@@ -1,11 +1,6 @@
-#include "UARTI.hpp"
+#include "UATRInterface.hpp"
 
-UARTI::UARTI()
-{
-    inputBuffer = NULL;
-    bufferIndex = 0;
-    storeText = false;
-}
+UARTI::UARTI() : inputBuffer(NULL), bufferIndex(0), storeText(false) {}
 
 UARTI::~UARTI()
 {
