@@ -145,6 +145,19 @@ int I2C::GetLastChange()
     return returnVal;
 }
 
+int I2C::GetNodeCount()
+{
+    int count = 0;
+    for (int i = 0; i < MAX_I2C_ADDRESSES; i++)
+    {
+        if (addresses[i].available)
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
 bool I2C::IsAvailable()
 {
     return isAvailable;

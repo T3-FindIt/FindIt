@@ -20,6 +20,7 @@ class I2C : public IMasterSlave
     void Scan();
     int GetRegister(int my_register, void* data);
     int GetLastChange();
+    int GetNodeCount();
     bool IsAvailable();
     int GetLastAddress();
     void InitializeAddresses();
