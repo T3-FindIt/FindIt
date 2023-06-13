@@ -11,10 +11,10 @@ namespace FindIt
     {
         int Choice = 0;
         std::cout << "Welcome to the FindIt Server UI, please select your choice:\n"
-                  << "1. Show all known object types.\n"
-                  << "2. Request/search up objects.\n"
-                  << "3. Add object to the Database. \n"
-                  << "4. Quit application." << std::endl;
+                << "1. Show all known object types.\n"
+                << "2. Request/search up objects.\n"
+                << "3. Add object to the Database. \n"
+                << "4. Quit application." << std::endl;
         std::cin >> Choice;
         *choice = Choice;
     }
@@ -53,7 +53,7 @@ namespace FindIt
             case 3:
             {
                 std::cout << "Type in the object you would like to add:\n"
-                            << "The first name without spaces will be used!" << std::endl;
+                          << "The first name without spaces will be used!" << std::endl;
                 std::string ObjectToBeAdded;
                 std::cin >> ObjectToBeAdded;
                 FindIt::ItemType obj = FindIt::ItemType(ObjectToBeAdded, ID);
