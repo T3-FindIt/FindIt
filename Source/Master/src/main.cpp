@@ -127,10 +127,10 @@ void loop()
                     return;
                 }
             }
-
         }
-
-        webSocketHandler.Send("Hello from ESP32!");
+        #ifdef SERIAL_DEBUG
+        Serial.println("Somethign went wrong with the deserialisation.");
+        #endif
     }
     #endif
 
