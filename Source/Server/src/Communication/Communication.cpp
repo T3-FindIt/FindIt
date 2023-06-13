@@ -9,8 +9,16 @@
 namespace FindIt
 {
 
-Communication::Communication(IClusterConnection &clusterConnection, IProtocolParser &protocolParser)
-    : clusterConnection(clusterConnection), protocolParser(protocolParser)
+Communication::Communication(IClusterConnection &clusterConnection
+                            , IProtocolParser &protocolParser
+                            , IDatabase &database
+                            , MessageQueue &queueIn
+                            , MessageQueue &queueOut)
+    : clusterConnection(clusterConnection)
+    , protocolParser(protocolParser)
+    , database(database)
+    , queueIn(queueIn)
+    , queueOut(queueOut)
 {
     clusterConnection.setCallbacks(std::bind_front(&Communication::onMessage, this),
                                     std::bind_front(&Communication::onConnect, this),
@@ -99,31 +107,46 @@ void Communication::onMessage(const uint64_t client, const std::string &message)
         return;
     }
 
-    subject->lastCommunication = std::chrono::system_clock::now();
-    subject->lastInMessage.type = msg->GetType();
-    subject->lastInMessage.time = std::chrono::system_clock::now();
-    subject->lastInMessage.data = msg;
+    auto setLastInMessage = [subject](MessageType type, std::shared_ptr<FindIt::IMessage> msg)
+    {
+        subject->lastCommunication = std::chrono::system_clock::now();
+        subject->lastInMessage.type = type;
+        subject->lastInMessage.time = std::chrono::system_clock::now();
+        subject->lastInMessage.data = msg;
+    };
+
+    auto setLastOutMessage = [subject](MessageType type, std::shared_ptr<FindIt::IMessage> msg)
+    {
+        subject->lastCommunication = std::chrono::system_clock::now();
+        subject->lastOutMessage.type = type;
+        subject->lastOutMessage.time = std::chrono::system_clock::now();
+        subject->lastOutMessage.data = msg;
+    };
+
+    setLastInMessage(msg->GetType(), msg);
 
     if (subject->lastInMessage.type == MessageType::NODE_SIGN_IN)
     {
         auto signInMsg = std::dynamic_pointer_cast<NodeSignIn>(msg);
-        std::unique_ptr<FindIt::NodeSignInResponse> response;
+        std::shared_ptr<FindIt::NodeSignInResponse> response;
         if (clients.contains(client))
         {
-            response = std::make_unique<FindIt::NodeSignInResponse>(signInMsg->GetNode(), signInMsg->GetPlaces(), false);
+            response = std::make_shared<FindIt::NodeSignInResponse>(signInMsg->GetNode(), signInMsg->GetPlaces(), false);
         }
         else
         {
-            response = std::make_unique<FindIt::NodeSignInResponse>(signInMsg->GetNode(), signInMsg->GetPlaces(), true);
+            response = std::make_shared<FindIt::NodeSignInResponse>(signInMsg->GetNode(), signInMsg->GetPlaces(), true);
         }
         clients.try_emplace(client, client_t{.id = client, .lastCommunication = std::chrono::system_clock::now()});
         clusterConnection.sendMessage(client, protocolParser.Parse(*response));
+        setLastOutMessage(response->GetType(), response);
     }
     else if (subject->lastInMessage.type == MessageType::NODE_NOTIFY_NEW_PRODUCT)
     {
         auto notifyMsg = std::dynamic_pointer_cast<NodeNotifyNewProduct>(msg);
-        std::unique_ptr<FindIt::NodeNotifyNewProductResponse> response;
-        // TODO: add to database
+        std::shared_ptr<FindIt::NodeNotifyNewProductResponse> response;
+        ItemType type(notifyMsg->GetProduct());
+        database.Add(type);
     }
 }
 
