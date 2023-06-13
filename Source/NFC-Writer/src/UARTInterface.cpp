@@ -1,4 +1,4 @@
-#include "UATRInterface.hpp"
+#include "UARTInterface.hpp"
 
 constexpr int minCharArraySize = 2;
 
