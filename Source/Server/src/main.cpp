@@ -1,45 +1,27 @@
+// #include <nlohmann/json.hpp>
 #include <iostream>
 #include <thread>
 #include <vector>
-#include <memory>
-
-#include <Communication.hpp>
-#include <TCPConnection.hpp>
-#include <JSONProtocolParser.hpp>
-#include <ItemType.hpp>
+#include <string>
 #include <PlainFileDatabase.hpp>
-#include <IMessage.hpp>
-#include <MessageQueue.hpp>
+#include <filesystem>
+#include <fstream>
+
+#include "./UserInterface/UserInterface.hpp"
+
+FindIt::PlainFileDatabase database = FindIt::PlainFileDatabase("DatabaseTestFiles/database.db");
+FindIt::MessageQueue msgq1 = FindIt::MessageQueue();
+FindIt::MessageQueue msgq2 = FindIt::MessageQueue();
 
 int main()
 {
-    // Set cluster coms to a TCP connection on port 54000
-    FindIt::Server clusterConnection(54000);
+    FindIt::UserInterface *UI = new FindIt::UserInterface(std::bind_front(&FindIt::PlainFileDatabase::GetAllObjects, &database)
+                                                            , std::bind_front(&FindIt::PlainFileDatabase::Add, &database)
+                                                            , msgq1
+                                                            , msgq2);
 
-    // Set protocol parser to JSON
-    FindIt::JSONProtocolParser protocolParser;
+    std::jthread t1(&FindIt::UserInterface::Run, UI);
+    t1.join();
 
-    // Set up communication and start a new thread for it
-    FindIt::Communication communication(clusterConnection, protocolParser);
-    std::jthread communicationThread(&FindIt::Communication::Run, communication);
-
-    // std::cin.get();
-
-    // communication->Stop();
-    // communicationThread.join();
-
-
-    FindIt::PlainFileDatabase database("./Data/Database.txt");
-    database.Add(FindIt::ItemType("TEST_JOHN", 51));
-    database.Add(FindIt::ItemType("TEST_TEST", 35));
-    database.Add(FindIt::ItemType("TEST_TEST", 35));
-    database.Add(FindIt::ItemType("TEST_BARB", 50));
-    database.Add(FindIt::ItemType("TEST_JOHNS", 52));
-    database.SearchIfPresent(FindIt::ItemType("TEST_TEST", 35));
-
-    std::vector<FindIt::ItemType> objects = database.GetAllObjects();
-
-    database.Remove(FindIt::ItemType("TEST_TEST", 35));
-
-    return 0;
+    delete UI;
 }
