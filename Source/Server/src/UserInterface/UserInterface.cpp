@@ -1,24 +1,20 @@
 #include "UserInterface.hpp"
+//update design (extra functionpointer)
 
 namespace FindIt
 {
-    UserInterface::UserInterface(Get_objects_t functionPointer, Request_object_t functionpointer2, FindIt::MessageQueue &queue)
-            : ReturnUniqueObjectsTypes(functionPointer), RequestObject(functionpointer2), Queue(queue)
+    UserInterface::UserInterface(Get_objects_t functionPointer, Request_object_t functionpointer2, Add_objects_Database_t functionpointer3, FindIt::MessageQueue &queueIn, FindIt::MessageQueue &queueOut)
+        : ReturnUniqueObjectsTypes(functionPointer), RequestObject(functionpointer2), AddObject(functionpointer3), QueueIn(queueIn), QueueOut(queueOut)
     {
-
     }
 
-    UserInterface::~UserInterface()
-    {
-
-    }
-    
     void UserInterface::PrintStartUp(int *choice)
     {
         std::cout << "Welcome to the FindIt Server UI, please select your choice:\n"
-        << "1. Show all known object types\n"
-        << "2. Request/search up objects\n"
-        << "3. Quit application" << std::endl;
+                  << "1. Show all known object types.\n"
+                  << "2. Request/search up objects.\n"
+                  << "3. Add object to the Database. \n"
+                  << "4. Quit application." << std::endl;
         std::cin >> *choice;
     }
 
@@ -26,28 +22,38 @@ namespace FindIt
     {
         int choice = 0;
         std::string requestedObject;
+        std::shared_ptr<FindIt::IMessage> msg;
+        FindIt::ItemType *object;
         running = true;
 
-        while(running)
+        while (running)
         {
             PrintStartUp(&choice);
             switch (choice)
             {
             case 1:
                 std::cout << "All types:" << std::endl;
-                for(auto type : ReturnUniqueObjectsTypes())
+                for (auto type : ReturnUniqueObjectsTypes())
                 {
                     std::cout << type << std::endl;
                 }
                 break;
 
             case 2:
-                std::cout << "Type in the object you would like to request" << std::endl;
+                std::cout << "Type in the object you would like to request:" << std::endl;
                 std::cin >> requestedObject;
                 RequestObject(requestedObject);
+                msg = std::make_shared<FindIt::ServerRequestProduct>(requestedObject, true);
+                QueueOut.push(msg);
                 break;
-                
+
             case 3:
+                std::cout << "Type in the object you would like to add:" << std::endl;
+                object = new FindIt::ItemType("TestObject", 20);
+                AddObject(*object);
+                break;
+
+            case 4:
                 std::cout << "quitting";
                 UserInterface::Stop();
                 break;
