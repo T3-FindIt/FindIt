@@ -63,7 +63,7 @@ void loop()
     if (webSocketHandler.isConnected())
     {
         std::string websocketData = webSocketHandler.Recieve();
-        if(websocketData != "")
+        if (websocketData != "")
         {
         // Decompile with JSON parser
         // Do some stuff with the data
