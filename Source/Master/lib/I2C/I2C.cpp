@@ -232,7 +232,7 @@ void receiveEvent(int howMany) // A node sends data, not making a request.
         }
         case Node_Heartbeat:
         {
-            Serial.println("Heartbeat");
+            Serial.println("Heartbeat"); // Use Send() to send over the Notification Data.
             break;
         }
         case Node_Error:
