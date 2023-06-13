@@ -10,9 +10,9 @@ public:
     int ReadTextFromSerial(char* message, int maxMessageLength);
 
 private:
-char* inputBuffer;
-int bufferIndex;
-bool storeText;
+    char* inputBuffer;
+    int bufferIndex;
+    bool storeText;
 
 };
 
