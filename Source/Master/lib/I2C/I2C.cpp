@@ -77,7 +77,6 @@ void I2C::InitializeAddresses()
 I2C::I2C(int address)
 {
     this->address = address;
-    Serial.begin(9600);
     Wire.begin(address);
     Wire.onReceive(receiveEvent);
     Wire.onRequest(RequestEvent);
@@ -120,7 +119,7 @@ int I2C::GetRegister(int my_register, void* data)
         }
         case Node_Item:
         {
-            strcpy((char*)data, (char*)storedItems[debug_GetLastAddress()].c_str());
+            strcpy((char*)data, (char*)storedItems[GetLastAddress()].c_str());
             return 0;
         }
         case Node_Active:
@@ -151,7 +150,7 @@ bool I2C::IsAvailable()
     return isAvailable;
 }
 
-int I2C::debug_GetLastAddress()
+int I2C::GetLastAddress()
 {
     return receiveAddress;
 }
@@ -197,7 +196,7 @@ void receiveEvent(int howMany) // A node sends data, not making a request.
     char data[MAX_STRING_SIZE];
     size_t i = 0;
 
-    while(Wire.available() && i < MAX_STRING_SIZE)
+    while (Wire.available() && i < MAX_STRING_SIZE)
     {
         data[i] = (char)Wire.read();
         i++;
