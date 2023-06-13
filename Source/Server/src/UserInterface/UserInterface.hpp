@@ -24,7 +24,7 @@ private:
     Get_objects_t ReturnUniqueObjectsTypes;
     Request_object_t RequestObject;
     Add_objects_Database_t AddObject;
-    FindIt::MessageQueue &QueueIn; //idk where to use the queue for input
+    FindIt::MessageQueue &QueueIn; // idk where to use the queue for input
     FindIt::MessageQueue &QueueOut;
     bool running;
 

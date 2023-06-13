@@ -1,5 +1,5 @@
 #include "UserInterface.hpp"
-//update design (extra functionpointer)
+// update design (extra functionpointer) -> no time
 
 namespace FindIt
 {
@@ -26,7 +26,7 @@ namespace FindIt
         std::shared_ptr<FindIt::IMessage> msg;
         std::shared_ptr<FindIt::ItemType> obj;
 
-        int ID = 0; //how to decide what the ID should be
+        int ID = 1; // dirty hardcoded fix
         running = true;
 
         while (running)
