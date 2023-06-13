@@ -20,7 +20,7 @@ public:
     MFRC522Reader(int SS_PIN, int RST_PIN);
     ~MFRC522Reader();
     bool CheckForCard();
-    // outputstring should be [49]
+    // outputstring should be [32]
     MFRC522::StatusCode status;
     int ReadCard(char* outputString, int arrayLength);
 };
