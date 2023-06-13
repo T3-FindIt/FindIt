@@ -55,7 +55,7 @@ namespace FindIt
                 std::cin >> ObjectToBeAdded;
                 obj = std::make_shared<FindIt::ItemType>(ObjectToBeAdded, ID);
                 AddObject((*obj));
-                delete(obj.get()); //decide if to leave in or remove
+                obj.reset();
                 break;
 
             case 4:
