@@ -38,8 +38,9 @@ namespace FindIt
             {
             case 1:
             {
+                system("cls");
                 std::cout << "All types:" << std::endl;
-                for (auto type : ReturnUniqueObjectsTypes())
+                for (const auto& type : ReturnUniqueObjectsTypes())
                 {
                     std::cout << type.GetName() << std::endl;
                 }
