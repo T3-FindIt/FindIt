@@ -116,6 +116,7 @@ void Communication::onMessage(const uint64_t client, const std::string &message)
     
     std::shared_ptr<FindIt::IMessage> msg = protocolParser.Parse(message);
     
+    // Invalid message
     if (msg == nullptr)
     {
         return;
@@ -161,6 +162,11 @@ void Communication::onMessage(const uint64_t client, const std::string &message)
         std::shared_ptr<FindIt::NodeNotifyNewProductResponse> response;
         ItemType type(notifyMsg->GetProduct());
         database.Add(type);
+    }
+    else if (subject->lastInMessage.type == MessageType::HEARTBEAT_RESPONSE)
+    {
+        // We don't need to do anything here
+        // This is just present to show we are correctly receiving heartbeats
     }
 }
 
