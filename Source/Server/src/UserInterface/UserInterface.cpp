@@ -88,23 +88,23 @@ namespace FindIt
             }
             case 3:
             {
+                system("cls");
                 std::cout << "Type in the object you would like to add:\n"
                         << "The first name without spaces will be used!" << std::endl;
                 std::string ObjectToBeAdded;
                 std::cin >> ObjectToBeAdded;
-                FindIt::ItemType obj = FindIt::ItemType(ObjectToBeAdded, ID);
+                FindIt::ItemType obj = FindIt::ItemType(ObjectToBeAdded);
                 AddObject(obj);
                 system("cls");
                 break;
             }
             case 4:
             {
-                std::cout << "quitting" << std::endl;
-                UserInterface::Stop();
                 system("cls");
+                std::cout << "quitting..." << std::endl;
+                UserInterface::Stop();
                 break;
             }
-
             default:
             {
                 std::cout << "something went wrong" << std::endl;
