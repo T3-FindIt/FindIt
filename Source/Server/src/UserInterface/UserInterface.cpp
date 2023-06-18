@@ -107,8 +107,8 @@ namespace FindIt
             }
             default:
             {
-                std::cout << "something went wrong" << std::endl;
                 system("cls");
+                std::cout << "something went wrong" << std::endl;
                 break;
             }
             }
