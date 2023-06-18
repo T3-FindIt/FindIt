@@ -18,6 +18,9 @@ target_link_libraries(Communication PRIVATE
 MessageInterface
 ProtocolParser
 ClusterConnection
+MessageQueue
+Database
+ItemType
 )
 
 add_subdirectory(ProtocolParser)

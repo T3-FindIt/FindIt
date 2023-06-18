@@ -31,6 +31,8 @@ public:
 
     virtual void broadcastMessage(const std::string& message) = 0;
 
+    virtual void sendMessage(const uint64_t client, const std::string& message) = 0;
+
     virtual void closeClient(const uint64_t client) = 0;
 };
 

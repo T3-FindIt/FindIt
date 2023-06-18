@@ -9,129 +9,155 @@
 namespace FindIt
 {
 
-struct client_t
+Communication::Communication(IClusterConnection &clusterConnection
+                            , IProtocolParser &protocolParser
+                            , IDatabase &database
+                            , MessageQueue &queueIn
+                            , MessageQueue &queueOut)
+    : clusterConnection(clusterConnection)
+    , protocolParser(protocolParser)
+    , database(database)
+    , queueIn(queueIn)
+    , queueOut(queueOut)
 {
-    uint64_t id;
-    std::chrono::time_point<std::chrono::system_clock> lastCommunication;
-
-    std::chrono::time_point<std::chrono::system_clock> last_out_message_time;
-    FindIt::MessageType last_out_message;
-};
-
-std::list<client_t> clients;
-
-void onMessage(const uint64_t client, const std::string& message)
-{
-    client_t* subject = nullptr;
-    for (auto it = clients.begin(); it != clients.end(); ++it)
-    {
-        if (it->id == client)
-        {
-            subject = std::to_address(it);
-            break;
-        }
-    }
-    std::string firstPart = message.substr(0, message.find_first_of(','));
-    if (firstPart == "{\"action\": \"HeartBeat\""
-        && subject != nullptr)
-    {
-        subject->lastCommunication = std::chrono::system_clock::now();
-        subject->last_out_message = MessageType::INVALID;
-    }
-
-    std::cout << "Client " << subject->id << " says: " << message << std::endl;
-}
-
-void onConnect(const uint64_t client)
-{
-    client_t newClient = {.id = client,
-                            .lastCommunication = std::chrono::system_clock::now(),
-                            .last_out_message_time = std::chrono::system_clock::now(),
-                            .last_out_message = MessageType::INVALID};
-    clients.push_back(newClient);
-    std::cout << "Client " << client << " connected" << std::endl;
-}
-
-void onDisconnect(const uint64_t client)
-{
-    for (auto it = clients.begin(); it != clients.end(); ++it)
-    {
-        if (it->id == client)
-        {
-            clients.erase(it);
-            break;
-        }
-    }
-    std::cout << "Client " << client << " disconnected" << std::endl;
-}
-
-Communication::Communication(IClusterConnection &clusterConnection, IProtocolParser &protocolParser)
-    : clusterConnection(clusterConnection), protocolParser(protocolParser)
-{
-    this->clusterConnection.setCallbacks(onMessage, onConnect, onDisconnect);
+    clusterConnection.setCallbacks(std::bind_front(&Communication::onMessage, this),
+                                    std::bind_front(&Communication::onConnect, this),
+                                    std::bind_front(&Communication::onDisconnect, this));
 }
 
 Communication::~Communication()
 {
-    this->Stop();
+    Stop();
 }
 
 void Communication::Run()
 {
-    this->isRunning = true;
-    IClusterConnection* _clusterConnection = &clusterConnection;
-    std::jthread server_thread(&IClusterConnection::run, _clusterConnection);
-    while (this->isRunning)
+    isRunning = true;
+    std::jthread server_thread(&IClusterConnection::run, &clusterConnection);
+    while (isRunning)
     {
-        bool isMessageSent = false;
-        for (auto client = clients.begin(); client != clients.end(); ++client)
+        // bool isMessageSent = false;
+        // for (auto client = clients.begin(); client != clients.end(); ++client)
+        // {
+        //     if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - client->lastCommunication)
+        //             > std::chrono::milliseconds(MAX_CLIENT_INACTIVITY_TIME)
+        //         && client->last_out_message != MessageType::HEARTBEAT
+        //         && !isMessageSent)
+        //     {
+        //         std::string msg = "{\"action\": \"HeartBeat\"}\0";
+        //         for (auto it = clients.begin(); it != clients.end(); ++it)
+        //             it->last_out_message = MessageType::HEARTBEAT;
+
+        //         clusterConnection.broadcastMessage(msg);
+        //         isMessageSent = true;
+        //     }
+
+        // }
+
+        // if (isMessageSent)
+        // {
+        //     for (auto client = clients.begin(); client != clients.end(); ++client)
+        //         if (client->last_out_message != MessageType::INVALID)
+        //         {
+        //             client->last_out_message = MessageType::HEARTBEAT;
+        //             client->last_out_message_time = std::chrono::system_clock::now();
+        //         }
+        // }
+
+        for (auto& [ID, obj] : clients)
         {
-            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - client->lastCommunication)
-                    > std::chrono::milliseconds(MAX_CLIENT_INACTIVITY_TIME)
-                && client->last_out_message != MessageType::HEARTBEAT
-                && !isMessageSent)
-            {
-                std::string msg = "{\"action\": \"HeartBeat\"}\0";
-                for (auto it = clients.begin(); it != clients.end(); ++it)
-                    it->last_out_message = MessageType::HEARTBEAT;
-
-                this->clusterConnection.broadcastMessage(msg);
-                isMessageSent = true;
-            }
-
-        }
-
-        if (isMessageSent)
-        {
-            for (auto client = clients.begin(); client != clients.end(); ++client)
-                if (client->last_out_message != MessageType::INVALID)
-                {
-                    client->last_out_message = MessageType::HEARTBEAT;
-                    client->last_out_message_time = std::chrono::system_clock::now();
-                }
-        }
-
-        for (auto client = clients.begin(); client != clients.end(); ++client)
-        {
-            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - client->lastCommunication)
+            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - obj.lastCommunication)
                     > std::chrono::milliseconds((MAX_CLIENT_INACTIVITY_TIME * 2)))
             {
-                std::cout << "Disconnecting Client " << client->id << std::endl;
-                this->clusterConnection.closeClient(client->id);
-                clients.erase(client);
+                std::cout << "Disconnecting Client " << ID << std::endl;
+                clusterConnection.closeClient(ID);
+                clients.erase(ID);
                 break;
             }
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1)); // Save CPU
     }
-    this->clusterConnection.stop();
+    clusterConnection.stop();
     server_thread.join();
 }
 
 void Communication::Stop()
 {
-    this->isRunning = false;
+    isRunning = false;
 }
 
+void Communication::onMessage(const uint64_t client, const std::string &message)
+{
+    client_t* subject = nullptr;
+    
+    if (clients.contains(client))
+    {
+        subject = &clients.at(client);
+    }
+    else
+    {
+        return;
+    }
+    
+    std::shared_ptr<FindIt::IMessage> msg = protocolParser.Parse(message);
+    
+    if (msg == nullptr)
+    {
+        return;
+    }
+
+    auto setLastInMessage = [subject](MessageType type, std::shared_ptr<FindIt::IMessage> msg)
+    {
+        subject->lastCommunication = std::chrono::system_clock::now();
+        subject->lastInMessage.type = type;
+        subject->lastInMessage.time = std::chrono::system_clock::now();
+        subject->lastInMessage.data = msg;
+    };
+
+    auto setLastOutMessage = [subject](MessageType type, std::shared_ptr<FindIt::IMessage> msg)
+    {
+        subject->lastCommunication = std::chrono::system_clock::now();
+        subject->lastOutMessage.type = type;
+        subject->lastOutMessage.time = std::chrono::system_clock::now();
+        subject->lastOutMessage.data = msg;
+    };
+
+    setLastInMessage(msg->GetType(), msg);
+
+    if (subject->lastInMessage.type == MessageType::NODE_SIGN_IN)
+    {
+        auto signInMsg = std::dynamic_pointer_cast<NodeSignIn>(msg);
+        std::shared_ptr<FindIt::NodeSignInResponse> response;
+        if (clients.contains(client))
+        {
+            response = std::make_shared<FindIt::NodeSignInResponse>(signInMsg->GetNode(), signInMsg->GetPlaces(), false);
+        }
+        else
+        {
+            response = std::make_shared<FindIt::NodeSignInResponse>(signInMsg->GetNode(), signInMsg->GetPlaces(), true);
+        }
+        clients.try_emplace(client, client_t{.id = client, .lastCommunication = std::chrono::system_clock::now()});
+        clusterConnection.sendMessage(client, protocolParser.Parse(*response));
+        setLastOutMessage(response->GetType(), response);
+    }
+    else if (subject->lastInMessage.type == MessageType::NODE_NOTIFY_NEW_PRODUCT)
+    {
+        auto notifyMsg = std::dynamic_pointer_cast<NodeNotifyNewProduct>(msg);
+        std::shared_ptr<FindIt::NodeNotifyNewProductResponse> response;
+        ItemType type(notifyMsg->GetProduct());
+        database.Add(type);
+    }
+}
+
+void Communication::onConnect(const uint64_t client)
+{
+    std::cout << "Client " << client << " connected" << std::endl;
+}
+
+void Communication::onDisconnect(const uint64_t client)
+{
+    clients.erase(client);
+    std::cout << "Client " << client << " disconnected" << std::endl;
+}
 };

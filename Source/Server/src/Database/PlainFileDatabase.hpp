@@ -5,6 +5,7 @@
 #include <ItemType.hpp>
 
 #include <string>
+#include <mutex>
 
 namespace FindIt
 {
@@ -20,8 +21,14 @@ public:
     std::vector<ItemType> GetAllObjects() final;
 private:
     std::string relativePath;
+    std::mutex mutex;
 private:
-    std::vector<std::string> ReadObjectAndIncrement(std::fstream& file);
+    std::vector<std::string> _ReadObjectAndIncrement(std::fstream& file);
+
+    void _Add(ItemType object);
+    void _Remove(ItemType object);
+    bool _SearchIfPresent(ItemType object);
+    std::vector<ItemType> _GetAllObjects();
 };
 
 } // namespace FindIt
