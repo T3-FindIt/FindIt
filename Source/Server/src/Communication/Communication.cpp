@@ -37,22 +37,6 @@ void Communication::Run()
     while (isRunning)
     {
         // bool isMessageSent = false;
-        // for (auto client = clients.begin(); client != clients.end(); ++client)
-        // {
-        //     if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - client->lastCommunication)
-        //             > std::chrono::milliseconds(MAX_CLIENT_INACTIVITY_TIME)
-        //         && client->last_out_message != MessageType::HEARTBEAT
-        //         && !isMessageSent)
-        //     {
-        //         std::string msg = "{\"action\": \"HeartBeat\"}\0";
-        //         for (auto it = clients.begin(); it != clients.end(); ++it)
-        //             it->last_out_message = MessageType::HEARTBEAT;
-
-        //         clusterConnection.broadcastMessage(msg);
-        //         isMessageSent = true;
-        //     }
-
-        // }
 
         // if (isMessageSent)
         // {
