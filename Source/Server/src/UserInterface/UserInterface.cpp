@@ -28,7 +28,6 @@ namespace FindIt
     void UserInterface::Run()
     {
         int choice = 0;
-        int ID = 1; // dirty hardcoded fix
         running = true;
 
         while (running)
