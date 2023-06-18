@@ -2,8 +2,14 @@
 
 namespace FindIt
 {
-    UserInterface::UserInterface(Get_objects_t functionPointer, Add_objects_Database_t functionpointer3, FindIt::MessageQueue &queueIn, FindIt::MessageQueue &queueOut)
-        : ReturnUniqueObjectsTypes(functionPointer), AddObject(functionpointer3), QueueIn(queueIn), QueueOut(queueOut)
+    UserInterface::UserInterface(Get_objects_t functionPointer
+                                , Add_objects_Database_t functionpointer3
+                                , FindIt::MessageQueue &queueIn
+                                , FindIt::MessageQueue &queueOut)
+        : ReturnUniqueObjectsTypes(functionPointer)
+        , AddObject(functionpointer3)
+        , QueueIn(queueIn)
+        , QueueOut(queueOut)
     {
     }
 
