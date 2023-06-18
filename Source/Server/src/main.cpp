@@ -12,7 +12,12 @@
 #include "MessageQueue.hpp"
 #include "UserInterface.hpp"
 
-#include "./UserInterface/UserInterface.hpp"
+// TODO: Allow user to request an object (correctly do so in the communication class)
+// TODO: Check connection with clients.
+//      - Sign In
+//      - Sign HeartBeat
+//      - Sign Out (inactive for too long)
+//      - Request Object
 
 int main()
 {
