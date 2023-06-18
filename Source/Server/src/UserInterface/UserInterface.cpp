@@ -41,13 +41,49 @@ namespace FindIt
             }
             case 2:
             {
+                system("cls");
+                std::cout << "All types:" << std::endl;
+                for (const auto& type : ReturnUniqueObjectsTypes())
+                {
+                    std::cout << type.GetName() << std::endl;
+                }
+                std::cout << std::endl;
                 std::cout << "Type in the object you would like to request:" << std::endl;
                 std::string requestedObject;
                 std::cin >> requestedObject;
+                // check if the database has the object
+                bool found = false;
+                for (const auto& type : ReturnUniqueObjectsTypes())
+                {
+                    if (type.GetName() == requestedObject)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    std::cout << "The object you requested is not in the database." << std::endl;
+                    std::cout << "If you still want to request it, it will be added to the database." << std::endl;
+                    std::cout << "Do you want to continue? y/n" << std::endl;
+                    char answer;
+                    std::cin >> answer;
+                    answer = tolower(answer);
+                    if (answer == 'y')
+                    {
+                        FindIt::ItemType obj = FindIt::ItemType(requestedObject);
+                        AddObject(obj);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
                 std::shared_ptr<FindIt::IMessage> msg = std::make_shared<FindIt::ServerRequestProduct>(requestedObject, true);
                 QueueOut.push(msg);
-                std::cout << "Unfortunatly we cannot tell you if the object was found or not." << std::endl;
-                system("cls");
+                std::cout << "Unfortunatly we cannot tell you if the object was found or not.\n\n\n\n" << std::endl;
                 break;
             }
             case 3:
