@@ -5,8 +5,8 @@
 #include <vector>
 #include <iostream>
 #include <functional>
-#include <../Message/MessageQueue/MessageQueue.hpp>
-#include <../Message/IMessage.hpp>
+#include <MessageQueue.hpp>
+#include <IMessage.hpp>
 #include <ServerRequestProduct.hpp>
 #include <ItemType.hpp>
 
