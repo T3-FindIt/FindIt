@@ -4,19 +4,25 @@
 #include <Wire.h>
 #include "IMasterSlave.hpp"
 
-#define MAX_STRING_SIZE 48
+#define MAX_STRING_SIZE 30
+#define LAST_ITEM_REGISTER 3
 
 class I2C : public IMasterSlave
 {
     private:
     int address;
     public:
-    I2C();
+
+
     I2C(int address);
-    void Send(int address,Node_Registers register, int data);
-    void Scan(int* addresses, int size);
-    int GetRegister(Node_Registers my_register, void* data);
-    Node_Registers GetLastChange();
+    void Send(int address,int node_Register, int data);
+    void Request(int address, int node_Register, int sizeOfData);
+    void Scan();
+    int GetRegister(int my_register, void* data);
+    int GetLastChange();
+    bool IsAvailable();
+    int GetLastAddress();
+    void InitializeAddresses();
 };
 
 #endif // I2C_HPP

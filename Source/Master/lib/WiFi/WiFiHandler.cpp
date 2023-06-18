@@ -1,5 +1,8 @@
 #include "WiFiHandler.hpp"
 
+#define ATTEMPTS 10
+#define DELAY_BETWEEN_ATTEMPTS 1000
+
 WiFiHandler::WiFiHandler()
 {
 }
@@ -21,13 +24,13 @@ bool WiFiHandler::isConnected()
 void WiFiHandler::Connect()
 {
     WiFi.begin(data.GetSSID().c_str(), data.GetPassword().c_str());
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < ATTEMPTS; i++)
     {
         if (WiFi.isConnected())
         {
             break;
         }
-        delay(1000);
+        delay(DELAY_BETWEEN_ATTEMPTS);
     }
 
     if (WiFi.isConnected())

@@ -1,24 +1,17 @@
+// #include <nlohmann/json.hpp>
 #include <iostream>
 #include <thread>
 #include <vector>
-#include <memory>
-
-#include <Communication.hpp>
-#include <TCPConnection.hpp>
-#include <JSONProtocolParser.hpp>
-#include <ItemType.hpp>
+#include <string>
 #include <PlainFileDatabase.hpp>
-#include <IMessage.hpp>
-#include <MessageQueue.hpp>
+#include <filesystem>
+#include <fstream>
+
+
+#include "./UserInterface/UserInterface.hpp"
 
 int main()
 {
-    // Set cluster coms to a TCP connection on port 54000
-    FindIt::Server clusterConnection(54000);
-
-    // Set protocol parser to JSON
-    FindIt::JSONProtocolParser protocolParser;
-
     // Set up database
     FindIt::PlainFileDatabase database("./Data/Database.db");
 
@@ -30,8 +23,12 @@ int main()
     FindIt::Communication communication(clusterConnection, protocolParser, database, UIToCommunication, CommunicationToUI);
     std::jthread communicationThread2(&FindIt::Communication::Run, &communication);
 
-    // std::cin.get();
+    FindIt::UserInterface *UI = new FindIt::UserInterface(std::bind_front(&FindIt::PlainFileDatabase::GetAllObjects, &database)
+                                                            , std::bind_front(&FindIt::PlainFileDatabase::Add, &database)
+                                                            , msgq1
+                                                            , msgq2);
 
+    std::jthread t1(&FindIt::UserInterface::Run, UI);
     // communication->Stop();
     // communicationThread.join();
 
@@ -46,6 +43,7 @@ int main()
 
     database.Remove(FindIt::ItemType("TEST_TEST"));
     communication.Stop();
+    t1.join();
 
-    return 0;
+    delete UI;
 }
