@@ -14,6 +14,7 @@ public:
 
     const std::string& GetName() const;
     bool operator==(const ItemType& other) const;
+    bool operator!=(const ItemType& other) const;
 private:
     std::string name;
 };

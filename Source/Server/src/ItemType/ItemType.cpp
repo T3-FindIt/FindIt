@@ -18,4 +18,9 @@ bool ItemType::operator==(const ItemType &other) const
     return name == other.name;
 }
 
+bool ItemType::operator!=(const ItemType &other) const
+{
+    return name != other.name;
+}
+
 };
