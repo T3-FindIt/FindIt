@@ -66,6 +66,7 @@ void Communication::Run()
 
         for (auto& [ID, obj] : clients)
         {
+            // Forcefully disconnect client if it has been inactive for too long
             if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - obj.lastCommunication)
                     > std::chrono::milliseconds((MAX_CLIENT_INACTIVITY_TIME * 2)))
             {
@@ -73,6 +74,19 @@ void Communication::Run()
                 clusterConnection.closeClient(ID);
                 clients.erase(ID);
                 break;
+            }
+
+            // Send heartbeat if client has been inactive for too long
+            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - obj.lastCommunication)
+                    > std::chrono::milliseconds(MAX_CLIENT_INACTIVITY_TIME)
+                && obj.lastOutMessage.type != MessageType::HEARTBEAT)
+            {
+                std::cout << "Sending heartbeat to Client " << ID << std::endl;
+                FindIt::HeartBeat msgObj;
+                std::string msg = protocolParser.Parse(msgObj);
+                clusterConnection.sendMessage(ID, msg);
+                obj.lastOutMessage.type = MessageType::HEARTBEAT;
+                obj.lastOutMessage.time = std::chrono::system_clock::now();
             }
         }
 
