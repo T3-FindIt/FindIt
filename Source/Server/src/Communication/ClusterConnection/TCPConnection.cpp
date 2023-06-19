@@ -98,7 +98,7 @@ void Server::run()
                 if (!m_broadcast_messages_out.empty())
                 {
                     std::string message = m_broadcast_messages_out.front();
-                    std::cout << "Broadcasting: " << message << "\nTo: " << sock << std::endl;
+                    // std::cout << "Broadcasting: " << message << "\nTo: " << sock << std::endl;
                     send(sock, message.c_str(), message.size() + 1, 0);
                 }
                 if (i == m_master.fd_count - 1 && m_broadcast_messages_out.size() > 0)
