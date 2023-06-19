@@ -19,6 +19,7 @@ class I2C : public IMasterSlave
     void Request(int address, int node_Register, int sizeOfData);
     void Scan();
     int GetRegister(int my_register, void* data);
+    bool FindProduct(std::string product);
     int GetLastChange();
     int GetNodeCount();
     bool IsAvailable();
