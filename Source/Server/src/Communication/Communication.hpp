@@ -22,7 +22,8 @@
 
 #include <chrono>
 
-constexpr uint64_t MAX_CLIENT_INACTIVITY_TIME = 10000;
+// constexpr uint64_t MAX_CLIENT_INACTIVITY_TIME = 10000;
+constexpr uint64_t MAX_CLIENT_INACTIVITY_TIME = 1000;
 
 namespace FindIt
 {
