@@ -12,6 +12,9 @@
 #define PAYLOAD_TWO 2
 #define PAYLOAD_THREE 3
 
+#define TWO_PAYLOAD_ELEMENTS 3
+#define MAX_ELEMENTS 4
+
 class JsonBuilder
 {
 public:
