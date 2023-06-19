@@ -138,6 +138,19 @@ int I2C::GetRegister(int my_register, void* data)
     }
 }
 
+bool I2C::FindProduct(std::string product)
+{
+    for (int i = 0; i < MAX_I2C_ADDRESSES; i++)
+    {
+        if(storedItems[i] == product)
+        {
+            Send(i, Node_Active, true);
+            return true;
+        }
+    }
+    return false;
+}
+
 int I2C::GetLastChange()
 {
     int returnVal = lastRecieved;
