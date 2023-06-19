@@ -16,6 +16,7 @@ set(CMAKE_CXX_STANDARD 20) # C++ standard is C++20
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(BUILD_SHARED_LIBS OFF)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -static-libgcc -static-libstdc++")
 
 if(CMAKE_COMPILER_IS_GNUCXX)
   add_compile_options(-Wall -Wextra -Wpedantic -static -static-libgcc -static-libstdc++)
