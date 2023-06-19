@@ -108,6 +108,7 @@ void Server::run()
             {
                 std::scoped_lock<std::mutex> message_lock(m_messages_out_mutex);
                 send(sock, m_messages_out.at(sock).c_str(), m_messages_out.at(sock).size() + 1, 0);
+                m_messages_out.erase(sock);
             }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1)); //Save CPU
