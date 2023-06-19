@@ -31,7 +31,7 @@ std::string gen_random(const int len) {
     for (int i = 0; i < len; ++i) {
         tmp_s += alphanum[rand() % (sizeof(alphanum) - 1)];
     }
-    
+
     return tmp_s;
 }
 
@@ -39,9 +39,9 @@ SOCKET init()
 {
     if (WSADATA wsData; WSAStartup(MAKEWORD(2, 2), &wsData) != NO_ERROR)
         {throw std::runtime_error("Failed to initialize Winsock");}
-	
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (sock == INVALID_SOCKET)
+
+    SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock == INVALID_SOCKET)
         {throw std::runtime_error("Failed to initialize socket");}
 
     SOCKADDR_IN target;
