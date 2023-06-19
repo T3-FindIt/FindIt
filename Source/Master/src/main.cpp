@@ -14,7 +14,6 @@
 #define SERVER_ADDRESS "SERVER IP"
 #define SERVER_PORT 80
 
-#define I2C_
 #define WIFI
 
 WiFiHandler wifiHandler = WiFiHandler();
@@ -27,8 +26,8 @@ int scanTime = 0;
 
 void setup()
 {
+    Serial.begin(9600);
     #ifdef WIFI
-
     WiFiData wifiData(SSID, PASSWORD);
     wifiHandler = WiFiHandler(wifiData);
 
@@ -38,16 +37,17 @@ void setup()
     wifiHandler.Connect();
     if (!wifiHandler.isConnected())
     {
+        Serial.println("Couldn't connect to the network!");
         return;
     }
 
     webSocketHandler.Connect();
     if (!webSocketHandler.isConnected())
     {
+        Serial.println("Couldn't connect to the server!");
         return;
     }
     #endif
-    Serial.begin(9600);
     Serial.println();
     Serial.println("Starting up!");
     #ifdef I2C_
@@ -60,7 +60,7 @@ int lastRequest;
 
 // HANDLES ALL THE MESSAGES INCOMING FROM THE SERVER
 
-bool Handle_Json(std::string keys[MAX_ARRAY_SIZE], std::string values[MAX_ARRAY_SIZE])
+bool Handle_Json(std::string keys[MAX_ARRAY_SIZE], std::string values[MAX_ARRAY_SIZE]) // TODO: This is a bit of a mess. Cleanup at some point. Turn this into a function pointer array?
 {
     // Check if there is an actual request
     if(keys[ACTION_INDEX] == ACTION_KEY)
@@ -74,15 +74,15 @@ bool Handle_Json(std::string keys[MAX_ARRAY_SIZE], std::string values[MAX_ARRAY_
         std::string secondPayload = std::to_string(i2c.GetNodeCount()); // Get count
 
         // Protocol Compliant
-        keys[PAYLOAD_ONE] == "Node";
-        keys[PAYLOAD_TWO] == "Places";
+        keys[PAYLOAD_ONE] = "Node";
+        keys[PAYLOAD_TWO] = "Places";
 
         // Send the values
-        values[PAYLOAD_ONE] == firstPayload;
-        values[PAYLOAD_TWO] == secondPayload;
+        values[PAYLOAD_ONE] = firstPayload;
+        values[PAYLOAD_TWO] = secondPayload;
 
         std::string json;
-        if(!jsonBuilder.Serialize(keys,values,3, json)) // Parse!
+        if(!jsonBuilder.Serialize(keys,values, TWO_PAYLOAD_ELEMENTS, json)) // Parse!
         {
             return false;
         }
@@ -91,16 +91,40 @@ bool Handle_Json(std::string keys[MAX_ARRAY_SIZE], std::string values[MAX_ARRAY_
         return true;
     }
 
-    if(keys[ACTION_INDEX] == "ServerRequestProduct")
+    if(keys[ACTION_INDEX] == "RequestProduct")
     {
-        
+        std::string firstPayload = "ResponseProduct";
+        #ifdef I2C_
+        std::string secondPayload = i2c.GetProductName(values[PAYLOAD_ONE]);
+        #endif
+        std::string secondPayload = "Demo_Product"; // Code for getting the product name goes here. This also activates the corresponding node :)
+
+        // Protocol Compliant
+        keys[PAYLOAD_ONE] = "Action";
+        keys[PAYLOAD_TWO] = "ProductName";
+        keys[PAYLOAD_THREE] = "Result";
+
+        // Send the values
+        values[PAYLOAD_ONE] = firstPayload;
+        values[PAYLOAD_TWO] = secondPayload;
+        values[PAYLOAD_THREE] = "true"; // TODO: Change the product status to the actual status
+
+        std::string json;
+        if(!jsonBuilder.Serialize(keys,values, MAX_ELEMENTS, json)) // Parse!
+        {
+            return false;
+        }
+
+        webSocketHandler.Send(json); // And send it.
         return true;
     }
 
-    if(keys[ACTION_INDEX] == "NotifyNewProduct")
+    if(keys[0] == "NotifyNewProduct")
     {
         return true;
     }
+    
+    return false;
 }
 
 void loop()
