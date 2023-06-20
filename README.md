@@ -25,10 +25,10 @@ Het FindIt-systeem is modulair opgebouwd, wat betekent dat het gemakkelijk kan w
 
 ### [<img src="https://avatars.githubusercontent.com/u/99728206?v=4" height="20px"/> Nathan](https://github.com/NathanThus)
 
-**Functie:**
-Projectleider
+**Functie / Function:**
+Projectleider / Project Leader
 
-**Software Verantwoordelijkheden:**
+**Software Verantwoordelijkheden / Software Responsibilities:**
 
 * Master
 
@@ -43,15 +43,16 @@ Projectleider
 
 ### [<img src="https://avatars.githubusercontent.com/u/66320357?v=4" height="20px"/> Tom](https://github.com/TomVer99)
 
-**Functie:** Gitbeheerder
+**Functie / Function:**
+Gitbeheerder / Git Master
 
-**Software Verantwoordelijkheden:**
+**Software Verantwoordelijkheden / Software Responsibilities:**
 
 * StyleChecker
 * CI (GitHub Actions)
 * Server
-  * Alle componenten behalve de UI en Message Queue
-  * Componenten integratie
+  * Alle componenten behalve de UI en Message Queue / All components except the UI and Message Queue
+  * Componenten integratie / Component integration
 
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
@@ -65,9 +66,10 @@ Projectleider
 
 ### [<img src="https://avatars.githubusercontent.com/u/95349225?v=4" height="20px"/> Coen](https://github.com/coenhezemans)
 
-**Functie:** Hardware Verantwoordelijke
+**Functie / Function:**
+Hardware Verantwoordelijke / Hardware Responsible
 
-**Software Verantwoordelijkheden:**
+**Software Verantwoordelijkheden / Software Responsibilities:**
 
 * Node
 
@@ -81,9 +83,10 @@ Projectleider
 
 ### [<img src="https://avatars.githubusercontent.com/u/49792918?v=4" height="20px"/> Yassine](https://github.com/Therealyassinetama)
 
-**Functie:** Scrum Master
+**Functie / Function:**
+Scrum Master
 
-**Software Verantwoordelijkheden:**
+**Software Verantwoordelijkheden / Software Responsibilities:**
 
 * Server
   * UI
@@ -99,7 +102,7 @@ Projectleider
 
 ### [<img src="https://avatars.githubusercontent.com/u/113686829?v=4" height="20px"/> Gharib](https://github.com/GharibGharib)
 
-**Software Verantwoordelijkheden:**
+**Software Verantwoordelijkheden / Software Responsibilities:**
 
 * Node
   * NFC Writer
