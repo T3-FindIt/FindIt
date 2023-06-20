@@ -38,7 +38,7 @@ The FindIt system is designed to help users find objects in storage areas such a
 
 The FindIt system is modular, meaning that it can be easily adapted to the specific needs of the user, such as different types of objects, storage locations and users.
 
-## Het Team
+## Het Team / The Team
 
 ### [<img src="https://avatars.githubusercontent.com/u/99728206?v=4" height="20px"/> Nathan](https://github.com/NathanThus)
 
