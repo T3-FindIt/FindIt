@@ -24,7 +24,7 @@ In the end we did not manage to create a working product. We came very close, bu
 
 We thank Fontys and Sioux for their time and their guidance.
 
-## Introductie
+## Introductie / Introduction
 
 **[NL]**
 
