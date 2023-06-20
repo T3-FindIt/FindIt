@@ -9,6 +9,11 @@
 ![Code Hygiene](https://img.shields.io/github/actions/workflow/status/T3-FindIt/FindIt/hygiene.yml?label=Code%20Hygiene&style=flat-square)
 ![In Progress](https://img.shields.io/badge/Project%20In%20Progress-No-red?style=flat-square)
 
+## Final Product
+
+Uiteindelijk is het net niet gelukt om een werkend product te maken. We zijn erg dichtbij gekomen, maar de uiteindelijke integratie is niet gelukt. Zouden we extra tijd gehad hebben zou dit zeker gewerkt kunnen hebben, maar deze tijd was er helaas niet. De individuele stukken werkten wel. 
+
+Wij bedanken Fontys en Sioux voor hun tijd en hun begeleiding.
 
 ## Introductie
 
