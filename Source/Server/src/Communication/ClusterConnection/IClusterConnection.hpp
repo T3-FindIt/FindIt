@@ -1,9 +1,9 @@
 #ifndef ICLUSTERCONNECTION_HPP
 #define ICLUSTERCONNECTION_HPP
 
-#include <IMessage.hpp>
-
 #include <functional>
+#include <cstdint>
+#include <string>
 
 namespace FindIt
 {
@@ -21,6 +21,7 @@ protected:
     on_client_connect_callback_t    m_on_client_connect;
     on_client_disconnect_callback_t m_on_client_disconnect;
 public:
+    virtual ~IClusterConnection() = default;
     virtual void run() = 0;
     virtual void stop() = 0;
 
@@ -29,6 +30,8 @@ public:
                             on_client_disconnect_callback_t on_client_disconnect) = 0;
 
     virtual void broadcastMessage(const std::string& message) = 0;
+
+    virtual void sendMessage(const uint64_t client, const std::string& message) = 0;
 
     virtual void closeClient(const uint64_t client) = 0;
 };

@@ -155,10 +155,13 @@ def CheckForOperator(line:str, index:int, currentFilePath:str):
 
     # Regex to check for correct operators.
     singleRegex = '(\+|-|=|\/|%|==|!=|>=|<=|&&|\|\||\||\^|\+=|-=|\*=|\/=|%=|<<=|>>=|&=|\^=|\|=|<<|>>)'
-    exceptionRegex = '(->|\+\+|--)'
+    exceptionRegex = '(->|\+\+|--)|((-)[0-9]+)'
+    exceptionRegex += '|("*' + singleRegex + '*")'
+    exceptionRegex += '|(' + 'operator' + ')'
     completeRegex = '(\\b' + singleRegex + '\\b)|(' + singleRegex + '\\b)|(\\b' + singleRegex + ')'
     completeExceptionRegex = '(\\b' + exceptionRegex + '\\b)|(' + exceptionRegex + '\\b)|(\\b' + exceptionRegex + ')'
-    if re.search(completeRegex, line) is not None and re.search(completeExceptionRegex, line) is None:
+    if (re.search(completeRegex, line) is not None
+        and re.search(completeExceptionRegex, line) is None):
         PrintStyleError(index, line, currentFilePath, 'Incorrect operator.', 'Operators must be preceded and followed by a whitespace.')
         failed = True
 
