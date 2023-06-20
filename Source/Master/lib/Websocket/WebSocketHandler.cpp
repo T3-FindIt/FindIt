@@ -30,7 +30,9 @@ std::string WebSocketHandler::Recieve()
     {
         if (client.available())
         {
-            return client.readStringUntil('\n').c_str();
+            std::string line = std::string(client.readStringUntil('\n').c_str());
+            Serial.println(line.c_str());
+            return line;
         }
     }
     return "";

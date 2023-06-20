@@ -2,6 +2,7 @@
 #define I2C_HPP
 
 #include <Wire.h>
+#include <string>
 #include "IMasterSlave.hpp"
 
 #define MAX_STRING_SIZE 30

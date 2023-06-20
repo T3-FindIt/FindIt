@@ -8,20 +8,22 @@
 #define LOCAL_ADDRESS 8 // slave address
 
 // Might be better to put this in a secret.h file. To be discussed with the Git Master
-#define SSID "SSID"
-#define PASSWORD "PASSWORD"
+#define SSID "alexa69"
+#define PASSWORD "yassine1"
 
-#define SERVER_ADDRESS "SERVER IP"
-#define SERVER_PORT 80
+#define SERVER_ADDRESS "192.168.137.163"
+#define SERVER_PORT 54000
 
 #define WIFI
+#define I2C_
+#define SERIAL_DEBUG
 
 WiFiHandler wifiHandler = WiFiHandler();
 WebSocketHandler webSocketHandler = WebSocketHandler();
 I2C i2c (LOCAL_ADDRESS);
 JsonBuilder jsonBuilder;
 
-#define SCAN_OFFSET 200 * 1000 // 10 Seconds
+#define SCAN_OFFSET 10 * 1000 // 10 Seconds
 int scanTime = 0;
 
 void setup()
@@ -47,9 +49,14 @@ void setup()
         Serial.println("Couldn't connect to the server!");
         return;
     }
+    Serial.println("Successfully started up!");
     #endif
     Serial.println();
-    Serial.println("Starting up!");
+    std::string keys[] = {"Action:", "Node:", "Places:"};
+    std::string values[] = {"SignIn", "Demo_Cluster", "1"};
+    std::string output;
+    jsonBuilder.Serialize(keys, values, 3,output);
+    webSocketHandler.Send(output);
     #ifdef I2C_
     scanTime = millis() + SCAN_OFFSET;
     i2c.InitializeAddresses();
@@ -63,7 +70,7 @@ int lastRequest;
 bool Handle_Json(std::string keys[MAX_ARRAY_SIZE], std::string values[MAX_ARRAY_SIZE]) // TODO: This is a bit of a mess. Cleanup at some point. Turn this into a function pointer array?
 {
     // Check if there is an actual request
-    if(keys[ACTION_INDEX] == ACTION_KEY)
+    if(keys[ACTION_INDEX] != ACTION_KEY)
     {
         return false;
     }
@@ -95,9 +102,8 @@ bool Handle_Json(std::string keys[MAX_ARRAY_SIZE], std::string values[MAX_ARRAY_
     {
         std::string firstPayload = "ResponseProduct";
         #ifdef I2C_
-        std::string secondPayload = i2c.GetProductName(values[PAYLOAD_ONE]);
+        std::string secondPayload = std::to_string(i2c.FindProduct(values[PAYLOAD_ONE]));
         #endif
-        std::string secondPayload = "Demo_Product"; // Code for getting the product name goes here. This also activates the corresponding node :)
 
         // Protocol Compliant
         keys[PAYLOAD_ONE] = "Action";
@@ -119,7 +125,7 @@ bool Handle_Json(std::string keys[MAX_ARRAY_SIZE], std::string values[MAX_ARRAY_
         return true;
     }
 
-    if(keys[0] == "NotifyNewProduct")
+    if(keys[ACTION_INDEX] == "NotifyNewProduct")
     {
         return true;
     }
@@ -135,6 +141,7 @@ void loop()
         std::string websocketData = webSocketHandler.Recieve();
         if (websocketData != "")
         {
+            Serial.println(websocketData.c_str());
             std::string keys[MAX_ARRAY_SIZE];
             std::string values[MAX_ARRAY_SIZE];
             if(jsonBuilder.Deserialize(websocketData, keys, values, MAX_ARRAY_SIZE))
@@ -151,10 +158,13 @@ void loop()
                     return;
                 }
             }
+            else
+            {
+                #ifdef SERIAL_DEBUG
+                Serial.println("Something went wrong with the deserialisation.");
+                #endif
+            }
         }
-        #ifdef SERIAL_DEBUG
-        Serial.println("Somethign went wrong with the deserialisation.");
-        #endif
     }
     #endif
 
