@@ -10,7 +10,7 @@
 ![In Progress](https://img.shields.io/badge/Project%20In%20Progress-No-red?style=flat-square)
 ![Final Grade](https://img.shields.io/badge/Final%20Grade-8%2F10-green?style=flat-square)
 
-## Final Product
+## Eindproduct / Final Product
 
 **[NL]**
 
