@@ -14,13 +14,13 @@
 
 **[NL]**
 
-Uiteindelijk is het net niet gelukt om een werkend product te maken. We zijn erg dichtbij gekomen, maar de uiteindelijke integratie is niet gelukt. Zouden we extra tijd gehad hebben zou dit zeker gewerkt kunnen hebben, maar deze tijd was er helaas niet. De individuele stukken werkten wel. 
+Hoewel het niet helemaal is gelukt om een werkend product te realiseren, zijn we ontzettend dichtbij gekomen. De uiteindelijke integratie bleek een uitdaging, maar we hebben grote vooruitgang geboekt. Met wat extra tijd zouden we zeker tot een succesvol resultaat hebben kunnen komen, maar helaas was die tijd niet beschikbaar. Gelukkig werkten de individuele stukken wel naar behoren.
 
 Wij bedanken Fontys en Sioux voor hun tijd en hun begeleiding.
 
 **[EN]**
 
-In the end we did not manage to create a working product. We came very close, but the final integration did not work out. If we had more time this would have worked, but unfortunately we did not have this time. The individual parts of the project did work.
+Although we did not quite manage to achieve a working product, we came incredibly close. The final integration proved challenging, but we made great progress. With some extra time, we certainly could have achieved a successful result, but unfortunately that time was not available. Fortunately, the individual pieces did work properly.
 
 We thank Fontys and Sioux for their time and their guidance.
 
