@@ -8,6 +8,7 @@
 ![Test Status](https://img.shields.io/github/actions/workflow/status/T3-FindIt/FindIt/CI.yml?label=Tests&style=flat-square)
 ![Code Hygiene](https://img.shields.io/github/actions/workflow/status/T3-FindIt/FindIt/hygiene.yml?label=Code%20Hygiene&style=flat-square)
 ![In Progress](https://img.shields.io/badge/Project%20In%20Progress-No-red?style=flat-square)
+![Final Grade](https://img.shields.io/badge/Final%20Grade-8%2F10-green?style=flat-square)
 
 ## Final Product
 
