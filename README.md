@@ -32,6 +32,12 @@ Het FindIt-systeem is ontworpen om gebruikers te helpen objecten te vinden in op
 
 Het FindIt-systeem is modulair opgebouwd, wat betekent dat het gemakkelijk kan worden aangepast aan de specifieke behoeften van de gebruiker, zoals verschillende soorten objecten, opbergplekken en gebruikers.
 
+**[EN]**
+
+The FindIt system is designed to help users find objects in storage areas such as drawers, tool carts or medicine cabinets. The system automatically tracks where each object is located and ensures that the user can easily find what he or she is looking for. This is achieved through a central system in which the user can specify what he or she is looking for, and then the system displays the correct objects and guides the user to the correct location.
+
+The FindIt system is modular, meaning that it can be easily adapted to the specific needs of the user, such as different types of objects, storage locations and users.
+
 ## Het Team
 
 ### [<img src="https://avatars.githubusercontent.com/u/99728206?v=4" height="20px"/> Nathan](https://github.com/NathanThus)
