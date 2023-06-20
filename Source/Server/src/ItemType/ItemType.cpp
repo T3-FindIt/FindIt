@@ -3,8 +3,8 @@
 namespace FindIt
 {
 
-ItemType::ItemType(const std::string& Name, int ID)
-    : name(Name), id(ID)
+ItemType::ItemType(const std::string& Name)
+    : name(Name)
 {
 }
 
@@ -13,14 +13,14 @@ const std::string& ItemType::GetName() const
     return name;
 }
 
-int ItemType::GetID() const
-{
-    return id;
-}
-
 bool ItemType::operator==(const ItemType &other) const
 {
-    return name == other.name && id == other.id;
+    return name == other.name;
+}
+
+bool ItemType::operator!=(const ItemType &other) const
+{
+    return name != other.name;
 }
 
 };

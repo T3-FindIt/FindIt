@@ -44,10 +44,8 @@ Projectleider
 * StyleChecker
 * CI (GitHub Actions)
 * Server
-  * CMake structuur
-  * Database
-  * TCP Server
-  * JSON Parser
+  * Alle componenten behalve de UI en Message Queue
+  * Componenten integratie
 
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)

@@ -37,6 +37,8 @@ public:
 
     void broadcastMessage(const std::string& message) final;
 
+    void sendMessage(const uint64_t client, const std::string& message) final;
+
     void closeClient(const uint64_t client) final;
 
 private:
@@ -45,6 +47,9 @@ private:
 
     std::list<uint64_t> m_clients_to_close;
     std::mutex m_clients_to_close_mutex;
+
+    std::unordered_map<uint64_t, std::string> m_messages_out;
+    std::mutex m_messages_out_mutex;
 
     fd_set m_master;
     SOCKET m_listener;

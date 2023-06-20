@@ -2,8 +2,14 @@
 
 namespace FindIt
 {
-    UserInterface::UserInterface(Get_objects_t functionPointer, Add_objects_Database_t functionpointer3, FindIt::MessageQueue &queueIn, FindIt::MessageQueue &queueOut)
-        : ReturnUniqueObjectsTypes(functionPointer), AddObject(functionpointer3), QueueIn(queueIn), QueueOut(queueOut)
+    UserInterface::UserInterface(Get_objects_t functionPointer
+                                , Add_objects_Database_t functionpointer3
+                                , FindIt::MessageQueue &queueIn
+                                , FindIt::MessageQueue &queueOut)
+        : ReturnUniqueObjectsTypes(functionPointer)
+        , AddObject(functionpointer3)
+        , QueueIn(queueIn)
+        , QueueOut(queueOut)
     {
     }
 
@@ -22,7 +28,6 @@ namespace FindIt
     void UserInterface::Run()
     {
         int choice = 0;
-        int ID = 1; // dirty hardcoded fix
         running = true;
 
         while (running)
@@ -32,8 +37,9 @@ namespace FindIt
             {
             case 1:
             {
+                system("cls");
                 std::cout << "All types:" << std::endl;
-                for (auto type : ReturnUniqueObjectsTypes())
+                for (const auto& type : ReturnUniqueObjectsTypes())
                 {
                     std::cout << type.GetName() << std::endl;
                 }
@@ -41,38 +47,74 @@ namespace FindIt
             }
             case 2:
             {
+                system("cls");
+                std::cout << "All types:" << std::endl;
+                for (const auto& type : ReturnUniqueObjectsTypes())
+                {
+                    std::cout << type.GetName() << std::endl;
+                }
+                std::cout << std::endl;
                 std::cout << "Type in the object you would like to request:" << std::endl;
                 std::string requestedObject;
                 std::cin >> requestedObject;
+                // check if the database has the object
+                bool found = false;
+                for (const auto& type : ReturnUniqueObjectsTypes())
+                {
+                    if (type.GetName() == requestedObject)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    std::cout << "The object you requested is not in the database." << std::endl;
+                    std::cout << "If you still want to request it, it will be added to the database." << std::endl;
+                    std::cout << "Do you want to continue? y/n" << std::endl;
+                    char answer;
+                    std::cin >> answer;
+                    answer = tolower(answer);
+                    if (answer == 'y')
+                    {
+                        FindIt::ItemType obj = FindIt::ItemType(requestedObject);
+                        AddObject(obj);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
                 std::shared_ptr<FindIt::IMessage> msg = std::make_shared<FindIt::ServerRequestProduct>(requestedObject, true);
                 QueueOut.push(msg);
-                std::cout << "Unfortunatly we cannot tell you if the object was found or not." << std::endl;
-                system("cls");
+                std::cout << "Unfortunatly we cannot tell you if the object was found or not.\n\n\n\n" << std::endl;
                 break;
             }
             case 3:
             {
+                system("cls");
                 std::cout << "Type in the object you would like to add:\n"
                         << "The first name without spaces will be used!" << std::endl;
                 std::string ObjectToBeAdded;
                 std::cin >> ObjectToBeAdded;
-                FindIt::ItemType obj = FindIt::ItemType(ObjectToBeAdded, ID);
+                FindIt::ItemType obj = FindIt::ItemType(ObjectToBeAdded);
                 AddObject(obj);
                 system("cls");
                 break;
             }
             case 4:
             {
-                std::cout << "quitting" << std::endl;
-                UserInterface::Stop();
                 system("cls");
+                std::cout << "quitting..." << std::endl;
+                UserInterface::Stop();
                 break;
             }
-
             default:
             {
-                std::cout << "something went wrong" << std::endl;
                 system("cls");
+                std::cout << "something went wrong" << std::endl;
                 break;
             }
             }

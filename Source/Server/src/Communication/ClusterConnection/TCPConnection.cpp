@@ -92,16 +92,24 @@ void Server::run()
             SOCKET sock = m_master.fd_array[i];
             if (sock == m_listener)
                 continue;
-            
-            std::scoped_lock<std::mutex> broadcast_lock(m_broadcast_messages_out_mutex);
-            if (!m_broadcast_messages_out.empty())
+
             {
-                std::string message = m_broadcast_messages_out.front();
-                std::cout << "Broadcasting: " << message << "\nTo: " << sock << std::endl;
-                send(sock, message.c_str(), message.size() + 1, 0);
+                std::scoped_lock<std::mutex> broadcast_lock(m_broadcast_messages_out_mutex);
+                if (!m_broadcast_messages_out.empty())
+                {
+                    std::string message = m_broadcast_messages_out.front();
+                    // std::cout << "Broadcasting: " << message << "\nTo: " << sock << std::endl;
+                    send(sock, message.c_str(), message.size() + 1, 0);
+                }
+                if (i == m_master.fd_count - 1 && m_broadcast_messages_out.size() > 0)
+                m_broadcast_messages_out.pop_front();
             }
-            if (i == m_master.fd_count - 1 && m_broadcast_messages_out.size() > 0)
-               m_broadcast_messages_out.pop_front();
+            if (m_messages_out.contains(sock))
+            {
+                std::scoped_lock<std::mutex> message_lock(m_messages_out_mutex);
+                send(sock, m_messages_out.at(sock).c_str(), m_messages_out.at(sock).size() + 1, 0);
+                m_messages_out.erase(sock);
+            }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1)); //Save CPU
     }
@@ -125,6 +133,12 @@ void Server::broadcastMessage(const std::string &message)
 {
     std::scoped_lock<std::mutex> lock(m_broadcast_messages_out_mutex);
     m_broadcast_messages_out.push_back(message);
+}
+
+void Server::sendMessage(const uint64_t client, const std::string &message)
+{
+    std::scoped_lock<std::mutex> lock(m_messages_out_mutex);
+    m_messages_out.try_emplace(client, message);
 }
 
 void Server::closeClient(const uint64_t client)

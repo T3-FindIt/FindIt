@@ -1,27 +1,46 @@
-// #include <nlohmann/json.hpp>
 #include <iostream>
 #include <thread>
 #include <vector>
-#include <string>
-#include <PlainFileDatabase.hpp>
-#include <filesystem>
-#include <fstream>
+#include <memory>
 
-#include "./UserInterface/UserInterface.hpp"
-
-FindIt::PlainFileDatabase database = FindIt::PlainFileDatabase("DatabaseTestFiles/database.db");
-FindIt::MessageQueue msgq1 = FindIt::MessageQueue();
-FindIt::MessageQueue msgq2 = FindIt::MessageQueue();
+#include "Communication.hpp"
+#include "TCPConnection.hpp"
+#include "JSONProtocolParser.hpp"
+#include "ItemType.hpp"
+#include "PlainFileDatabase.hpp"
+#include "IMessage.hpp"
+#include "MessageQueue.hpp"
+#include "UserInterface.hpp"
 
 int main()
 {
-    FindIt::UserInterface *UI = new FindIt::UserInterface(std::bind_front(&FindIt::PlainFileDatabase::GetAllObjects, &database)
-                                                            , std::bind_front(&FindIt::PlainFileDatabase::Add, &database)
-                                                            , msgq1
-                                                            , msgq2);
+    // Set cluster coms to a TCP connection on port 54000
+    FindIt::Server clusterConnection(54000);
 
-    std::jthread t1(&FindIt::UserInterface::Run, UI);
-    t1.join();
+    // Set protocol parser to JSON
+    FindIt::JSONProtocolParser protocolParser;
 
-    delete UI;
+    // Set up database
+    FindIt::PlainFileDatabase database("./Data/Database.db");
+
+    // Set up message queues
+    FindIt::MessageQueue UIToCommunication;
+    FindIt::MessageQueue CommunicationToUI;
+
+    // Set up communication and start a new thread for it
+    FindIt::Communication communication(clusterConnection, protocolParser, database, UIToCommunication, CommunicationToUI);
+    std::jthread communicationThread(&FindIt::Communication::Run, &communication);
+
+    // Set up UI and start a new thread for it
+    FindIt::UserInterface UI(std::bind_front(&FindIt::PlainFileDatabase::GetAllObjects, &database)
+                                                , std::bind_front(&FindIt::PlainFileDatabase::Add, &database)
+                                                , CommunicationToUI
+                                                , UIToCommunication);
+    std::jthread uiThread(&FindIt::UserInterface::Run, &UI);
+
+    // Make sure we exit gracefully
+    uiThread.join();
+    communication.Stop();
+    communicationThread.join();
+    return 0;
 }

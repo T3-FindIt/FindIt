@@ -31,78 +31,30 @@ PlainFileDatabase::PlainFileDatabase(std::string relativePath)
 
 void PlainFileDatabase::Add(ItemType object)
 {
-    if (!SearchIfPresent(object))
-    {
-        std::fstream file(relativePath, std::ios::app);
-        if (!file.good())
-        {
-            throw std::runtime_error("Database Source Missing - Add");
-        }
-        file << separator << ';' << object.GetName() << ";" << object.GetID() << ";" << separator << ';';
-        file.close();
-    }
+    std::scoped_lock<std::mutex> lock(mutex);
+    _Add(object);
 }
 
 void PlainFileDatabase::Remove(ItemType object)
 {
-    std::vector<ItemType> objects = GetAllObjects();
-    std::erase(objects, object);
-
-    std::ofstream file(relativePath, std::ios::trunc);
-    file.close();
-
-    for (const auto& obj : objects)
-    {
-        Add(obj);
-    }
+    std::scoped_lock<std::mutex> lock(mutex);
+    _Remove(object);
 }
 
 bool PlainFileDatabase::SearchIfPresent(ItemType object)
 {
-    std::fstream file(relativePath);
-    if (!file.good())
-    {
-        throw std::runtime_error("Database Source Missing - SearchIfPresent");
-    }
-    bool result = false;
-
-    std::vector<std::string> lines;
-    lines = ReadObjectAndIncrement(file);
-    while (!lines.empty() && lines.size() >= 2)
-    {
-        if (lines.at(0) == object.GetName() && lines.at(1) == std::to_string(object.GetID()))
-        {
-            result = true;
-            break;
-        }
-        lines = ReadObjectAndIncrement(file);
-    }
-
-    return result;
+    std::scoped_lock<std::mutex> lock(mutex);
+    return _SearchIfPresent(object);
 }
 
 std::vector<ItemType> PlainFileDatabase::GetAllObjects()
 {
-    std::fstream file(relativePath);
-    if (!file.good())
-    {
-        throw std::runtime_error("Database Source Missing - GetAllObjects");
-    }
-
-    std::vector<ItemType> objects;
-    std::vector<std::string> lines;
-    lines = ReadObjectAndIncrement(file);
-    while (!lines.empty() && lines.size() >= 2)
-    {
-        objects.emplace_back(lines.at(0), std::stoi(lines.at(1)));
-        lines = ReadObjectAndIncrement(file);
-    }
-
-    file.close();
-    return objects;
+    std::scoped_lock<std::mutex> lock(mutex);
+    return _GetAllObjects();
 }
 
-std::vector<std::string> PlainFileDatabase::ReadObjectAndIncrement(std::fstream &file)
+// Only used internally, no mutex needed.
+std::vector<std::string> PlainFileDatabase::_ReadObjectAndIncrement(std::fstream &file)
 {
     if (!file.good())
     {
@@ -140,6 +92,85 @@ std::vector<std::string> PlainFileDatabase::ReadObjectAndIncrement(std::fstream 
     }
 
     return lines;
+}
+
+// Only used internally, no mutex needed.
+void PlainFileDatabase::_Add(ItemType object)
+{
+    if (!_SearchIfPresent(object))
+    {
+        std::fstream file(relativePath, std::ios::app);
+        if (!file.good())
+        {
+            throw std::runtime_error("Database Source Missing - Add");
+        }
+        // This is VERY bad, but there is not enough time to change the database format.
+        // The ID will always be 1 and never be checked.
+        // But trying to remove this caused too much time to be wasted.
+        file << separator << ';' << object.GetName() << ";" << '1' << ";" << separator << ';';
+        file.close();
+    }
+}
+
+// Only used internally, no mutex needed.
+void PlainFileDatabase::_Remove(ItemType object)
+{
+    std::vector<ItemType> objects = _GetAllObjects();
+    std::erase(objects, object);
+
+    std::ofstream file(relativePath, std::ios::trunc);
+    file.close();
+
+    for (const auto& obj : objects)
+    {
+        _Add(obj);
+    }
+}
+
+// Only used internally, no mutex needed.
+bool PlainFileDatabase::_SearchIfPresent(ItemType object)
+{
+    std::fstream file(relativePath);
+    if (!file.good())
+    {
+        throw std::runtime_error("Database Source Missing - SearchIfPresent");
+    }
+    bool result = false;
+
+    std::vector<std::string> lines;
+    lines = _ReadObjectAndIncrement(file);
+    while (!lines.empty() && lines.size() >= 2)
+    {
+        if (lines.at(0) == object.GetName())
+        {
+            result = true;
+            break;
+        }
+        lines = _ReadObjectAndIncrement(file);
+    }
+    return result;
+}
+
+// Only used internally, no mutex needed.
+std::vector<ItemType> PlainFileDatabase::_GetAllObjects()
+{
+    std::fstream file(relativePath);
+    if (!file.good())
+    {
+        throw std::runtime_error("Database Source Missing - GetAllObjects");
+    }
+
+    std::vector<ItemType> objects;
+    std::vector<std::string> lines;
+    lines = _ReadObjectAndIncrement(file);
+    while (!lines.empty() && lines.size() >= 2)
+    {
+        objects.emplace_back(lines.at(0));
+        lines = _ReadObjectAndIncrement(file);
+    }
+
+    file.close();
+    return objects;
 }
 
 } // namespace FindIt
