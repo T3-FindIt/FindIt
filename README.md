@@ -18,6 +18,12 @@ Uiteindelijk is het net niet gelukt om een werkend product te maken. We zijn erg
 
 Wij bedanken Fontys en Sioux voor hun tijd en hun begeleiding.
 
+**[EN]**
+
+In the end we did not manage to create a working product. We came very close, but the final integration did not work out. If we had more time this would have worked, but unfortunately we did not have this time. The individual parts of the project did work.
+
+We thank Fontys and Sioux for their time and their guidance.
+
 ## Introductie
 
 Het FindIt-systeem is ontworpen om gebruikers te helpen objecten te vinden in opbergplekken zoals lades, gereedschapswagens of medicijnkasten. Het systeem houdt automatisch bij waar elk object zich bevindt en zorgt ervoor dat de gebruiker gemakkelijk kan vinden wat hij of zij zoekt. Dit wordt bereikt door middel van een centraal systeem waarin de gebruiker kan aangeven wat hij of zij zoekt, waarna het systeem de juiste objecten toont en de gebruiker naar de juiste locatie leidt.
